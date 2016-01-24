@@ -56,6 +56,11 @@ categories:
 `$ bundle install`  
 ![bundle](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/bundlepng.png =450x90)  
 如果出现错误，请尝试更换ruby版本  
+### 7、更改jquery.min.js的Request URL  
+在国内环境下加载页面速度很慢，用google浏览器检查发现，jquery.min.js和widgets.js的请求失败。是由于jquery.min.js和widgets.js默认的Request URL如下：  
+`http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js`  
+`http://platform.twitter.com/widgets.js`  
+由于被墙，在国内环境下打开博客时，加载速度很慢。所以将jquery.min.js的Request URL改为国内可用的(主要修改jquery.min.js，widgets.js可先不管)。打开octopress/source/_includes目录下的head.html文件，将`<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>`替换为`<script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>`  
 ## Mac环境： 
 Mac环境下默认已经安装了Git和Ruby，可以不用另外安装，除非版本不匹配，需要别的版本，安装即可。只是注意也要修改Ruby的更新源：  
 `> gem sources -a https://ruby.taobao.org/`  
