@@ -15,7 +15,8 @@ categories: Octopress
 下载地址：[http://git-scm.com/](http://git-scm.com/)  
 安装好git后，配置user.name和user.email  `$ git config --global user.name "rayco"`  `$ git config --global user.email "rayco.zhang@gmail.com"`  
 ### 2、安装并配置Ruby  
-下载地址：[http://rubyinstaller.org/downloads/](http://rubyinstaller.org/downloads/)  将ruby安装到一个没有空格，没有中文的路径下（避免后面在执行bundle install时报错）。安装时勾选Add Ruby executables to your PATH，将ruby加入系统环境路径。  ![rubyinstall](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rubyinstall.png)  安装完成后在cmd执行：  `> ruby -v`  确认是否添加成功。  ![ruby-v](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/ruby-v.png)  
+下载地址：[http://rubyinstaller.org/downloads/](http://rubyinstaller.org/downloads/)  将ruby安装到一个没有空格，没有中文的路径下（避免后面在执行bundle install时报错）。安装时勾选Add Ruby executables to your PATH，将ruby加入系统环境路径。  
+<!--more-->![rubyinstall](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rubyinstall.png)  安装完成后在cmd执行：  `> ruby -v`  确认是否添加成功。  ![ruby-v](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/ruby-v.png)  
 替换更新源（gem是基于ruby的一些开发工具包）  `> gem sources -a https://ruby.taobao.org/`  `> gem sources -r https://rubygems.org/`  `> gem sources -l`  因为若不翻墙，ruby网站上不去，所以需要更换ruby的更新源，第一个是添加，第二个是删除，第三个是显示，如果显示输出[https://ruby.taobao.org/](https://ruby.taobao.org/)，就对了。  
 ![ruby-v](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/gem-sources.png)  
 ### 3、安装DevKit  

@@ -11,6 +11,7 @@ categories: Octopress
 
 ### 1、新建Github仓库  
 仓库名字必须是username.github.io，其中username是你的github用户名。描述和Readme 可选，创建即可。  ![github-repo](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/github-repo.png)  
+<!--more-->
 ### 2、发布Octopress到Github  
 #### (1) 建立github page  进入octopress目录，执行如下命令：  `$ rake setup_github_pages`  在Repository url输入刚刚创建的仓库地址：  git@github.com:[username]/[username].github.com.git，自行替换username  ![setup-github-page](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/setup-github-page.png)  从打印信息可得到以下信息：  1. 已经将默认的remote(即Github上的仓库名)设置为origin  2. 将master分支重命名为source，即将源码分支命名成了source，用来提交博客源文件  3. 新建了_deploy目录，并在该目录下初始化了一个空的Git仓库，且添加了index.html  
 #### (2) 安装Octopress默认主题  
