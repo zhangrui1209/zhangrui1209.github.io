@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://zhangrui1209.github.io/blog/2016/01/19/2-dot-fa-bu-bo-ke/</loc>
+    <loc>http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html/</loc>
     <lastmod>2016-01-19T22:45:06+08:00</lastmod>
   </url>
   <url>
-    <loc>http://zhangrui1209.github.io/blog/2016/01/19/1-dot-huan-jing-da-jian/</loc>
+    <loc>http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html/</loc>
     <lastmod>2016-01-19T21:26:36+08:00</lastmod>
   </url>
   <url>
@@ -13,5 +13,8 @@
   </url>
   <url>
     <loc>http://zhangrui1209.github.io/</loc>
+  </url>
+  <url>
+    <loc>http://zhangrui1209.github.io/blog/categories/octopress/</loc>
   </url>
 </urlset>
