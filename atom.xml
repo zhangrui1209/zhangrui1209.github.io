@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-01-19T23:22:17+08:00</updated>
+  <updated>2016-01-24T16:13:44+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -161,6 +161,13 @@ LC_ALL=zh_CN.UTF-8</p>
 <code>$ bundle install</code><br/>
 <img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/bundlepng.png" height="90" width="450" alt="bundle" /><br/>
 如果出现错误，请尝试更换ruby版本</p>
+
+<h3>7、更改jquery.min.js的Request URL</h3>
+
+<p>在国内环境下加载页面速度很慢，用google浏览器检查发现，jquery.min.js和widgets.js的请求失败。是由于jquery.min.js和widgets.js默认的Request URL如下：<br/>
+<code>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</code><br/>
+<code>http://platform.twitter.com/widgets.js</code><br/>
+由于被墙，在国内环境下打开博客时，加载速度很慢。所以将jquery.min.js的Request URL改为国内可用的(主要修改jquery.min.js，widgets.js可先不管)。打开octopress/source/_includes目录下的head.html文件，将<code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code>替换为<code>&lt;script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code></p>
 
 <h2>Mac环境：</h2>
 
