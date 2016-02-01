@@ -6,7 +6,6 @@ comments: true
 categories: Octopress
 ---
 
-# <center>环境搭建</center>
 
 ## Windows环境
 
