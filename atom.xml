@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[張先森]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-02-01T14:57:52+08:00</updated>
+  <updated>2016-02-01T18:03:52+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[zhangrui]]></name>
@@ -18,7 +18,26 @@
     <link href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html"/>
     <updated>2016-01-19T22:45:06+08:00</updated>
     <id>http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke</id>
-    <content type="html"><![CDATA[<p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#github" id="markdown-toc-github">1、新建Github仓库</a></li>
+  <li><a href="#octopressgithub" id="markdown-toc-octopressgithub">2、发布Octopress到Github</a>    <ul>
+      <li><a href="#github-page" id="markdown-toc-github-page">(1) 建立github page</a></li>
+      <li><a href="#octopress" id="markdown-toc-octopress">(2) 安装Octopress默认主题</a></li>
+      <li><a href="#section" id="markdown-toc-section">(3) 生成静态页面</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">(4) 本地预览</a></li>
+      <li><a href="#github-1" id="markdown-toc-github-1">(5) 发布博客到Github</a></li>
+      <li><a href="#source" id="markdown-toc-source">(6) 提交源文件，即source分支</a></li>
+      <li><a href="#githubssh" id="markdown-toc-githubssh">附录-给github设置SSH</a>        <ul>
+          <li><a href="#a-ssh" id="markdown-toc-a-ssh">A. 创建SSH密钥（通常在用户主目录下进行）</a></li>
+          <li><a href="#b-github" id="markdown-toc-b-github">B. 添加公有密钥到github</a></li>
+          <li><a href="#c-" id="markdown-toc-c-">C. 在本地确认设置</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
 
 <h3 id="github">1、新建Github仓库</h3>
 
@@ -94,7 +113,21 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
     <link href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html"/>
     <updated>2016-01-19T21:26:36+08:00</updated>
     <id>http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian</id>
-    <content type="html"><![CDATA[<h2 id="windows">Windows环境</h2>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#windows" id="markdown-toc-windows">Windows环境</a>    <ul>
+      <li><a href="#git" id="markdown-toc-git">1、安装并配置Git</a></li>
+      <li><a href="#ruby" id="markdown-toc-ruby">2、安装并配置Ruby</a></li>
+      <li><a href="#devkit" id="markdown-toc-devkit">3、安装DevKit</a></li>
+      <li><a href="#utf-8windows" id="markdown-toc-utf-8windows">4、为支持UTF-8编码，配置Windows环境变量如下：</a></li>
+      <li><a href="#octopress" id="markdown-toc-octopress">5、克隆Octopress库</a></li>
+      <li><a href="#octopress-1" id="markdown-toc-octopress-1">6、安装Octopress依赖项</a></li>
+      <li><a href="#jqueryminjsrequest-url" id="markdown-toc-jqueryminjsrequest-url">7、更改jquery.min.js的Request URL</a></li>
+    </ul>
+  </li>
+  <li><a href="#mac" id="markdown-toc-mac">Mac环境：</a></li>
+</ul>
+
+<h2 id="windows">Windows环境</h2>
 
 <h3 id="git">1、安装并配置Git</h3>
 

@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>2.发布博客 - My Octopress Blog</title>
+  <title>2.发布博客 - 張先森</title>
   <meta name="author" content="zhangrui">
 
   
-  <meta name="description" content="本地环境配置完毕后就可以把Octopress推到Github上了。 1、新建Github仓库 仓库名字必须是username.github.io，其中username是你的github用户名。描述和Readme 可选，创建即可。 2、发布Octopress到Github (1) 建立github &hellip;">
+  <meta name="description" content="1、新建Github仓库 2、发布Octopress到Github (1) 建立github page (2) 安装Octopress默认主题 (3) 生成静态页面 (4) 本地预览 (5) 发布博客到Github (6) 提交源文件，即source分支 附录-给github设置SSH A. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -21,7 +21,7 @@
   <link rel="canonical" href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <link href="/atom.xml" rel="alternate" title="張先森" type="application/atom+xml">
   <script src="/javascripts/modernizr-2.0.js"></script>
   <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
   <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
@@ -62,28 +62,29 @@
 
 <body   >
   <header role="banner"><hgroup>
-  <h1><a href="/">My Octopress Blog</a></h1>
+  <h1><a href="/">張先森</a></h1>
   
-    <h2>Stay hungry, Stay ahead.</h2>
+    <h2>未经审视的人生，是不值得过的。</h2>
   
 </hgroup>
 
 </header>
   <nav role="navigation"><ul class="subscription" data-subscription="rss">
-  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
   
 </ul>
   
 <form action="https://www.google.com/search" method="get">
   <fieldset role="search">
     <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
-    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
   </fieldset>
 </form>
   
 <ul class="main-navigation">
-  <li><a href="/">Blog</a></li>
-  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
 </ul>
 
 </nav>
@@ -110,7 +111,26 @@
   </header>
 
 
-<div class="entry-content"><p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
+<div class="entry-content"><ul id="markdown-toc">
+  <li><a href="#github" id="markdown-toc-github">1、新建Github仓库</a></li>
+  <li><a href="#octopressgithub" id="markdown-toc-octopressgithub">2、发布Octopress到Github</a>    <ul>
+      <li><a href="#github-page" id="markdown-toc-github-page">(1) 建立github page</a></li>
+      <li><a href="#octopress" id="markdown-toc-octopress">(2) 安装Octopress默认主题</a></li>
+      <li><a href="#section" id="markdown-toc-section">(3) 生成静态页面</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">(4) 本地预览</a></li>
+      <li><a href="#github-1" id="markdown-toc-github-1">(5) 发布博客到Github</a></li>
+      <li><a href="#source" id="markdown-toc-source">(6) 提交源文件，即source分支</a></li>
+      <li><a href="#githubssh" id="markdown-toc-githubssh">附录-给github设置SSH</a>        <ul>
+          <li><a href="#a-ssh" id="markdown-toc-a-ssh">A. 创建SSH密钥（通常在用户主目录下进行）</a></li>
+          <li><a href="#b-github" id="markdown-toc-b-github">B. 添加公有密钥到github</a></li>
+          <li><a href="#c-" id="markdown-toc-c-">C. 在本地确认设置</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
 
 <h3 id="github">1、新建Github仓库</h3>
 
@@ -207,8 +227,6 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html" data-via="" data-counturl="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html" >Tweet</a>
-  
   
   
 </div>
@@ -228,7 +246,7 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
 <aside class="sidebar">
   
     <section>
-  <h1>Recent Posts</h1>
+  <h1>最新发布</h1>
   <ul id="recent_posts">
     
       <li class="post">
@@ -241,7 +259,13 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
     
   </ul>
 </section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 
+  </ul>
+</section>
 
 
 
@@ -265,16 +289,6 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 
