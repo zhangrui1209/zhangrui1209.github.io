@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-02-01T14:40:27+08:00</updated>
+  <updated>2016-02-01T14:54:46+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[zhangrui]]></name>
@@ -15,7 +15,7 @@
   
   <entry>
     <title type="html"><![CDATA[2.发布博客]]></title>
-    <link href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html/"/>
+    <link href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html"/>
     <updated>2016-01-19T22:45:06+08:00</updated>
     <id>http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke</id>
     <content type="html"><![CDATA[<h1 id="centercenter"><center>发布博客</center></h1>
@@ -93,7 +93,7 @@ git@github.com:[username]/[username].github.com.git，自行替换username<br />
   
   <entry>
     <title type="html"><![CDATA[1.环境搭建]]></title>
-    <link href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html/"/>
+    <link href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html"/>
     <updated>2016-01-19T21:26:36+08:00</updated>
     <id>http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian</id>
     <content type="html"><![CDATA[<h1 id="centercenter"><center>环境搭建</center></h1>
