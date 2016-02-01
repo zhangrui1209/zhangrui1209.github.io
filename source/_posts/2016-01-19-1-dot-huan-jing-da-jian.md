@@ -4,8 +4,10 @@ title: "1.环境搭建"
 date: 2016-01-19 21:26:36 +0800
 comments: true
 categories: Octopress
----
+---  
 
+* list element with functor item  
+{:toc}  
 
 ## Windows环境
 
