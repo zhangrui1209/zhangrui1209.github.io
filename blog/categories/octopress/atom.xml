@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[分类：octopress | My Octopress Blog]]></title>
+  <link href="http://zhangrui1209.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://zhangrui1209.github.io/"/>
+  <updated>2016-02-01T14:40:27+08:00</updated>
+  <id>http://zhangrui1209.github.io/</id>
+  <author>
+    <name><![CDATA[zhangrui]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[2.发布博客]]></title>
+    <link href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html/"/>
+    <updated>2016-01-19T22:45:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke</id>
+    <content type="html"><![CDATA[<h1 id="centercenter"><center>发布博客</center></h1>
+
+<p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
+
+<h3 id="github">1、新建Github仓库</h3>
+
+<p>仓库名字必须是username.github.io，其中username是你的github用户名。描述和Readme 可选，创建即可。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/github-repo.png" alt="github-repo" /></p>
+
+<!--more-->
+
+<h3 id="octopressgithub">2、发布Octopress到Github</h3>
+
+<h4 id="github-page">(1) 建立github page</h4>
+<p>进入octopress目录，执行如下命令：<br />
+<code>$ rake setup_github_pages</code><br />
+在Repository url输入刚刚创建的仓库地址：<br />
+git@github.com:[username]/[username].github.com.git，自行替换username<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/setup-github-page.png" alt="setup-github-page" /><br />
+从打印信息可得到以下信息：<br />
+1. 已经将默认的remote(即Github上的仓库名)设置为origin<br />
+2. 将master分支重命名为source，即将源码分支命名成了source，用来提交博客源文件<br />
+3. 新建了_deploy目录，并在该目录下初始化了一个空的Git仓库，且添加了index.html</p>
+
+<h4 id="octopress">(2) 安装Octopress默认主题</h4>
+<p><code>$ rake install</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-install.png" alt="rake-install" /></p>
+
+<h4 id="section">(3) 生成静态页面</h4>
+<p><code>$ rake generate</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-generate.png" alt="rake-generate" /></p>
+
+<h4 id="section-1">(4) 本地预览</h4>
+<p><code>$ rake preview</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-preview.png" alt="rake-preview" /><br />
+本地预览地址：<a href="http://localhost:4000/">http://localhost:4000/</a>这时候打开本地预览地址，可以看到如下页面，使用 Ctrl+C停止预览。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/localhost.png" alt="localhost" /></p>
+
+<h4 id="github-1">(5) 发布博客到Github</h4>
+<p><code>$ rake deploy</code><br />
+这步会帮我们把master分支提交到Github，但是平时我们编辑的则是source分支，source分支则不会提交，需要我们手动提交。这里采用的是SSH方式推送的，如果出错，可能是没有创建SSH密钥，请按照附录方法设置。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-deploy.png" alt="rake-deploy" /><br />
+这时候打开<a href="http://zhangrui1209.github.io">http://zhangrui1209.github.io</a>，可以看到如下页面（如果是404页面，那等一等，第一次deploy可能需要10分钟左右才能看到）：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/404.png" alt="404" /><br />
+正确显示效果<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/github-io.png" alt="github-io" /></p>
+
+<h4 id="source">(6) 提交源文件，即source分支</h4>
+<p><code>$ git add .</code><br />
+<code>$ git commit -m “commit message”</code><br />
+<code>$ git push origin source</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/push-source.png" alt="push-source" /></p>
+
+<h4 id="githubssh">附录-给github设置SSH</h4>
+
+<h6 id="a-ssh">A. 创建SSH密钥（通常在用户主目录下进行）</h6>
+<p><code>$ ssh-keygen -t rsa -C "YourEmail@example.com"</code><br />
+确认目录和密码短语，可以直接使用默认，回车就行。</p>
+
+<h5 id="b-github">B. 添加公有密钥到github</h5>
+<p>在刚才确认的目录下可以看到生成了.ssh目录，里面有两个文件id_rsa（私有密钥）和id_rsa.pub（公有密钥）。登录github→Account Settings→SSH keys→Add SSH key添加一个SSH key，标题任意，把id_rsa.pub的内容拷入即可。</p>
+
+<h5 id="c-">C. 在本地确认设置</h5>
+<p><code>$ ssh -T git@github.com</code></p>
+
+<p>…</p>
+
+<p>Hi xxx! You’ve successfully authenticated…</p>
+
+<p>有上面的提示就OK了，如果设置了密码短语，需要输入密码短语。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[1.环境搭建]]></title>
+    <link href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html/"/>
+    <updated>2016-01-19T21:26:36+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian</id>
+    <content type="html"><![CDATA[<h1 id="centercenter"><center>环境搭建</center></h1>
+
+<h2 id="windows">Windows环境</h2>
+
+<h3 id="git">1、安装并配置Git</h3>
+
+<p>下载地址：<a href="http://git-scm.com/">http://git-scm.com/</a><br />
+安装好git后，配置user.name和user.email<br />
+<code>$ git config --global user.name "rayco"</code><br />
+<code>$ git config --global user.email "rayco.zhang@gmail.com"</code></p>
+
+<h3 id="ruby">2、安装并配置Ruby</h3>
+
+<p>下载地址：<a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a><br />
+将ruby安装到一个没有空格，没有中文的路径下（避免后面在执行bundle install时报错）。安装时勾选Add Ruby executables to your PATH，将ruby加入系统环境路径。<br />
+<!--more-->
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rubyinstall.png" alt="rubyinstall" /><br />
+安装完成后在cmd执行：<br />
+<code>&gt; ruby -v</code><br />
+确认是否添加成功。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/ruby-v.png" alt="ruby-v" /></p>
+
+<p>替换更新源（gem是基于ruby的一些开发工具包）<br />
+<code>&gt; gem sources -a https://ruby.taobao.org/</code><br />
+<code>&gt; gem sources -r https://rubygems.org/</code><br />
+<code>&gt; gem sources -l</code><br />
+因为若不翻墙，ruby网站上不去，所以需要更换ruby的更新源，第一个是添加，第二个是删除，第三个是显示，如果显示输出<a href="https://ruby.taobao.org/">https://ruby.taobao.org/</a>，就对了。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/gem-sources.png" alt="ruby-v" /></p>
+
+<h3 id="devkit">3、安装DevKit</h3>
+
+<p>下载地址：<a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a><br />
+下载完后解压到D:\DevKit，打开cmd，执行如下命令：<br />
+<code>&gt; d:</code><br />
+<code>&gt; cd d:DevKit</code><br />
+<code>&gt; ruby dk.rb init</code><br />
+<code>&gt; ruby dk.rb install</code><br />
+如果执行ruby dk.rb install时出现Invalid configuration or no Rubies listed. Please fix ‘config.yml’ and rerun ‘ruby dk.rb install’<br />
+则打开DevKit目录下的config.yml文件，将ruby安装目录的绝对路径添加进去，然后重新执行ruby dk.rb install<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/devkit.png" alt="devkit" /><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/configyml.png" alt="configyml" /></p>
+
+<h3 id="utf-8windows">4、为支持UTF-8编码，配置Windows环境变量如下：</h3>
+
+<p>LANG=zh_CN.UTF-8<br />
+LC_ALL=zh_CN.UTF-8</p>
+
+<h3 id="octopress">5、克隆Octopress库</h3>
+
+<p>进入你要存放博客源码的目录，比如直接在D盘根目录。<br />
+在D盘根目录右键选择Git Bash Here，打开git的命令行，然后执行：<br />
+<code>$ git clone git://github.com/imathis/octopress.git</code><br />
+将Octopress源码克隆到本地<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/clone-octopress.png" alt="clone-octopress" /><br />
+进入octopress文件夹，用文本工具打开Gemfile文件，将<code>source "https://rubygems.org"</code>替换为<code>source "https://ruby.taobao.org"</code></p>
+
+<h3 id="octopress-1">6、安装Octopress依赖项</h3>
+
+<p>进入octopress目录，运行如下命令：<br />
+<code>$ gem install bundler</code><br />
+<code>$ bundle install</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/bundlepng.png" alt="bundle" /><br />
+如果出现错误，请尝试更换ruby版本</p>
+
+<h3 id="jqueryminjsrequest-url">7、更改jquery.min.js的Request URL</h3>
+
+<p>在国内环境下加载页面速度很慢，用google浏览器检查发现，jquery.min.js和widgets.js的请求失败。是由于jquery.min.js和widgets.js默认的Request URL如下：<br />
+<code>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</code><br />
+<code>http://platform.twitter.com/widgets.js</code><br />
+由于被墙，在国内环境下打开博客时，加载速度很慢。所以将jquery.min.js的Request URL改为国内可用的(主要修改jquery.min.js，widgets.js可先不管)。打开octopress/source/_includes目录下的head.html文件，将<br />
+<code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code><br />
+替换为<br />
+<code>&lt;script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code></p>
+
+<h2 id="mac">Mac环境：</h2>
+
+<p>Mac环境下默认已经安装了Git和Ruby，可以不用另外安装，除非版本不匹配，需要别的版本，安装即可。只是注意也要修改Ruby的更新源：<br />
+<code>&gt; gem sources -a https://ruby.taobao.org/</code><br />
+<code>&gt; gem sources -r https://rubygems.org/</code><br />
+<code>&gt; gem sources -l</code><br />
+剩下的步骤都同Windows一样。同样注意先将octopress目录下Gemfile文件中的<code>source "https://rubygems.org"</code>替换为<code>source "https://ruby.taobao.org"</code></p>
+
+<p>octopress/source/_includes目录下的head.html文件中的<br />
+<code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code><br />
+替换为<br />
+<code>&lt;script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code></p>
+]]></content>
+  </entry>
+  
+</feed>
