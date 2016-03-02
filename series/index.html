@@ -9,8 +9,8 @@
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content=" 系列文章 2016 年2 月1 日 3:29 pm 2016 年2 月1 日 3:29 pm 最新发布 通过CocoaPods发布自己的开源库 通过CocoaPods管理项目中用到的开源库 2.发布博客 1.环境搭建 分类目录 ios (2)
-octopress (2) ">
+  <meta name="description" content="系列文章 2016 年2 月1 日 3:29 pm 2016 年2 月1 日 3:29 pm 评论 最新发布 通过CocoaPods发布自己的开源库 通过CocoaPods管理项目中用到的开源库 2.发布博客 1.环境搭建 分类目录 ios (2)
+octopress (2) GitHub &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -28,8 +28,8 @@ octopress (2) ">
   <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!--<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
 <!-- MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -56,6 +56,17 @@ octopress (2) ">
 </script>
 <script type="text/javascript"
    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
 </script>
   
 
@@ -130,6 +141,28 @@ octopress (2) ">
   
 </article>
 
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="" data-title="系列文章" data-url="http://zhangrui1209.github.io/series/index.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -164,10 +197,44 @@ octopress (2) ">
 
   </ul>
 </section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
 
+        github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <!--<script src="/javascripts/github.js" type="text/javascript"> </script>-->
+</section>
 
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
 
-
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
   
 </aside>
 
@@ -187,8 +254,8 @@ octopress (2) ">
 
 
 
-
-
+<!--
+-->
 
 
 

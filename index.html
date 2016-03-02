@@ -29,8 +29,8 @@
   <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
   <script src="/javascripts/octopress.js" type="text/javascript"></script>
   <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
-<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!--<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
 <!-- MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({
@@ -57,6 +57,17 @@
 </script>
 <script type="text/javascript"
    src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
 </script>
   
 
@@ -111,6 +122,9 @@
 
 <time class='entry-date' datetime='2016-03-02T14:45:32+08:00'><span class='date'>2016 年3 月2 日</span> <span class='time'>2:45 pm</span></time>
         
+        
+            | <a href="/blog/zhi-zuo-cocoapods.html#comments">评论</a>
+        
       </p>
     
   </header>
@@ -154,6 +168,9 @@
 
 <time class='entry-date' datetime='2016-03-01T14:04:45+08:00'><span class='date'>2016 年3 月1 日</span> <span class='time'>2:04 pm</span></time>
         
+        
+            | <a href="/blog/shi-yong-cocoapods.html#comments">评论</a>
+        
       </p>
     
   </header>
@@ -194,6 +211,9 @@
 
 
 <time class='entry-date' datetime='2016-01-19T22:45:06+08:00'><span class='date'>2016 年1 月19 日</span> <span class='time'>10:45 pm</span></time>
+        
+        
+            | <a href="/blog/2-dot-fa-bu-bo-ke.html#comments">评论</a>
         
       </p>
     
@@ -252,6 +272,9 @@
 
 
 <time class='entry-date' datetime='2016-01-19T21:26:36+08:00'><span class='date'>2016 年1 月19 日</span> <span class='time'>9:26 pm</span></time>
+        
+        
+            | <a href="/blog/1-dot-huan-jing-da-jian.html#comments">评论</a>
         
       </p>
     
@@ -334,10 +357,57 @@
 
   </ul>
 </section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $(document).ready(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
 
+        github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });
+    });
+  </script>
+  <!--<script src="/javascripts/github.js" type="text/javascript"> </script>-->
+</section>
 
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
 
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rayco"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!--多说js加载结束，一个页面只需要加载一次 -->
 
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
   
 </aside>
 
@@ -356,8 +426,8 @@
 
 
 
-
-
+<!--
+-->
 
 
 
