@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>使用CocoaPods - Rayco Zhang</title>
+  <title>通过CocoaPods管理项目中用到的开源库 - Rayco Zhang</title>
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="CocoaPods官方网站：https://cocoapods.org/ 1、安装
+  <meta name="description" content="CocoaPods官方网站：https://cocoapods.org/ 一、安装CocoaPods
 使用 ruby 的 gem 命令下载安装：
 $ sudo gem install cocoapods
 $ pod setup 安装过程可能出现的问题：
@@ -99,7 +99,7 @@ $ pod setup 安装过程可能出现的问题：
   
   <header>
     
-      <h1 class="entry-title">使用CocoaPods</h1>
+      <h1 class="entry-title">通过CocoaPods管理项目中用到的开源库</h1>
     
     
       <p class="meta">
@@ -117,7 +117,7 @@ $ pod setup 安装过程可能出现的问题：
 
 <div class="entry-content"><p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
 
-<h3 id="section">1、安装</h3>
+<h3 id="cocoapods">一、安装CocoaPods</h3>
 <p>使用 ruby 的 gem 命令下载安装：<br />
 <code>$ sudo gem install cocoapods</code><br />
 <code>$ pod setup</code></p>
@@ -133,7 +133,7 @@ $ pod setup 安装过程可能出现的问题：
 gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导致安装失败，升级gem即可：<br />
 <code>$ sudo gem update --system</code></p>
 
-<h3 id="section-1">2、使用</h3>
+<h3 id="cocoapods-1">二、使用CocoaPods</h3>
 <p>使用CocoaPods时需要创建一个名为Podfile的文件，将项目要使用到的第三方库的的名字列在该文件中：</p>
 
 <pre><code>platform :ios
@@ -151,10 +151,10 @@ pod 'RESideMenu'
 1) 使用CocoaPods生成的<strong>.xcworkspace</strong>文件来打开工程，而不是以前的<strong>.xcodeproj</strong>文件。<br />
 2) 每次更改了Podfile文件，要重新执行一次<code>pod update</code>命令。</p>
 
-<h3 id="podfilelock">3、Podfile.lock</h3>
+<h3 id="podfilelock">三、Podfile.lock</h3>
 <p>执行完<code>pod install</code>之后，会生成一个Podfile.lock文件，该文件用于保存已经安装的Pods依赖库的版本。  Podfile.lock文件最大的用处在于多人开发。应该加入到版本控制里面，不应该把这个文件加入到.gitignore中。因为Podfile.lock会锁定当前各依赖库的版本，之后如果多次执行pod install 不会更改版本，要pod update才会更改Podfile.lock。这样多人协作的时候，可以防止第三方库升级时造成大家各自的第三方库版本不一致。</p>
 
-<h3 id="podfile">4、Podfile</h3>
+<h3 id="podfile">四、Podfile</h3>
 <p>我们打交道最多的就是Podfile文件。CocoaPods是用ruby实现的，所以Podfile文件的语法就是ruby语法</p>
 
 <h4 id="podfile-1">(1)Podfile文件存放位置</h4>
@@ -225,7 +225,7 @@ pod 'AFNetworking', '~&gt;0.1'    //使用大于等于0.1但小于1.0的版本
 pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么都不写是一个效果，都表示使用最新版本  
 </code></pre>
 
-<h3 id="cocoapods">5、CocoaPods常用命令</h3>
+<h3 id="cocoapods-2">五、CocoaPods常用命令</h3>
 
 <h4 id="pod-install">(1)pod install</h4>
 <p>根据Podfile文件指定的内容，安装依赖库，如果有Podfile.lock文件而且对应的Podfile文件未被修改，则会根据Podfile.lock文件指定的版本安装。<br />
@@ -298,6 +298,8 @@ pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么�
         <a class="basic-alignment left" href="/blog/2-dot-fa-bu-bo-ke.html" title="Previous Post: 2.发布博客">&laquo; 2.发布博客</a>
       
       
+        <a class="basic-alignment right" href="/blog/zhi-zuo-cocoapods.html" title="Next Post: 通过CocoaPods发布自己的开源库">通过CocoaPods发布自己的开源库 &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -311,7 +313,11 @@ pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么�
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/shi-yong-cocoapods.html">使用CocoaPods</a>
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
       </li>
     
       <li class="post">
@@ -327,7 +333,7 @@ pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么�
 <section>
   <h1>分类目录</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/ios/'>ios (1)</a></li>
+    <li class='category'><a href='/blog/categories/ios/'>ios (2)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
 
   </ul>

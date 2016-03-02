@@ -1,0 +1,334 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>通过CocoaPods发布自己的开源库 - Rayco Zhang</title>
+  <meta name="author" content="Rayco">
+
+  
+  <meta name="description" content="CocoaPods官方网站：https://cocoapods.org/ 一、在Github上创建自己的开源库 1、创建
+首先在Github上创建一个空的版本库，比如创建一个名为MyCustomView的仓库。
+注意：一定要给仓库添加license。正规的仓库都应该有一个license文件， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Rayco Zhang</a></h1>
+  
+    <h2>Better master one than engage with ten.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">通过CocoaPods发布自己的开源库</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2016-03-02T14:45:32+08:00'><span class='date'>2016 年3 月2 日</span> <span class='time'>2:45 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="github">一、在Github上创建自己的开源库</h3>
+
+<h4 id="section">1、创建</h4>
+<p>首先在Github上创建一个空的版本库，比如创建一个名为<strong>MyCustomView</strong>的仓库。<br />
+<strong>注意：</strong>一定要给仓库添加<strong>license</strong>。正规的仓库都应该有一个license文件，况且Pods依赖库对这个文件的要求更严，所以必须要有。可以在新建的时候让github创建一个，也可以自己后续再创建。</p>
+
+<h4 id="section-1">2、添加</h4>
+<p>将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。<br />
+<strong>注意：</strong>以下描述的文件都要放在本地仓库的根目录下面。<br />
+<!--more--> 
+##### (1)、后缀为.podspec的文件<br />
+这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
+创建命令：<br />
+<code>$ pod spec create MyCustomView</code><br />
+使用该命令创建的podspec文件，里面内容太多，很多不是我们需要的，可以精简一下，以下是一个例子：</p>
+
+<pre><code>Pod::Spec.new do |s|
+s.name             = "MyCustomView"
+s.version          = "1.0.0"
+s.summary          = "A custom view used on iOS."
+s.description      = &lt;&lt;-DESC
+                   It is a custom view used on iOS, which implement by Objective-C.  
+                                          DESC
+s.homepage         = "https://github.com/username/MyCustomView"  
+# s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"  
+s.license          = 'MIT'  
+s.author           = { "username" =&gt; "username@gmail.com" }  
+s.source           = { :git =&gt; "https://github.com/username/MyCustomView.git", :tag =&gt; s.version.to_s }  
+# s.social_media_url = 'https://twitter.com/NAME'  
+
+s.platform     = :ios, '4.3'  
+# s.ios.deployment_target = '5.0'  
+# s.osx.deployment_target = '10.7'  
+s.requires_arc = true  
+
+s.source_files = 'MyCustomView/*'  
+# s.resources = 'Assets'  
+
+# s.ios.exclude_files = 'Classes/osx'  
+# s.osx.exclude_files = 'Classes/ios'  
+# s.public_header_files = 'Classes/**/*.h'  
+s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'  
+
+end
+</code></pre>
+
+<p>注意几个参数：<br />
+<em>s.license</em><br />
+Pods依赖库使用的license类型<br />
+<em>s.source_files</em><br />
+源文件的路径(这个路径是相对podspec文件而言的)<br />
+<em>s.frameworks</em><br />
+需要用到的frameworks，不需要加.frameworks后缀</p>
+
+<h5 id="license">(2)、LICENSE文件</h5>
+<p>CocoaPods强制要求所有的Pods依赖库都必须有license文件，否则验证不会通过。license的类型有很多，可以参考网站<a href="https://tldrlegal.com/">TLDRLegal</a>。</p>
+
+<h5 id="section-2">(3)、库的源文件</h5>
+<p>创建一个与库名字相同的子目录，用来存放源码。</p>
+
+<h5 id="demo">(4)、demo工程</h5>
+<p>创建一个demo工程，帮助别人能快速使用我们的开源库。</p>
+
+<h5 id="readmemd">(5)、README.md</h5>
+<p>该文件用以对仓库进行详细说明。</p>
+
+<p>以上5个是创建Pods依赖库所需最基础的文件，其中1、2、3是必需的，4、5是可选但强烈推荐创建的。</p>
+
+<h4 id="section-3">3、提交</h4>
+<p>上一步骤中在本地仓库中添加了不少文件，现在需要将它们提交到Github仓库中去。分两步：</p>
+
+<h5 id="pod">(1)pod验证</h5>
+<p>执行以下命令，为pod添加版本号并打上tag： <br />
+<code>$ set the new version to 1.0.0</code><br />
+<code>$ set the new tag to 1.0.0</code></p>
+
+<p>然后执行pod验证命令：<br />
+<code>$ pod lib lint</code></p>
+
+<p>如果一切正常，该命令执行完后会出现：</p>
+
+<pre><code>-&gt; MyCustomView (1.0.0)  
+
+MyCustomView passed validation.
+</code></pre>
+
+<p><strong>注意：</strong>在执行pod验证命令的时候，如果打印出任何warning或者error信息，验证都会失败！根据提示修改即可。</p>
+
+<h5 id="section-4">(2)提交</h5>
+<p>依次执行以下命令：<br />
+<code>$ git add -A &amp;&amp; git commit -m "Release 1.0.0."</code><br />
+<code>$ git tag '1.0.0'</code><br />
+<code>$ git push --tags</code><br />
+<code>$ git push origin master</code></p>
+
+<h3 id="podspeccocoapods">二、将库的podspec文件上传到CocoaPods官方仓库中</h3>
+<p>要想一个Pods依赖库真正可用，还需要将我们刚才生成的podspec文件上传到<a href="https://github.com/CocoaPods/Specs">CocoaPods官方的Specs仓库</a>中。</p>
+
+<p>我们能使用的，以及我们使用pod search命令能搜索到的所有Pods依赖库都会把它们的podspec文件上传到这个仓库中，也就是说，只有将我们的podspec文件上传到这个仓库中以后，才能成为一个真正的Pods依赖库，别人才能搜索到并使用。</p>
+
+<p>由于要修改别人的仓库，所以先fork一份该仓库，待修改完成之后再创建一个<strong>pull request</strong>提交给原仓库。</p>
+
+<p>podspec文件在Specs仓库中的保存原则是：<br />
+<strong>Pods依赖库同名文件夹—&gt;版本号同名文件夹—&gt;podspec文件</strong></p>
+
+<p>所以按照上面的例子，需要在Specs目录下创建一个名为MyCustomView的子目录，然后在MyCustomView目录下创建一个名为1.0.0的子目录，最后将之前创建好的MyCustomView.podspec文件拷贝到1.0.0目录。</p>
+
+<p>不难理解，如果以后需要对MyCustomView升级，就在MyCustomView文件夹下建立对应版本名称的文件夹，用于保存对应版本的podspec文件即可。</p>
+
+<p>最后，如果CocoaPods官方审核通过了我们提交的pull request之后，想要通过<code>pod search</code>命令搜索到我们的Pods依赖库，需要先执行<code>pod setup</code>命令将所有的Pods依赖库tree更新到本地。然后再去执行<code>pod search MyCustomView</code>就能显示出对应的介绍信息了。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2016-03-02T14:45:32+08:00'><span class='date'>2016 年3 月2 日</span> <span class='time'>2:45 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>ios</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/shi-yong-cocoapods.html" title="Previous Post: 通过CocoaPods管理项目中用到的开源库">&laquo; 通过CocoaPods管理项目中用到的开源库</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2-dot-fa-bu-bo-ke.html">2.发布博客</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/1-dot-huan-jing-da-jian.html">1.环境搭建</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/ios/'>ios (2)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (2)</a></li>
+
+  </ul>
+</section>
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Rayco -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

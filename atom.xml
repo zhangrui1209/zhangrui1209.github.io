@@ -4,7 +4,7 @@
   <title><![CDATA[Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-01T17:46:41+08:00</updated>
+  <updated>2016-03-02T17:06:26+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -14,13 +14,133 @@
 
   
   <entry>
-    <title type="html"><![CDATA[使用CocoaPods]]></title>
+    <title type="html"><![CDATA[通过CocoaPods发布自己的开源库]]></title>
+    <link href="http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods.html"/>
+    <updated>2016-03-02T14:45:32+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods</id>
+    <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="github">一、在Github上创建自己的开源库</h3>
+
+<h4 id="section">1、创建</h4>
+<p>首先在Github上创建一个空的版本库，比如创建一个名为<strong>MyCustomView</strong>的仓库。<br />
+<strong>注意：</strong>一定要给仓库添加<strong>license</strong>。正规的仓库都应该有一个license文件，况且Pods依赖库对这个文件的要求更严，所以必须要有。可以在新建的时候让github创建一个，也可以自己后续再创建。</p>
+
+<h4 id="section-1">2、添加</h4>
+<p>将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。<br />
+<strong>注意：</strong>以下描述的文件都要放在本地仓库的根目录下面。<br />
+<!--more--> 
+##### (1)、后缀为.podspec的文件<br />
+这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
+创建命令：<br />
+<code>$ pod spec create MyCustomView</code><br />
+使用该命令创建的podspec文件，里面内容太多，很多不是我们需要的，可以精简一下，以下是一个例子：</p>
+
+<pre><code>Pod::Spec.new do |s|
+s.name             = "MyCustomView"
+s.version          = "1.0.0"
+s.summary          = "A custom view used on iOS."
+s.description      = &lt;&lt;-DESC
+                   It is a custom view used on iOS, which implement by Objective-C.  
+                                          DESC
+s.homepage         = "https://github.com/username/MyCustomView"  
+# s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"  
+s.license          = 'MIT'  
+s.author           = { "username" =&gt; "username@gmail.com" }  
+s.source           = { :git =&gt; "https://github.com/username/MyCustomView.git", :tag =&gt; s.version.to_s }  
+# s.social_media_url = 'https://twitter.com/NAME'  
+
+s.platform     = :ios, '4.3'  
+# s.ios.deployment_target = '5.0'  
+# s.osx.deployment_target = '10.7'  
+s.requires_arc = true  
+
+s.source_files = 'MyCustomView/*'  
+# s.resources = 'Assets'  
+
+# s.ios.exclude_files = 'Classes/osx'  
+# s.osx.exclude_files = 'Classes/ios'  
+# s.public_header_files = 'Classes/**/*.h'  
+s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'  
+
+end
+</code></pre>
+
+<p>注意几个参数：<br />
+<em>s.license</em><br />
+Pods依赖库使用的license类型<br />
+<em>s.source_files</em><br />
+源文件的路径(这个路径是相对podspec文件而言的)<br />
+<em>s.frameworks</em><br />
+需要用到的frameworks，不需要加.frameworks后缀</p>
+
+<h5 id="license">(2)、LICENSE文件</h5>
+<p>CocoaPods强制要求所有的Pods依赖库都必须有license文件，否则验证不会通过。license的类型有很多，可以参考网站<a href="https://tldrlegal.com/">TLDRLegal</a>。</p>
+
+<h5 id="section-2">(3)、库的源文件</h5>
+<p>创建一个与库名字相同的子目录，用来存放源码。</p>
+
+<h5 id="demo">(4)、demo工程</h5>
+<p>创建一个demo工程，帮助别人能快速使用我们的开源库。</p>
+
+<h5 id="readmemd">(5)、README.md</h5>
+<p>该文件用以对仓库进行详细说明。</p>
+
+<p>以上5个是创建Pods依赖库所需最基础的文件，其中1、2、3是必需的，4、5是可选但强烈推荐创建的。</p>
+
+<h4 id="section-3">3、提交</h4>
+<p>上一步骤中在本地仓库中添加了不少文件，现在需要将它们提交到Github仓库中去。分两步：</p>
+
+<h5 id="pod">(1)pod验证</h5>
+<p>执行以下命令，为pod添加版本号并打上tag： <br />
+<code>$ set the new version to 1.0.0</code><br />
+<code>$ set the new tag to 1.0.0</code></p>
+
+<p>然后执行pod验证命令：<br />
+<code>$ pod lib lint</code></p>
+
+<p>如果一切正常，该命令执行完后会出现：</p>
+
+<pre><code>-&gt; MyCustomView (1.0.0)  
+
+MyCustomView passed validation.
+</code></pre>
+
+<p><strong>注意：</strong>在执行pod验证命令的时候，如果打印出任何warning或者error信息，验证都会失败！根据提示修改即可。</p>
+
+<h5 id="section-4">(2)提交</h5>
+<p>依次执行以下命令：<br />
+<code>$ git add -A &amp;&amp; git commit -m "Release 1.0.0."</code><br />
+<code>$ git tag '1.0.0'</code><br />
+<code>$ git push --tags</code><br />
+<code>$ git push origin master</code></p>
+
+<h3 id="podspeccocoapods">二、将库的podspec文件上传到CocoaPods官方仓库中</h3>
+<p>要想一个Pods依赖库真正可用，还需要将我们刚才生成的podspec文件上传到<a href="https://github.com/CocoaPods/Specs">CocoaPods官方的Specs仓库</a>中。</p>
+
+<p>我们能使用的，以及我们使用pod search命令能搜索到的所有Pods依赖库都会把它们的podspec文件上传到这个仓库中，也就是说，只有将我们的podspec文件上传到这个仓库中以后，才能成为一个真正的Pods依赖库，别人才能搜索到并使用。</p>
+
+<p>由于要修改别人的仓库，所以先fork一份该仓库，待修改完成之后再创建一个<strong>pull request</strong>提交给原仓库。</p>
+
+<p>podspec文件在Specs仓库中的保存原则是：<br />
+<strong>Pods依赖库同名文件夹—&gt;版本号同名文件夹—&gt;podspec文件</strong></p>
+
+<p>所以按照上面的例子，需要在Specs目录下创建一个名为MyCustomView的子目录，然后在MyCustomView目录下创建一个名为1.0.0的子目录，最后将之前创建好的MyCustomView.podspec文件拷贝到1.0.0目录。</p>
+
+<p>不难理解，如果以后需要对MyCustomView升级，就在MyCustomView文件夹下建立对应版本名称的文件夹，用于保存对应版本的podspec文件即可。</p>
+
+<p>最后，如果CocoaPods官方审核通过了我们提交的pull request之后，想要通过<code>pod search</code>命令搜索到我们的Pods依赖库，需要先执行<code>pod setup</code>命令将所有的Pods依赖库tree更新到本地。然后再去执行<code>pod search MyCustomView</code>就能显示出对应的介绍信息了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[通过CocoaPods管理项目中用到的开源库]]></title>
     <link href="http://zhangrui1209.github.io/blog/shi-yong-cocoapods.html"/>
     <updated>2016-03-01T14:04:45+08:00</updated>
     <id>http://zhangrui1209.github.io/blog/shi-yong-cocoapods</id>
     <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
 
-<h3 id="section">1、安装</h3>
+<h3 id="cocoapods">一、安装CocoaPods</h3>
 <p>使用 ruby 的 gem 命令下载安装：<br />
 <code>$ sudo gem install cocoapods</code><br />
 <code>$ pod setup</code></p>
@@ -36,7 +156,7 @@
 gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导致安装失败，升级gem即可：<br />
 <code>$ sudo gem update --system</code></p>
 
-<h3 id="section-1">2、使用</h3>
+<h3 id="cocoapods-1">二、使用CocoaPods</h3>
 <p>使用CocoaPods时需要创建一个名为Podfile的文件，将项目要使用到的第三方库的的名字列在该文件中：</p>
 
 <pre><code>platform :ios
@@ -54,10 +174,10 @@ pod 'RESideMenu'
 1) 使用CocoaPods生成的<strong>.xcworkspace</strong>文件来打开工程，而不是以前的<strong>.xcodeproj</strong>文件。<br />
 2) 每次更改了Podfile文件，要重新执行一次<code>pod update</code>命令。</p>
 
-<h3 id="podfilelock">3、Podfile.lock</h3>
+<h3 id="podfilelock">三、Podfile.lock</h3>
 <p>执行完<code>pod install</code>之后，会生成一个Podfile.lock文件，该文件用于保存已经安装的Pods依赖库的版本。  Podfile.lock文件最大的用处在于多人开发。应该加入到版本控制里面，不应该把这个文件加入到.gitignore中。因为Podfile.lock会锁定当前各依赖库的版本，之后如果多次执行pod install 不会更改版本，要pod update才会更改Podfile.lock。这样多人协作的时候，可以防止第三方库升级时造成大家各自的第三方库版本不一致。</p>
 
-<h3 id="podfile">4、Podfile</h3>
+<h3 id="podfile">四、Podfile</h3>
 <p>我们打交道最多的就是Podfile文件。CocoaPods是用ruby实现的，所以Podfile文件的语法就是ruby语法</p>
 
 <h4 id="podfile-1">(1)Podfile文件存放位置</h4>
@@ -128,7 +248,7 @@ pod 'AFNetworking', '~&gt;0.1'    //使用大于等于0.1但小于1.0的版本
 pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么都不写是一个效果，都表示使用最新版本  
 </code></pre>
 
-<h3 id="cocoapods">5、CocoaPods常用命令</h3>
+<h3 id="cocoapods-2">五、CocoaPods常用命令</h3>
 
 <h4 id="pod-install">(1)pod install</h4>
 <p>根据Podfile文件指定的内容，安装依赖库，如果有Podfile.lock文件而且对应的Podfile文件未被修改，则会根据Podfile.lock文件指定的版本安装。<br />
