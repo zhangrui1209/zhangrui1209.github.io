@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "使用CocoaPods"
+title: "通过CocoaPods管理项目中用到的开源库"
 date: 2016-03-01 14:04:45 +0800
 comments: true
 categories: iOS
@@ -8,7 +8,7 @@ categories: iOS
 
 CocoaPods官方网站：<https://cocoapods.org/>  
 
-### 1、安装  
+### 一、安装CocoaPods  
 使用 ruby 的 gem 命令下载安装：  
 `$ sudo gem install cocoapods`  
 `$ pod setup`  
@@ -24,7 +24,7 @@ CocoaPods官方网站：<https://cocoapods.org/>
 gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导致安装失败，升级gem即可：  
 `$ sudo gem update --system`  
 
-### 2、使用  
+### 二、使用CocoaPods  
 使用CocoaPods时需要创建一个名为Podfile的文件，将项目要使用到的第三方库的的名字列在该文件中：  
 	
 	platform :ios
@@ -41,10 +41,10 @@ gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导�
 1) 使用CocoaPods生成的**.xcworkspace**文件来打开工程，而不是以前的**.xcodeproj**文件。  
 2) 每次更改了Podfile文件，要重新执行一次`pod update`命令。  
 
-### 3、Podfile.lock  
+### 三、Podfile.lock  
 执行完`pod install`之后，会生成一个Podfile.lock文件，该文件用于保存已经安装的Pods依赖库的版本。  Podfile.lock文件最大的用处在于多人开发。应该加入到版本控制里面，不应该把这个文件加入到.gitignore中。因为Podfile.lock会锁定当前各依赖库的版本，之后如果多次执行pod install 不会更改版本，要pod update才会更改Podfile.lock。这样多人协作的时候，可以防止第三方库升级时造成大家各自的第三方库版本不一致。  
 
-### 4、Podfile  
+### 四、Podfile  
 我们打交道最多的就是Podfile文件。CocoaPods是用ruby实现的，所以Podfile文件的语法就是ruby语法  
   
 #### (1)Podfile文件存放位置  
@@ -111,7 +111,7 @@ MyProject这个target使用的是Reachability、MJRefresh、RESideMenu三个依�
 	pod 'AFNetworking', '~>0.1'    //使用大于等于0.1但小于1.0的版本
 	pod 'AFNetworking', '~>0'      //高于0的版本，写这个限制和什么都不写是一个效果，都表示使用最新版本  
 
-### 5、CocoaPods常用命令  
+### 五、CocoaPods常用命令  
 
 #### (1)pod install  
 根据Podfile文件指定的内容，安装依赖库，如果有Podfile.lock文件而且对应的Podfile文件未被修改，则会根据Podfile.lock文件指定的版本安装。  
