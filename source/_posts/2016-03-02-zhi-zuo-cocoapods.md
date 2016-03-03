@@ -17,7 +17,8 @@ CocoaPods官方网站：<https://cocoapods.org/>
 #### 2、添加  
 将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。  
 **注意：**以下描述的文件都要放在本地仓库的根目录下面。  
-<!--more--> 
+<!--more-->  
+
 ##### (1)、后缀为.podspec的文件  
 这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。  
 创建命令：  
