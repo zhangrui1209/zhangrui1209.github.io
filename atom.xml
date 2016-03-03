@@ -4,7 +4,7 @@
   <title><![CDATA[Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-03T15:55:36+08:00</updated>
+  <updated>2016-03-03T16:12:28+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -29,9 +29,10 @@
 <h4 id="section-1">2、添加</h4>
 <p>将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。<br />
 <strong>注意：</strong>以下描述的文件都要放在本地仓库的根目录下面。<br />
-<!--more--> 
-##### (1)、后缀为.podspec的文件<br />
-这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
+<!--more--></p>
+
+<h5 id="podspec">(1)、后缀为.podspec的文件</h5>
+<p>这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
 创建命令：<br />
 <code>$ pod spec create MyCustomView</code><br />
 使用该命令创建的podspec文件，里面内容太多，很多不是我们需要的，可以精简一下，以下是一个例子：</p>
