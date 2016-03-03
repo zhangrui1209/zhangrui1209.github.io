@@ -4,7 +4,7 @@
   <title><![CDATA[分类：ios | Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/blog/categories/ios/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-03T17:13:19+08:00</updated>
+  <updated>2016-03-03T22:43:11+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -68,11 +68,11 @@ end
 </code></pre>
 
 <p>注意几个参数：<br />
-<em>s.license</em><br />
+<strong><em>s.license</em></strong><br />
 Pods依赖库使用的license类型<br />
-<em>s.source_files</em><br />
+<strong><em>s.source_files</em></strong><br />
 源文件的路径(这个路径是相对podspec文件而言的)<br />
-<em>s.frameworks</em><br />
+<strong><em>s.frameworks</em></strong><br />
 需要用到的frameworks，不需要加.frameworks后缀</p>
 
 <h5 id="license">(2)、LICENSE文件</h5>

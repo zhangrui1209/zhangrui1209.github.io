@@ -4,7 +4,7 @@
   <title><![CDATA[分类：octopress | Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-03T17:13:19+08:00</updated>
+  <updated>2016-03-03T22:43:11+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -12,6 +12,98 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[3.博客克隆]]></title>
+    <link href="http://zhangrui1209.github.io/blog/3-bo-ke-ke-long.html"/>
+    <updated>2016-01-19T22:50:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/3-bo-ke-ke-long</id>
+    <content type="html"><![CDATA[<p>很多情况下我们需要在不同电脑之间维护同一个Octopress博客，那应该怎么在一台新的电脑上获取自己的Octopress仓库呢？</p>
+
+<h3 id="section">1、环境配置</h3>
+<p>安装Git，Ruby，DevKit等请参考第一篇：<a href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html">环境搭建</a>。Octopress依赖项在拉取仓库后再进行安装，也就是本文中在建立github pages之前。</p>
+
+<h3 id="octopress">2、克隆自己的Octopress</h3>
+
+<h4 id="octopress-1">(1) 拉取Octopress仓库内容</h4>
+<p>这里得注意要克隆自己的Octopress仓库，而不要去克隆imathis大神的仓库了。进入要放置Octopress的目录，比如桌面（换电脑记得 SSH 密钥要重新创建添加）。打开git bash，执行如下命令，初始化git仓库，添加远程仓库，也就是你自己的Octopress地址，pull远程仓库。<br />
+<!--more--></p>
+
+<p><code>$ mkdir octopress</code><br />
+<code>$ cd octopress/</code><br />
+<code>$ git init</code><br />
+<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.io.git</code><br />
+<code>$ git pull origin</code></p>
+
+<h4 id="source">(2) 切换到source分支</h4>
+<p>这时候进入octopress目录，发现除了初始化生成的.git目录，什么都没有。没事，执行如下命令。</p>
+
+<p><code>$ git checkout source</code><br />
+<code>$ ls -al</code></p>
+
+<p>这时source分支的东西都出来了。但是还没完，因为_deploy目录还没有。</p>
+
+<h4 id="octopress-2">(3) 安装Octopress依赖项</h4>
+<p>进入octopress目录，运行如下命令：</p>
+
+<p><code>$ gem install bundler</code><br />
+<code>$ bundle install</code></p>
+
+<p>如果出现错误，请尝试更换ruby版本。</p>
+
+<h4 id="github-pages">(4) 建立github pages</h4>
+<p>运行如下命令，在Repository url输入github上的博客仓库地址</p>
+
+<p><code>$ rake setup_github_pages</code></p>
+
+<p>查看Octopress目录，发现_deploy目录出来了。但是里面还是只有.git和index.html文件。</p>
+
+<h4 id="master">(5) 拉取master分支</h4>
+<p>进入_deploy目录，运行如下命令</p>
+
+<p><code>$ cd _deploy/</code><br />
+<code>$ git pull origin master</code><br />
+<code>$ ls –al</code></p>
+
+<p>发现东西都回来了。</p>
+
+<h4 id="source-1">(6) 切换回source分支</h4>
+<p>运行如下命令，切换至source分支</p>
+
+<p><code>$ cd ..</code><br />
+<code>$ git checkout source</code></p>
+
+<p>至此，Octopress就在另一台电脑上克隆好了，你可以在不同的电脑上维护同一个博客。运行一下如下命令，确认没有问题。</p>
+
+<p><code>$ rake generate</code><br />
+<code>$ rake preview</code><br />
+<code>$ rake deploy</code></p>
+
+<h3 id="section-1">3、注意</h3>
+
+<h4 id="push">记得push</h4>
+<p>不过需要注意的是在不同的电脑上维护同一个博客，需要处理好同步的问题。每台电脑在处理完博客事务后记得要要运行以下命令。</p>
+
+<p>发布博客到Github：</p>
+
+<p><code>$ rake deploy</code></p>
+
+<p>提交源文件：</p>
+
+<p><code>$ git add .</code><br />
+<code>$ git commit -m "commit message"</code><br />
+<code>$ git push origin source</code></p>
+
+<h4 id="pull">记得pull</h4>
+<p>在开始处理博客事务之前，需要同步Github仓库的数据。</p>
+
+<p><code>$ cd octopress/</code><br />
+<code>$ git pull origin source</code><br />
+<code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[2.发布博客]]></title>
