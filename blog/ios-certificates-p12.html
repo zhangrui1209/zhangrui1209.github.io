@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>3.博客克隆 - Rayco Zhang</title>
+  <title>[转]一个苹果证书怎么多次使用--导出p12文件 - Rayco Zhang</title>
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="很多情况下我们需要在不同电脑之间维护同一个Octopress博客，那应该怎么在一台新的电脑上获取自己的Octopress仓库呢？ 1、环境配置
-安装Git，Ruby，DevKit等请参考第一篇：环境搭建。Octopress依赖项在拉取仓库后再进行安装，也就是本文中在建立github pages之前 &hellip;">
+  <meta name="description" content="为什么要导出.p12文件 当我们用大于三个mac设备开发应用时，想要申请新的证书，如果在我们的证书里，包含了3个发布证书，2个开发证书，可以发现再也申请不了开发证书和发布证书了（一般在我们的证书界面中应该只有一个开发证书，一个发布证书，没必要生成那么多的证书，证书一般在过期之后才会重新添加。） &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangrui1209.github.io/blog/3-bo-ke-ke-long.html">
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/ios-certificates-p12.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
@@ -82,7 +81,7 @@
   
   <header>
     
-      <h1 class="entry-title">3.博客克隆</h1>
+      <h1 class="entry-title">[转]一个苹果证书怎么多次使用--导出p12文件</h1>
     
     
       <p class="meta">
@@ -91,7 +90,7 @@
 
 
 
-<time class='entry-date' datetime='2016-01-19T22:50:06+08:00'><span class='date'>2016 年1 月19 日</span> <span class='time'>10:50 pm</span></time>
+<time class='entry-date' datetime='2014-11-09T14:33:09+08:00'><span class='date'>2014 年11 月9 日</span> <span class='time'>2:33 pm</span></time>
         
         
             | <a href="#comments">评论</a>
@@ -101,90 +100,45 @@
   </header>
 
 
-<div class="entry-content"><p>很多情况下我们需要在不同电脑之间维护同一个Octopress博客，那应该怎么在一台新的电脑上获取自己的Octopress仓库呢？</p>
+<div class="entry-content"><h3 id="p12">为什么要导出.p12文件</h3>
 
-<h3 id="section">1、环境配置</h3>
-<p>安装Git，Ruby，DevKit等请参考第一篇：<a href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html">环境搭建</a>。Octopress依赖项在拉取仓库后再进行安装，也就是本文中在建立github pages之前。</p>
+<p>当我们用大于三个mac设备开发应用时，想要申请新的证书，如果在我们的证书里，包含了3个发布证书，2个开发证书，可以发现再也申请不了开发证书和发布证书了（一般在我们的证书界面中应该只有一个开发证书，一个发布证书，没必要生成那么多的证书，证书一般在过期之后才会重新添加。）<br />
+如图：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate1.png" alt="certificate1" /><br />
+这时候，再点击“+”时，就会发现点击不了开发和发布证书，也就是添加不了开发证书和发布证书了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate2.png" alt="certificate2" /></p>
 
-<h3 id="octopress">2、克隆自己的Octopress</h3>
+<h3 id="section">有两个解决不能添加证书的办法。</h3>
 
-<h4 id="octopress-1">(1) 拉取Octopress仓库内容</h4>
-<p>这里得注意要克隆自己的Octopress仓库，而不要去克隆imathis大神的仓库了。进入要放置Octopress的目录，比如桌面（换电脑记得 SSH 密钥要重新创建添加）。打开git bash，执行如下命令，初始化git仓库，添加远程仓库，也就是你自己的Octopress地址，pull远程仓库。<br />
-<!--more--></p>
+<h4 id="revoke">第一种方法——“revoke”（不推荐）：</h4>
+<p>将以前的证书“revoke”掉，如图：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/revoke.png" alt="revoke" /><br />
+然后重新生成一个新的证书。<br />
+这种方法是可以的，但是会造成相应的Provisioning Profiles失效，这个可大可小。如果只有你一个人则问题不大，如果是一个团队大家都在用，你把这个证书删除了，会导致别人的描述文件失效，这意味着别人不能发布应用了（还可以开发），这可是大问题，<strong><em>所以不提倡这种做法</em></strong>。</p>
 
-<p><code>$ mkdir octopress</code><br />
-<code>$ cd octopress/</code><br />
-<code>$ git init</code><br />
-<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.io.git</code><br />
-<code>$ git pull origin</code></p>
+<h4 id="p12-1">第二种方法——“.p12”（推荐）：</h4>
+<p>我们的每一个证书都可以生成一个.p12文件，这个文件是一个加密的文件，只要知道其密码，就可以供给所有的mac设备使用，使设备不需要在苹果开发者网站重新申请开发和发布证书，就能使用。<br />
+<strong><em>注意：一般.p12文件是给与别人使用的，本机必须已经有一个带秘钥的证书才可以生成.p12文件，如图：</em></strong><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-1.png" alt="p12-1" /><br />
+打开钥匙串，选择我们需要的证书，右击，选择“导出“iPhone Distribition:```”：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-2.png" alt="p12-2" /><br />
+为.p12文件填一个名字，点击存储：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-3.png" alt="p12-3" /><br />
+填一个“密码”，“验证”和密码相同：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-4.png" alt="" /><br />
+点击好，在桌面上就形成了一个.p12文件了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-5.png" alt="" /></p>
 
-<h4 id="source">(2) 切换到source分支</h4>
-<p>这时候进入octopress目录，发现除了初始化生成的.git目录，什么都没有。没事，执行如下命令。</p>
+<h4 id="section-1">在别人的电脑上要成功安装，须具备两个文件：</h4>
+<p>1) 该证书导出的“.p12”文件。<br />
+2) 苹果开发者中的与“证书”对应的“描述文件”</p>
 
-<p><code>$ git checkout source</code><br />
-<code>$ ls -al</code></p>
+<h4 id="section-2">如果需要用于开发的，那么需要这两个文件：</h4>
+<p>.p12文件本身就是一个加密的证书，所以用这两个文件就可以让其他mac设备使用了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-6.png" alt="p12-6" /><br />
+拿到这两个文件后，依次双击“证书”，“.p12“文件（需要输入密码，密码就是当时生成.p12时设定的密码，），作用是加入钥匙串中，使我们的电脑具备开发的证明，”描述文件“（作用是置于xcode中，让xcode知道我们开发的合法性），添加完后就可以使用了。</p>
 
-<p>这时source分支的东西都出来了。但是还没完，因为_deploy目录还没有。</p>
-
-<h4 id="octopress-2">(3) 安装Octopress依赖项</h4>
-<p>进入octopress目录，运行如下命令：</p>
-
-<p><code>$ gem install bundler</code><br />
-<code>$ bundle install</code></p>
-
-<p>如果出现错误，请尝试更换ruby版本。</p>
-
-<h4 id="github-pages">(4) 建立github pages</h4>
-<p>运行如下命令，在Repository url输入github上的博客仓库地址</p>
-
-<p><code>$ rake setup_github_pages</code></p>
-
-<p>查看Octopress目录，发现_deploy目录出来了。但是里面还是只有.git和index.html文件。</p>
-
-<h4 id="master">(5) 拉取master分支</h4>
-<p>进入_deploy目录，运行如下命令</p>
-
-<p><code>$ cd _deploy/</code><br />
-<code>$ git pull origin master</code><br />
-<code>$ ls –al</code></p>
-
-<p>发现东西都回来了。</p>
-
-<h4 id="source-1">(6) 切换回source分支</h4>
-<p>运行如下命令，切换至source分支</p>
-
-<p><code>$ cd ..</code><br />
-<code>$ git checkout source</code></p>
-
-<p>至此，Octopress就在另一台电脑上克隆好了，你可以在不同的电脑上维护同一个博客。运行一下如下命令，确认没有问题。</p>
-
-<p><code>$ rake generate</code><br />
-<code>$ rake preview</code><br />
-<code>$ rake deploy</code></p>
-
-<h3 id="section-1">3、注意</h3>
-
-<h4 id="push">记得push</h4>
-<p>不过需要注意的是在不同的电脑上维护同一个博客，需要处理好同步的问题。每台电脑在处理完博客事务后记得要要运行以下命令。</p>
-
-<p>发布博客到Github：</p>
-
-<p><code>$ rake deploy</code></p>
-
-<p>提交源文件：</p>
-
-<p><code>$ git add .</code><br />
-<code>$ git commit -m "commit message"</code><br />
-<code>$ git push origin source</code></p>
-
-<h4 id="pull">记得pull</h4>
-<p>在开始处理博客事务之前，需要同步Github仓库的数据。</p>
-
-<p><code>$ cd octopress/</code><br />
-<code>$ git pull origin source</code><br />
-<code>$ cd _deploy</code><br />
-<code>$ git pull origin master</code></p>
-
+<p>原文：<a href="http://my.oschina.net/u/1245365/blog/196363">http://my.oschina.net/u/1245365/blog/196363</a></p>
 </div>
 
 
@@ -200,12 +154,12 @@
 
 
 
-<time class='entry-date' datetime='2016-01-19T22:50:06+08:00'><span class='date'>2016 年1 月19 日</span> <span class='time'>10:50 pm</span></time>
+<time class='entry-date' datetime='2014-11-09T14:33:09+08:00'><span class='date'>2014 年11 月9 日</span> <span class='time'>2:33 pm</span></time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/octopress/'>Octopress</a>
+    <a class='category' href='/blog/categories/apple/'>Apple</a>
   
 </span>
 
@@ -221,10 +175,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2-dot-fa-bu-bo-ke.html" title="Previous Post: 2.发布博客">&laquo; 2.发布博客</a>
       
-      
-        <a class="basic-alignment right" href="/blog/shi-yong-cocoapods.html" title="Next Post: 通过CocoaPods管理项目中用到的开源库">通过CocoaPods管理项目中用到的开源库 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/1-dot-huan-jing-da-jian.html" title="Next Post: 1.环境搭建">1.环境搭建 &raquo;</a>
       
     </p>
   </footer>
@@ -234,7 +186,7 @@
   <section>
     <h1>评论</h1>
     <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="/blog/3-bo-ke-ke-long" data-title="3.博客克隆" data-url="http://zhangrui1209.github.io/blog/3-bo-ke-ke-long.html"></div>
+<div class="ds-thread" data-thread-key="/blog/ios-certificates-p12" data-title="[转]一个苹果证书怎么多次使用--导出p12文件" data-url="http://zhangrui1209.github.io/blog/ios-certificates-p12.html"></div>
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
