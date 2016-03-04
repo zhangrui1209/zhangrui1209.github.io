@@ -4,7 +4,7 @@
   <title><![CDATA[Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-04T11:36:43+08:00</updated>
+  <updated>2016-03-04T12:26:04+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[不让Octopress中的Category名称自动小写]]></title>
+    <link href="http://zhangrui1209.github.io/blog/category-not-downcase.html"/>
+    <updated>2016-03-04T11:30:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/category-not-downcase</id>
+    <content type="html"><![CDATA[<p>Octopress默认会将Category的名称全部自动小写，比如<code>Octopress</code>会被写为<code>octopress</code>；<code>iOS</code>被写为<code>ios</code>。这不是我们想要的结果，我们希望该大写的大写，该小写的小写。</p>
+
+<p>可以修改jekyll的post.rb文件来禁止Category名称自动小写。</p>
+
+<p><code>$ sudo vi /Library/Ruby/Gems/2.0.0/gems/jekyll-2.5.3/lib/jekyll/post.rb</code></p>
+
+<p>找到以下内容：<br />
+<!--more--></p>
+
+<pre><code>def populate_categories
+  categories_from_data = Utils.pluralized_array_from_hash(data, 'category', 'categories')
+  self.categories = (
+    Array(categories) + categories_from_data
+  ).map {|c| c.to_s.downcase}.flatten.uniq
+end  
+</code></pre>
+
+<p>将其中的<code>dowcase</code>去掉，改为：</p>
+
+<pre><code>def populate_categories
+  categories_from_data = Utils.pluralized_array_from_hash(data, 'category', 'categories')
+  self.categories = (
+    Array(categories) + categories_from_data
+  ).map {|c| c.to_s}.flatten.uniq
+end  
+</code></pre>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[通过CocoaPods发布自己的开源库]]></title>
