@@ -3,7 +3,7 @@ layout: post
 title: "通过CocoaPods发布自己的开源库"
 date: 2016-03-02 14:45:32 +0800
 comments: true
-categories: iOS
+categories: iOS开发
 ---  
 
 CocoaPods官方网站：<https://cocoapods.org/>  

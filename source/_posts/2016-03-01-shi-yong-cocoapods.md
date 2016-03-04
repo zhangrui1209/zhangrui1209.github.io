@@ -3,7 +3,7 @@ layout: post
 title: "通过CocoaPods管理项目中用到的开源库"
 date: 2016-03-01 14:04:45 +0800
 comments: true
-categories: iOS
+categories: iOS开发
 ---  
 
 CocoaPods官方网站：<https://cocoapods.org/>  
