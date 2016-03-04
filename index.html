@@ -405,50 +405,160 @@
   <div class="entry-content"><h3 id="p12">为什么要导出.p12文件</h3>
 
 <p>当我们用大于三个mac设备开发应用时，想要申请新的证书，如果在我们的证书里，包含了3个发布证书，2个开发证书，可以发现再也申请不了开发证书和发布证书了（一般在我们的证书界面中应该只有一个开发证书，一个发布证书，没必要生成那么多的证书，证书一般在过期之后才会重新添加。）<br />
-如图：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate1.png" alt="certificate1" /><br />
-这时候，再点击“+”时，就会发现点击不了开发和发布证书，也就是添加不了开发证书和发布证书了：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate2.png" alt="certificate2" /></p>
+如图：</p>
 
-<h3 id="section">有两个解决不能添加证书的办法。</h3>
-
-<h4 id="revoke">第一种方法——“revoke”（不推荐）：</h4>
-<p>将以前的证书“revoke”掉，如图：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/revoke.png" alt="revoke" /><br />
-然后重新生成一个新的证书。<br />
-这种方法是可以的，但是会造成相应的Provisioning Profiles失效，这个可大可小。如果只有你一个人则问题不大，如果是一个团队大家都在用，你把这个证书删除了，会导致别人的描述文件失效，这意味着别人不能发布应用了（还可以开发），这可是大问题，<strong><em>所以不提倡这种做法</em></strong>。</p>
-
-<h4 id="p12-1">第二种方法——“.p12”（推荐）：</h4>
-<p>我们的每一个证书都可以生成一个.p12文件，这个文件是一个加密的文件，只要知道其密码，就可以供给所有的mac设备使用，使设备不需要在苹果开发者网站重新申请开发和发布证书，就能使用。<br />
-<strong><em>注意：一般.p12文件是给与别人使用的，本机必须已经有一个带秘钥的证书才可以生成.p12文件，如图：</em></strong><br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-1.png" alt="p12-1" /><br />
-打开钥匙串，选择我们需要的证书，右击，选择“导出“iPhone Distribition:```”：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-2.png" alt="p12-2" /><br />
-为.p12文件填一个名字，点击存储：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-3.png" alt="p12-3" /><br />
-填一个“密码”，“验证”和密码相同：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-4.png" alt="" /><br />
-点击好，在桌面上就形成了一个.p12文件了：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-5.png" alt="" /></p>
-
-<h4 id="section-1">在别人的电脑上要成功安装，须具备两个文件：</h4>
-<p>1) 该证书导出的“.p12”文件。<br />
-2) 苹果开发者中的与“证书”对应的“描述文件”</p>
-
-<h4 id="section-2">如果需要用于开发的，那么需要这两个文件：</h4>
-<p>.p12文件本身就是一个加密的证书，所以用这两个文件就可以让其他mac设备使用了：<br />
-<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-6.png" alt="p12-6" /><br />
-拿到这两个文件后，依次双击“证书”，“.p12“文件（需要输入密码，密码就是当时生成.p12时设定的密码，），作用是加入钥匙串中，使我们的电脑具备开发的证明，”描述文件“（作用是置于xcode中，让xcode知道我们开发的合法性），添加完后就可以使用了。</p>
-
-<p>原文：<a href="http://my.oschina.net/u/1245365/blog/196363">http://my.oschina.net/u/1245365/blog/196363</a></p>
 </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/ios-certificates-p12.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ubuntu-samba-config.html">Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-19T14:52:39+08:00'><span class='date'>2014 年5 月19 日</span> <span class='time'>2:52 pm</span></time>
+        
+        
+            | <a href="/blog/ubuntu-samba-config.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="samba">1、先要安装Samba</h3>
+
+<p><code>$ sudo apt-get install samba openssh-server</code></p>
+
+<h3 id="samba-1">2、编译Samba配置文件</h3>
+
+<p><code>$ sudo vi /etc/samba/smb.conf</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ubuntu-samba-config.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-boot-flow.html">[转]Linux的启动流程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-07T16:32:59+08:00'><span class='date'>2014 年5 月7 日</span> <span class='time'>4:32 pm</span></time>
+        
+        
+            | <a href="/blog/linux-boot-flow.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-boot-flow.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-split-cat.html">Linux大文件分割(split)与合并(cat)使用方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-19T13:52:39+08:00'><span class='date'>2014 年4 月19 日</span> <span class='time'>1:52 pm</span></time>
+        
+        
+            | <a href="/blog/linux-split-cat.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
+  
+- 或者-l,指定每多少行切割一次，用于文本文件分割
+  
+-b 指定切割文件大小,单位KB，K，MB，M，G等
+  
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-split-cat.html">阅读全文 →</a>
+    </footer>
   
 
 
     </article>
   
   <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -486,6 +596,7 @@
   <h1>分类目录</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/apple/'>Apple (1)</a></li>
+<li class='category'><a href='/blog/categories/linuxshi-yong/'>Linux使用 (7)</a></li>
 <li class='category'><a href='/blog/categories/octopress/'>Octopress (4)</a></li>
 <li class='category'><a href='/blog/categories/ioskai-fa/'>iOS开发 (2)</a></li>
 

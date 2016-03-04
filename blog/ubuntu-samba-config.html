@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>分类：Apple - Rayco Zhang</title>
+  <title>Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录 - Rayco Zhang</title>
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="Category: Apple">
+  <meta name="description" content="1、先要安装Samba $ sudo apt-get install samba openssh-server 2、编译Samba配置文件 $ sudo vi /etc/samba/smb.conf 找到[homes]项，此项默认是注释掉的，取消其注释，然后修改其具体内容，修改成如下： [ &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangrui1209.github.io/blog/categories/apple/index.html">
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/ubuntu-samba-config.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
@@ -77,37 +77,146 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">分类：Apple</h1>
+    
+      <h1 class="entry-title">Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-19T14:52:39+08:00'><span class='date'>2014 年5 月19 日</span> <span class='time'>2:52 pm</span></time>
+        
+        
+            | <a href="#comments">评论</a>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives" class="category">
 
 
+<div class="entry-content"><h3 id="samba">1、先要安装Samba</h3>
 
-  
-  <h2>2014</h2>
+<p><code>$ sudo apt-get install samba openssh-server</code></p>
 
-<article>
-  
-<h1><a href="/blog/ios-certificates-p12.html">[转]一个苹果证书怎么多次使用--导出p12文件</a></h1>
-<time datetime="2014-11-09T14:33:09+08:00" pubdate><span class='month'>11 月</span> <span class='day'>09 日</span> <span class='year'>2014</span></time>
+<h3 id="samba-1">2、编译Samba配置文件</h3>
 
-<footer>
-  <span class="categories">分类： <a class='category' href='/blog/categories/apple/'>Apple</a></span>
-</footer>
+<p><code>$ sudo vi /etc/samba/smb.conf</code></p>
 
+<!--more-->
 
-</article>
+<p>找到[homes]项，此项默认是注释掉的，取消其注释，然后修改其具体内容，修改成如下：</p>
 
+<pre><code>[homes]
+comment = Home Directories
+browseable = yes
+# By default, the home directories are exported read-only. Change the
+# next parameter to 'no' if you want to be able to write to them.
+read only = no
+# File creation mask is set to 0700 for security reasons. If you want to
+# create files with group=rw permissions, set next parameter to 0775.
+create mask = 0755 #建议将权限修改成0755，这样其它用户只是不能修改
+# Directory creation mask is set to 0700 for security reasons. If you want to
+# create dirs. with group=rw permissions, set next parameter to 0775.
+directory mask = 0755
+# By default, \\server\username shares can be connected to by anyone
+# with access to the samba server. Un-comment the following parameter
+# to make sure that only "username" can connect to \\server\username
+# The following parameter makes sure that only "username" can connect
+#
+# This might need tweaking when using external authentication schemes
+valid users = %S #本行需要取消注释 
+</code></pre>
+
+<p>如上修改完成后wq保存退出！</p>
+
+<h3 id="samba-2">3、重启samba服务：</h3>
+
+<p><code>$ sudo service restart smbd</code><br />
+<code>$ sudo service restart nmbd</code></p>
+
+<h3 id="samba-3">4、增加一个现有用户的对应samba帐号：</h3>
+
+<p>如果已经有一个用户叫reddy，现在给reddy开通samba帐号：<br />
+<code>$ sudo smbpasswd -a reddy</code></p>
+
+<p>根据提示输入两次密码即可。</p>
+
+<h3 id="windowsamba">5、测试，在Window下输入samba地址尝试登录：</h3>
+<p><code>\\10.0.0.2\reddy</code></p>
+
+<h3 id="windows">6、windows会弹出窗口要求输入用户名和密码，输入即可</h3>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-05-19T14:52:39+08:00'><span class='date'>2014 年5 月19 日</span> <span class='time'>2:52 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linuxshi-yong/'>Linux使用</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/linux-boot-flow.html" title="Previous Post: [转]Linux的启动流程">&laquo; [转]Linux的启动流程</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ios-certificates-p12.html" title="Next Post: [转]一个苹果证书怎么多次使用--导出p12文件">[转]一个苹果证书怎么多次使用--导出p12文件 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="/blog/ubuntu-samba-config" data-title="Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录" data-url="http://zhangrui1209.github.io/blog/ubuntu-samba-config.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
 
 </div>
 

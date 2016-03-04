@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>分类：Apple - Rayco Zhang</title>
+  <title>Linux大文件分割(split)与合并(cat)使用方法 - Rayco Zhang</title>
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="Category: Apple">
+  <meta name="description" content="在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查： split 语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名] --version 显示版本信息 - 或者-l,指定每多少行切割一次， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangrui1209.github.io/blog/categories/apple/index.html">
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/linux-split-cat.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
@@ -77,37 +77,165 @@
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">分类：Apple</h1>
+    
+      <h1 class="entry-title">Linux大文件分割(split)与合并(cat)使用方法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-19T13:52:39+08:00'><span class='date'>2014 年4 月19 日</span> <span class='time'>1:52 pm</span></time>
+        
+        
+            | <a href="#comments">评论</a>
+        
+      </p>
     
   </header>
+
+
+<div class="entry-content"><p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
   
-  <div id="blog-archives" class="category">
-
-
-
+- 或者-l,指定每多少行切割一次，用于文本文件分割
   
-  <h2>2014</h2>
-
-<article>
+-b 指定切割文件大小,单位KB，K，MB，M，G等
   
-<h1><a href="/blog/ios-certificates-p12.html">[转]一个苹果证书怎么多次使用--导出p12文件</a></h1>
-<time datetime="2014-11-09T14:33:09+08:00" pubdate><span class='month'>11 月</span> <span class='day'>09 日</span> <span class='year'>2014</span></time>
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
 
-<footer>
-  <span class="categories">分类： <a class='category' href='/blog/categories/apple/'>Apple</a></span>
-</footer>
+<!--more-->
 
+<h4 id="section">示例1</h4>
+<p>将a.tar.gz包按每个5M大小切割</p>
 
-</article>
+<pre><code>$ split -b 5m a.tar.gz a.tar.gz.  
+</code></pre>
 
+<p>后面输出的文件名<code>a.tar.gz. </code>不指定的话会以xaa，xab，xac形式输出。文件名后面不加<code>". "</code>，输出文件名会和后缀连在一起而不直观</p>
+
+<h4 id="section-1">示例2</h4>
+<p>使用<code>|</code>管道将打包分割动作合并</p>
+
+<pre><code>$ tar -zcf - a | split -b 5m - a.tar.gz.
+</code></pre>
+
+<p>注意管道前后两个没带参数的<code>“-”</code>是不能省略的，它作为tar的ouput和split的input的参数</p>
+
+<h2 id="cat">cat</h2>
+
+<pre><code>语法：cat [-AbeEnstTuv] [--help] [--version] fileName
+  
+-n 或 –number 由 1 开始对所有输出的行数编号
+  
+-b 或 –number-nonblank 和 -n 相似，只不过对于空白行不编号
+  
+-s 或 –squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+  
+-v 或 –show-nonprinting
+</code></pre>
+
+<h4 id="cat-1">cat常用功能</h4>
+
+<pre><code>#一次显示整个文件
+cat   filename
+  
+#创建一个文件，只能创建新文件,不能编辑已有文件
+cat  &gt;  filename
+  
+#将几个文件合并为一个文件。
+cat   file1   file2  &gt; file
+</code></pre>
+
+<p>所以上面的示例中将分割文件合并，可以使用：</p>
+
+<pre><code>#合并
+cat a.tar.gz.* &gt; a.tar.gz
+  
+#合并并解压
+cat a.tar.gz.*  | tar -zxv
+</code></pre>
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-04-19T13:52:39+08:00'><span class='date'>2014 年4 月19 日</span> <span class='time'>1:52 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linuxshi-yong/'>Linux使用</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ubuntu-prompt-sign.html" title="Previous Post: 修改ubuntu的命令提示符">&laquo; 修改ubuntu的命令提示符</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/linux-boot-flow.html" title="Next Post: [转]Linux的启动流程">[转]Linux的启动流程 &raquo;</a>
+      
+    </p>
+  </footer>
 </article>
 
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="/blog/linux-split-cat" data-title="Linux大文件分割(split)与合并(cat)使用方法" data-url="http://zhangrui1209.github.io/blog/linux-split-cat.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
 
 </div>
 
