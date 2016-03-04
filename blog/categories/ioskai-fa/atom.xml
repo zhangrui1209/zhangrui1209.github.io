@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[分类：ios | Rayco Zhang]]></title>
-  <link href="http://zhangrui1209.github.io/blog/categories/ios/atom.xml" rel="self"/>
+  <title><![CDATA[分类：iOS开发 | Rayco Zhang]]></title>
+  <link href="http://zhangrui1209.github.io/blog/categories/ioskai-fa/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-03T22:43:11+08:00</updated>
+  <updated>2016-03-04T11:36:43+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
