@@ -10,6 +10,9 @@ categories: Apple
 
 当我们用大于三个mac设备开发应用时，想要申请新的证书，如果在我们的证书里，包含了3个发布证书，2个开发证书，可以发现再也申请不了开发证书和发布证书了（一般在我们的证书界面中应该只有一个开发证书，一个发布证书，没必要生成那么多的证书，证书一般在过期之后才会重新添加。）  
 如图：  
+
+<!--more-->  
+
 ![certificate1](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate1.png)  
 这时候，再点击“+”时，就会发现点击不了开发和发布证书，也就是添加不了开发证书和发布证书了：  
 ![certificate2](https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate2.png)  
