@@ -22,7 +22,7 @@ Octopress默认会将Category的名称全部自动小写，比如`Octopress`会�
       ).map {|c| c.to_s.downcase}.flatten.uniq
     end  
 
-将其中的`dowcase`去掉，改为：  
+将其中的`downcase`去掉，改为：  
 	
 	def populate_categories
       categories_from_data = Utils.pluralized_array_from_hash(data, 'category', 'categories')
