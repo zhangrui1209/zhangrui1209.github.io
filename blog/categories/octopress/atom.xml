@@ -4,7 +4,7 @@
   <title><![CDATA[分类：Octopress | Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/blog/categories/octopress/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-04T17:16:19+08:00</updated>
+  <updated>2016-05-12T22:18:53+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -45,6 +45,88 @@ end
 end  
 </code></pre>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[4.常用命令]]></title>
+    <link href="http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling.html"/>
+    <updated>2016-01-20T21:30:05+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling</id>
+    <content type="html"><![CDATA[<h3 id="github-page">· 建立github page</h3>
+<p><code>$ rake setup_github_pages</code><br />
+并在Repository url中输入在Github上创建的仓库地址</p>
+
+<h3 id="octopress">· 安装Octopress默认主题</h3>
+<p><code>$ rake install</code></p>
+
+<!--more-->
+
+<h3 id="section">· 生成静态页面</h3>
+<p><code>$ rake generate</code></p>
+
+<h3 id="section-1">· 本地预览</h3>
+<p><code>$ rake preview</code><br />
+<code>http://localhost:4000/</code></p>
+
+<h3 id="github">· 发布博客到Github</h3>
+<p><code>$ rake deploy</code></p>
+
+<h3 id="source">· 提交源文件，即source分支</h3>
+<p><code>$ git add .</code><br />
+<code>$ git commit -m “commit message”</code><br />
+<code>$ git push origin source</code></p>
+
+<h3 id="section-2">· 下载并安装主题：</h3>
+<p><code>$ cd octopress</code><br />
+<code>$ git clone GIT_URL .themes/THEME_NAME</code><br />
+<code>$ rake install['THEME_NAME']</code><br />
+<code>$ rake generate</code></p>
+
+<h3 id="section-3">· 新建博文：</h3>
+<p><code>$ rake new_post['Blog Name']</code></p>
+
+<h3 id="section-4">· 增加新网页</h3>
+<p><code>$ rake new_page['tag_cloud']</code></p>
+
+<h3 id="section-5">· 博客克隆</h3>
+
+<h5 id="octopress-1">(1)拉取Octopress仓库内容：</h5>
+
+<p><code>$ mkdir Octopress</code><br />
+<code>$ cd Octopress/</code><br />
+<code>$ git init</code><br />
+<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.com.git</code><br />
+<code>$ git pull origin</code></p>
+
+<h5 id="source-1">(2)切换到source分支：</h5>
+<p><code>$ git checkout source</code></p>
+
+<h5 id="github-pages">(3)建立github pages：</h5>
+<p><code>$ rake setup_github_pages</code></p>
+
+<h5 id="master">(4)拉取master分支：</h5>
+<p><code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+
+<h5 id="source-2">(5)切换回source分支：</h5>
+<p><code>$ cd ..</code><br />
+<code>$ git checkout source</code></p>
+
+<h3 id="section-6">· 在不同电脑上维护同一个博客，要处理好同步问题。</h3>
+
+<h5 id="section-7">每台电脑在处理完博客事务后记得要要运行：</h5>
+<p><code>$ rake deploy</code></p>
+
+<p><code>$ git add .</code><br />
+<code>$ git commit -m "commit message"</code><br />
+<code>$ git push origin source</code></p>
+
+<h5 id="github-1">在开始处理博客事务之前，要同步Github仓库的数据：</h5>
+<p><code>$ cd octopress/</code><br />
+<code>$ git pull origin source</code><br />
+<code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
 ]]></content>
   </entry>
   

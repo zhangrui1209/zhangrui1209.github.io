@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Ubuntu之dos2unix和unix2dos - Rayco Zhang</title>
+  <title>分类：Git - Rayco Zhang</title>
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="Ubuntu下默认没有安装dos2unix工具，而且也没有一个叫这个名字的工具。但是有一个替代工具——tofrodos, 下面说一下它的安装和使用。用apt安装。 (1) 安装tofrodos
-$ sudo apt-get install tofrodos
-实际上它安装了两个工具：todos（ &hellip;">
+  <meta name="description" content="Category: Git">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ $ sudo apt-get install tofrodos
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://zhangrui1209.github.io/blog/ubuntu-dos-unix.html">
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/categories/git/index.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
@@ -79,121 +77,37 @@ $ sudo apt-get install tofrodos
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Ubuntu之dos2unix和unix2dos</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2014-03-10T16:50:38+08:00'><span class='date'>2014 年3 月10 日</span> <span class='time'>4:50 pm</span></time>
-        
-        
-            | <a href="#comments">评论</a>
-        
-      </p>
+    <h1 class="entry-title">分类：Git</h1>
     
   </header>
-
-
-<div class="entry-content"><p>Ubuntu下默认没有安装dos2unix工具，而且也没有一个叫这个名字的工具。但是有一个替代工具——tofrodos, 下面说一下它的安装和使用。用apt安装。</p>
-
-<h4 id="tofrodos">(1) 安装tofrodos</h4>
-<p><code>$ sudo apt-get install tofrodos</code><br />
-实际上它安装了两个工具：todos（相当于unix2dos）和fromdos（相当于dos2unix）<br />
-安装完即可，现在已经可以进行文本格式的转换了。</p>
-
-<!--more-->
-
-<p>比如：<br />
-<code>$ todos Hello.txt</code><br />
-(即unix2dos Hello.txt)</p>
-
-<p><code>$ fromdos Hello.txt</code><br />
-(即dos2unix Hello.txt)</p>
-
-<h4 id="section">(2) 做一些优化</h4>
-<p>由于习惯了unix2dos和dos2unix的命令，可以把上面安装的两个工具链接成unix2dos 和dos2unix，或者仅仅是起个别名，并放在启动脚本里。<br />
-步骤：<br />
-<code>$ ln -s /usr/bin/todos /usr/bin/unix2dos</code><br />
-<code>$ ln -s /usr/bin/fromdos /usr/bin/dos2unix</code></p>
-
-<p>或者在 ~/.bashrc里起个别名<br />
-<code>$ vi ~/.bashrc</code><br />
-添加 alias unix2dos=todos alias dos2unix=fromdos</p>
-
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
-
-      
+  <div id="blog-archives" class="category">
 
 
 
-
-<time class='entry-date' datetime='2014-03-10T16:50:38+08:00'><span class='date'>2014 年3 月10 日</span> <span class='time'>4:50 pm</span></time>
-      
-
-<span class="categories">
   
-    <a class='category' href='/blog/categories/linuxshi-yong/'>Linux使用</a>
+  <h2>2014</h2>
+
+<article>
   
-</span>
+<h1><a href="/blog/git-manage-empty-dir.html">Git管理空目录</a></h1>
+<time datetime="2014-07-10T15:32:35+08:00" pubdate><span class='month'>07 月</span> <span class='day'>10 日</span> <span class='year'>2014</span></time>
+
+<footer>
+  <span class="categories">分类： <a class='category' href='/blog/categories/git/'>Git</a></span>
+</footer>
 
 
-    </p>
-    
-      <div class="sharing">
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/ubuntu-part-shortcut.html" title="Previous Post: Ubuntu12.04中的部分快捷键">&laquo; Ubuntu12.04中的部分快捷键</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/ubuntu-prompt-sign.html" title="Next Post: 修改ubuntu的命令提示符">修改ubuntu的命令提示符 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-
-  <section>
-    <h1>评论</h1>
-    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
-<div class="ds-thread" data-thread-key="/blog/ubuntu-dos-unix" data-title="Ubuntu之dos2unix和unix2dos" data-url="http://zhangrui1209.github.io/blog/ubuntu-dos-unix.html"></div>
-<!-- 多说评论框 end -->
-<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"rayco"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- 多说公共JS代码 end -->
 </div>
-  </section>
+
+  
+</article>
+
 
 </div>
 

@@ -4,7 +4,7 @@
   <title><![CDATA[Rayco Zhang]]></title>
   <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
   <link href="http://zhangrui1209.github.io/"/>
-  <updated>2016-03-04T17:16:19+08:00</updated>
+  <updated>2016-05-12T22:18:53+08:00</updated>
   <id>http://zhangrui1209.github.io/</id>
   <author>
     <name><![CDATA[Rayco]]></name>
@@ -318,6 +318,88 @@ pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么�
 <p>格式：<br />
 <code>$ pod setup</code><br />
 这条命令用于更新本地电脑上的保存的Pods依赖库tree。由于每天有很多人会创建或者更新Pods依赖库，这条命令执行的时候会很慢，要耐心等待。我们需要经常执行这条命令，否则有新的Pods依赖库的时候执行pod search命令搜不出来。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[4.常用命令]]></title>
+    <link href="http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling.html"/>
+    <updated>2016-01-20T21:30:05+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling</id>
+    <content type="html"><![CDATA[<h3 id="github-page">· 建立github page</h3>
+<p><code>$ rake setup_github_pages</code><br />
+并在Repository url中输入在Github上创建的仓库地址</p>
+
+<h3 id="octopress">· 安装Octopress默认主题</h3>
+<p><code>$ rake install</code></p>
+
+<!--more-->
+
+<h3 id="section">· 生成静态页面</h3>
+<p><code>$ rake generate</code></p>
+
+<h3 id="section-1">· 本地预览</h3>
+<p><code>$ rake preview</code><br />
+<code>http://localhost:4000/</code></p>
+
+<h3 id="github">· 发布博客到Github</h3>
+<p><code>$ rake deploy</code></p>
+
+<h3 id="source">· 提交源文件，即source分支</h3>
+<p><code>$ git add .</code><br />
+<code>$ git commit -m “commit message”</code><br />
+<code>$ git push origin source</code></p>
+
+<h3 id="section-2">· 下载并安装主题：</h3>
+<p><code>$ cd octopress</code><br />
+<code>$ git clone GIT_URL .themes/THEME_NAME</code><br />
+<code>$ rake install['THEME_NAME']</code><br />
+<code>$ rake generate</code></p>
+
+<h3 id="section-3">· 新建博文：</h3>
+<p><code>$ rake new_post['Blog Name']</code></p>
+
+<h3 id="section-4">· 增加新网页</h3>
+<p><code>$ rake new_page['tag_cloud']</code></p>
+
+<h3 id="section-5">· 博客克隆</h3>
+
+<h5 id="octopress-1">(1)拉取Octopress仓库内容：</h5>
+
+<p><code>$ mkdir Octopress</code><br />
+<code>$ cd Octopress/</code><br />
+<code>$ git init</code><br />
+<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.com.git</code><br />
+<code>$ git pull origin</code></p>
+
+<h5 id="source-1">(2)切换到source分支：</h5>
+<p><code>$ git checkout source</code></p>
+
+<h5 id="github-pages">(3)建立github pages：</h5>
+<p><code>$ rake setup_github_pages</code></p>
+
+<h5 id="master">(4)拉取master分支：</h5>
+<p><code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+
+<h5 id="source-2">(5)切换回source分支：</h5>
+<p><code>$ cd ..</code><br />
+<code>$ git checkout source</code></p>
+
+<h3 id="section-6">· 在不同电脑上维护同一个博客，要处理好同步问题。</h3>
+
+<h5 id="section-7">每台电脑在处理完博客事务后记得要要运行：</h5>
+<p><code>$ rake deploy</code></p>
+
+<p><code>$ git add .</code><br />
+<code>$ git commit -m "commit message"</code><br />
+<code>$ git push origin source</code></p>
+
+<h5 id="github-1">在开始处理博客事务之前，要同步Github仓库的数据：</h5>
+<p><code>$ cd octopress/</code><br />
+<code>$ git pull origin source</code><br />
+<code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
 ]]></content>
   </entry>
   
@@ -661,6 +743,31 @@ LC_ALL=zh_CN.UTF-8</p>
 拿到这两个文件后，依次双击“证书”，“.p12“文件（需要输入密码，密码就是当时生成.p12时设定的密码，），作用是加入钥匙串中，使我们的电脑具备开发的证明，”描述文件“（作用是置于xcode中，让xcode知道我们开发的合法性），添加完后就可以使用了。</p>
 
 <p>原文：<a href="http://my.oschina.net/u/1245365/blog/196363">http://my.oschina.net/u/1245365/blog/196363</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git管理空目录]]></title>
+    <link href="http://zhangrui1209.github.io/blog/git-manage-empty-dir.html"/>
+    <updated>2014-07-10T15:32:35+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/git-manage-empty-dir</id>
+    <content type="html"><![CDATA[<p>Git 和 SVN 不同，仅仅跟踪文件的变动，不跟踪目录。Perforce 也是如此。</p>
+
+<p>所以，一个空目录，如果里面没有文件，即便 git add 这个目录，另外在别处 check out 的时候，是没有这个空目录的。</p>
+
+<p>只跟踪文件变化，不跟踪目录，这么设计是有原因的。但这会带来一些小麻烦。有时候，确实需要在代码仓库中保留某个空目录。比如测试时需要用到的空目录。</p>
+
+<!--more-->
+
+<p>变通的解决办法是在空目录下存一个 .gitignore 文件。然后 git add 此目录后，相当于跟踪了 .gitignore 文件，产生的“副作用”就是这个“空”目录也纳入“跟踪”，最终的效果是可以 check out 出一个看起来空空的目录。如果有许多这样的空目录，可以用下面的命令自动补充 .gitignore 文件：</p>
+
+<p><code>$ find . −typed−empty -and −not−regex./\.git.∗ -exec touch {}/.gitignore \;</code></p>
+
+<p>该命令的作用是递归找寻当前目录下，类型为目录，且为空，也没有 .git 开头的文件，在其中用 touch 新建一个空的 .gitignore 文件。</p>
+
+<p>然后 git add . 之后即可。</p>
+
+<p>如果这些特殊文件会对测试带来干扰，那就只好在测试程序运行具体测试项目之前，先跑一段初始化目录结构的代码。另外可能还需要编写负责清理的代码。</p>
 ]]></content>
   </entry>
   

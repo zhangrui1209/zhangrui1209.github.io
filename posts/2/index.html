@@ -9,10 +9,7 @@
   <meta name="author" content="Rayco">
 
   
-  <meta name="description" content="首先了解一个变量：
-PS(Prompt Sign)：是指命令提示符，例如ubuntu 12.04终端下的：
-zhangrui@thinkPad-Edge-E430c:~$ 修改ubuntu的命令提示符主要是通过修改变量PS1和PS2的值
-PS1是主要的提示符设置，在ubuntu一般为： ">
+  <meta name="description" content="半年前，我写了《计算机是如何启动的？》，探讨BIOS和主引导记录的作用。 那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。 ">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -81,6 +78,101 @@ PS1是主要的提示符设置，在ubuntu一般为： ">
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-boot-flow.html">[转]Linux的启动流程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-07T16:32:59+08:00'><span class='date'>2014 年5 月7 日</span> <span class='time'>4:32 pm</span></time>
+        
+        
+            | <a href="/blog/linux-boot-flow.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-boot-flow.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-split-cat.html">Linux大文件分割(split)与合并(cat)使用方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-19T13:52:39+08:00'><span class='date'>2014 年4 月19 日</span> <span class='time'>1:52 pm</span></time>
+        
+        
+            | <a href="/blog/linux-split-cat.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
+  
+- 或者-l,指定每多少行切割一次，用于文本文件分割
+  
+-b 指定切割文件大小,单位KB，K，MB，M，G等
+  
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-split-cat.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -278,11 +370,11 @@ PS1是主要的提示符设置，在ubuntu一般为：</p>
       </li>
     
       <li class="post">
-        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
+        <a href="/blog/4-chang-yong-ming-ling.html">4.常用命令</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2-dot-fa-bu-bo-ke.html">2.发布博客</a>
+        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
       </li>
     
   </ul>
@@ -291,8 +383,9 @@ PS1是主要的提示符设置，在ubuntu一般为：</p>
   <h1>分类目录</h1>
   <ul id="categories">
     <li class='category'><a href='/blog/categories/apple/'>Apple (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>Git (1)</a></li>
 <li class='category'><a href='/blog/categories/linuxshi-yong/'>Linux使用 (7)</a></li>
-<li class='category'><a href='/blog/categories/octopress/'>Octopress (4)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (5)</a></li>
 <li class='category'><a href='/blog/categories/ioskai-fa/'>iOS开发 (2)</a></li>
 
   </ul>
