@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Rayco Zhang</title>
+  <meta name="author" content="Rayco">
+
+  
+  <meta name="description" content="半年前，我写了《计算机是如何启动的？》，探讨BIOS和主引导记录的作用。 那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。 ">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zhangrui1209.github.io/posts/2/index.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+</script> 
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Rayco Zhang</a></h1>
+  
+    <h2>Better master one than engage with ten.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-boot-flow.html">[转]Linux的启动流程</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-07T16:32:59+08:00'><span class='date'>2014 年5 月7 日</span> <span class='time'>4:32 pm</span></time>
+        
+        
+            | <a href="/blog/linux-boot-flow.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-boot-flow.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/linux-split-cat.html">Linux大文件分割(split)与合并(cat)使用方法</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-19T13:52:39+08:00'><span class='date'>2014 年4 月19 日</span> <span class='time'>1:52 pm</span></time>
+        
+        
+            | <a href="/blog/linux-split-cat.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
+  
+- 或者-l,指定每多少行切割一次，用于文本文件分割
+  
+-b 指定切割文件大小,单位KB，K，MB，M，G等
+  
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/linux-split-cat.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ubuntu-prompt-sign.html">修改ubuntu的命令提示符</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-04-12T17:40:38+08:00'><span class='date'>2014 年4 月12 日</span> <span class='time'>5:40 pm</span></time>
+        
+        
+            | <a href="/blog/ubuntu-prompt-sign.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>首先了解一个变量：<br />
+<strong>PS(Prompt Sign)</strong>：是指命令提示符，例如ubuntu 12.04终端下的：<br />
+<code>zhangrui@thinkPad-Edge-E430c:~$</code></p>
+
+<p>修改ubuntu的命令提示符主要是通过修改变量PS1和PS2的值<br />
+PS1是主要的提示符设置，在ubuntu一般为：</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ubuntu-prompt-sign.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ubuntu-dos-unix.html">Ubuntu之dos2unix和unix2dos</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-10T16:50:38+08:00'><span class='date'>2014 年3 月10 日</span> <span class='time'>4:50 pm</span></time>
+        
+        
+            | <a href="/blog/ubuntu-dos-unix.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Ubuntu下默认没有安装dos2unix工具，而且也没有一个叫这个名字的工具。但是有一个替代工具——tofrodos, 下面说一下它的安装和使用。用apt安装。</p>
+
+<h4 id="tofrodos">(1) 安装tofrodos</h4>
+<p><code>$ sudo apt-get install tofrodos</code><br />
+实际上它安装了两个工具：todos（相当于unix2dos）和fromdos（相当于dos2unix）<br />
+安装完即可，现在已经可以进行文本格式的转换了。</p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ubuntu-dos-unix.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/ubuntu-part-shortcut.html">Ubuntu12.04中的部分快捷键</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-06T10:26:40+08:00'><span class='date'>2014 年3 月6 日</span> <span class='time'>10:26 am</span></time>
+        
+        
+            | <a href="/blog/ubuntu-part-shortcut.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5 id="shiftctrlt">Shift+Ctrl+T:新建标签页</h5>
+
+<h5 id="shiftctrlw">Shift+Ctrl+W:关闭标签页</h5>
+
+<h5 id="ctrlpageup">Ctrl+PageUp:前一标签页</h5>
+
+<h5 id="ctrlpagedown">Ctrl+PageDown:后一标签页</h5>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/ubuntu-part-shortcut.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/hide-virtualbox-statusbar.html">Linux下VirtualBox状态栏隐藏和恢复</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-03-04T15:23:30+08:00'><span class='date'>2014 年3 月4 日</span> <span class='time'>3:23 pm</span></time>
+        
+        
+            | <a href="/blog/hide-virtualbox-statusbar.html#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3 id="section">隐藏：</h3>
+
+<p><code>$ VBoxManage setextradata global GUI/Customizations noStatusBar</code></p>
+
+<h3 id="section-1">恢复：</h3>
+<p><code>$ VBoxManage setextradata global GUI/Customizations StatusBar</code></p>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/hide-virtualbox-statusbar.html">阅读全文 →</a>
+    </footer>
+  
+
+
+    </article>
+  
+  <div class="pagination">
+    
+    <a href="/blog/archives">文章列表</a>
+    
+    <a class="next" href="/index.html">下一页 &rarr;</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/category-not-downcase.html">不让Octopress中的Category名称自动小写</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/4-chang-yong-ming-ling.html">4.常用命令</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/apple/'>apple (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>git (1)</a></li>
+<li class='category'><a href='/blog/categories/ioskai-fa/'>ios开发 (2)</a></li>
+<li class='category'><a href='/blog/categories/linuxshi-yong/'>linux使用 (7)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (5)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        /*github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });*/
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
+
+<!--多说js加载开始，一个页面只需要加载一次 -->
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"rayco"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!--多说js加载结束，一个页面只需要加载一次 -->
+
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
+  
+</aside>
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Rayco -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>. Background image by <a href="http://www.flickr.com/photos/89433098@N04/">Florian Kraft Fotografie</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<!--
+-->
+
+
+
+  <div id="full" style="width:0px; height:0px; position:fixed; right:90px; bottom:150px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+</body>
+</html>

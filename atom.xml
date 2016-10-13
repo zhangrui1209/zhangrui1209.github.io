@@ -1,0 +1,1312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Rayco Zhang]]></title>
+  <link href="http://zhangrui1209.github.io/atom.xml" rel="self"/>
+  <link href="http://zhangrui1209.github.io/"/>
+  <updated>2016-10-14T00:26:58+08:00</updated>
+  <id>http://zhangrui1209.github.io/</id>
+  <author>
+    <name><![CDATA[Rayco]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[不让Octopress中的Category名称自动小写]]></title>
+    <link href="http://zhangrui1209.github.io/blog/category-not-downcase.html"/>
+    <updated>2016-03-04T11:30:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/category-not-downcase</id>
+    <content type="html"><![CDATA[<p>Octopress默认会将Category的名称全部自动小写，比如<code>Octopress</code>会被写为<code>octopress</code>；<code>iOS</code>被写为<code>ios</code>。这不是我们想要的结果，我们希望该大写的大写，该小写的小写。</p>
+
+<p>可以修改jekyll的post.rb文件来禁止Category名称自动小写。</p>
+
+<p><code>$ sudo vi /Library/Ruby/Gems/2.0.0/gems/jekyll-2.5.3/lib/jekyll/post.rb</code></p>
+
+<p>找到以下内容：<br />
+<!--more--></p>
+
+<pre><code>def populate_categories
+  categories_from_data = Utils.pluralized_array_from_hash(data, 'category', 'categories')
+  self.categories = (
+    Array(categories) + categories_from_data
+  ).map {|c| c.to_s.downcase}.flatten.uniq
+end  
+</code></pre>
+
+<p>将其中的<code>downcase</code>去掉，改为：</p>
+
+<pre><code>def populate_categories
+  categories_from_data = Utils.pluralized_array_from_hash(data, 'category', 'categories')
+  self.categories = (
+    Array(categories) + categories_from_data
+  ).map {|c| c.to_s}.flatten.uniq
+end  
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[通过CocoaPods发布自己的开源库]]></title>
+    <link href="http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods.html"/>
+    <updated>2016-03-02T14:45:32+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods</id>
+    <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="github">一、在Github上创建自己的开源库</h3>
+
+<h4 id="section">1、创建</h4>
+<p>首先在Github上创建一个空的版本库，比如创建一个名为<strong>MyCustomView</strong>的仓库。<br />
+<strong>注意：</strong>一定要给仓库添加<strong>license</strong>。正规的仓库都应该有一个license文件，况且Pods依赖库对这个文件的要求更严，所以必须要有。可以在新建的时候让github创建一个，也可以自己后续再创建。</p>
+
+<h4 id="section-1">2、添加</h4>
+<p>将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。<br />
+<strong>注意：</strong>以下描述的文件都要放在本地仓库的根目录下面。<br />
+<!--more--></p>
+
+<h5 id="podspec">(1)、后缀为.podspec的文件</h5>
+<p>这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
+创建命令：<br />
+<code>$ pod spec create MyCustomView</code><br />
+使用该命令创建的podspec文件，里面内容太多，很多不是我们需要的，可以精简一下，以下是一个例子：</p>
+
+<pre><code>Pod::Spec.new do |s|
+s.name             = "MyCustomView"
+s.version          = "1.0.0"
+s.summary          = "A custom view used on iOS."
+s.description      = &lt;&lt;-DESC
+                   It is a custom view used on iOS, which implement by Objective-C.  
+                                          DESC
+s.homepage         = "https://github.com/username/MyCustomView"  
+# s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"  
+s.license          = 'MIT'  
+s.author           = { "username" =&gt; "username@gmail.com" }  
+s.source           = { :git =&gt; "https://github.com/username/MyCustomView.git", :tag =&gt; s.version.to_s }  
+# s.social_media_url = 'https://twitter.com/NAME'  
+
+s.platform     = :ios, '4.3'  
+# s.ios.deployment_target = '5.0'  
+# s.osx.deployment_target = '10.7'  
+s.requires_arc = true  
+
+s.source_files = 'MyCustomView/*'  
+# s.resources = 'Assets'  
+
+# s.ios.exclude_files = 'Classes/osx'  
+# s.osx.exclude_files = 'Classes/ios'  
+# s.public_header_files = 'Classes/**/*.h'  
+s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'  
+
+end
+</code></pre>
+
+<p>注意几个参数：<br />
+<strong><em>s.license</em></strong><br />
+Pods依赖库使用的license类型<br />
+<strong><em>s.source_files</em></strong><br />
+源文件的路径(这个路径是相对podspec文件而言的)<br />
+<strong><em>s.frameworks</em></strong><br />
+需要用到的frameworks，不需要加.frameworks后缀</p>
+
+<h5 id="license">(2)、LICENSE文件</h5>
+<p>CocoaPods强制要求所有的Pods依赖库都必须有license文件，否则验证不会通过。license的类型有很多，可以参考网站<a href="https://tldrlegal.com/">TLDRLegal</a>。</p>
+
+<h5 id="section-2">(3)、库的源文件</h5>
+<p>创建一个与库名字相同的子目录，用来存放源码。</p>
+
+<h5 id="demo">(4)、demo工程</h5>
+<p>创建一个demo工程，帮助别人能快速使用我们的开源库。</p>
+
+<h5 id="readmemd">(5)、README.md</h5>
+<p>该文件用以对仓库进行详细说明。</p>
+
+<p>以上5个是创建Pods依赖库所需最基础的文件，其中1、2、3是必需的，4、5是可选但强烈推荐创建的。</p>
+
+<h4 id="section-3">3、提交</h4>
+<p>上一步骤中在本地仓库中添加了不少文件，现在需要将它们提交到Github仓库中去。分两步：</p>
+
+<h5 id="pod">(1)pod验证</h5>
+<p>执行以下命令，为pod添加版本号并打上tag： <br />
+<code>$ set the new version to 1.0.0</code><br />
+<code>$ set the new tag to 1.0.0</code></p>
+
+<p>然后执行pod验证命令：<br />
+<code>$ pod lib lint</code></p>
+
+<p>如果一切正常，该命令执行完后会出现：</p>
+
+<pre><code>-&gt; MyCustomView (1.0.0)  
+
+MyCustomView passed validation.
+</code></pre>
+
+<p><strong>注意：</strong>在执行pod验证命令的时候，如果打印出任何warning或者error信息，验证都会失败！根据提示修改即可。</p>
+
+<h5 id="section-4">(2)提交</h5>
+<p>依次执行以下命令：<br />
+<code>$ git add -A &amp;&amp; git commit -m "Release 1.0.0."</code><br />
+<code>$ git tag '1.0.0'</code><br />
+<code>$ git push --tags</code><br />
+<code>$ git push origin master</code></p>
+
+<h3 id="podspeccocoapods">二、将库的podspec文件上传到CocoaPods官方仓库中</h3>
+<p>要想一个Pods依赖库真正可用，还需要将我们刚才生成的podspec文件上传到<a href="https://github.com/CocoaPods/Specs">CocoaPods官方的Specs仓库</a>中。</p>
+
+<p>我们能使用的，以及我们使用pod search命令能搜索到的所有Pods依赖库都会把它们的podspec文件上传到这个仓库中，也就是说，只有将我们的podspec文件上传到这个仓库中以后，才能成为一个真正的Pods依赖库，别人才能搜索到并使用。</p>
+
+<p>由于要修改别人的仓库，所以先fork一份该仓库，待修改完成之后再创建一个<strong>pull request</strong>提交给原仓库。</p>
+
+<p>podspec文件在Specs仓库中的保存原则是：<br />
+<strong>Pods依赖库同名文件夹—&gt;版本号同名文件夹—&gt;podspec文件</strong></p>
+
+<p>所以按照上面的例子，需要在Specs目录下创建一个名为MyCustomView的子目录，然后在MyCustomView目录下创建一个名为1.0.0的子目录，最后将之前创建好的MyCustomView.podspec文件拷贝到1.0.0目录。</p>
+
+<p>不难理解，如果以后需要对MyCustomView升级，就在MyCustomView文件夹下建立对应版本名称的文件夹，用于保存对应版本的podspec文件即可。</p>
+
+<p>最后，如果CocoaPods官方审核通过了我们提交的pull request之后，想要通过<code>pod search</code>命令搜索到我们的Pods依赖库，需要先执行<code>pod setup</code>命令将所有的Pods依赖库tree更新到本地。然后再去执行<code>pod search MyCustomView</code>就能显示出对应的介绍信息了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[通过CocoaPods管理项目中用到的开源库]]></title>
+    <link href="http://zhangrui1209.github.io/blog/shi-yong-cocoapods.html"/>
+    <updated>2016-03-01T14:04:45+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/shi-yong-cocoapods</id>
+    <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="cocoapods">一、安装CocoaPods</h3>
+<p>使用 ruby 的 gem 命令下载安装：<br />
+<code>$ sudo gem install cocoapods</code><br />
+<code>$ pod setup</code></p>
+
+<p>安装过程可能出现的问题：<br />
+1) 执行install命令半天没反应<br />
+因为Ruby的软件源<a href="https://rubygems.org">https://rubygems.org</a>使用的是亚马逊的云服务，被墙了，需要更新一下Ruby的源，使用如下代码将官方的Ruby源替换成国内淘宝的源：<!--more--><br />
+<code>$ gem sources --remove https://rubygems.org/</code><br />
+<code>$ gem sources -a https://ruby.taobao.org/</code><br />
+<code>$ gem sources -l</code></p>
+
+<p>2) gem版本过老<br />
+gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导致安装失败，升级gem即可：<br />
+<code>$ sudo gem update --system</code></p>
+
+<h3 id="cocoapods-1">二、使用CocoaPods</h3>
+<p>使用CocoaPods时需要创建一个名为Podfile的文件，将项目要使用到的第三方库的的名字列在该文件中：</p>
+
+<pre><code>platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'	
+</code></pre>
+
+<p>然后将编辑好的Podfile文件放到项目根目录中，并执行<code>pod install</code>命令：<br />
+<code>$ cd "project root directory"</code><br />
+<code>$ pod install</code><br />
+执行完之后，所有需要的第三方库都已经下载完成并且设置好了编译参数和依赖，注意两点：<br />
+1) 使用CocoaPods生成的<strong>.xcworkspace</strong>文件来打开工程，而不是以前的<strong>.xcodeproj</strong>文件。<br />
+2) 每次更改了Podfile文件，要重新执行一次<code>pod update</code>命令。</p>
+
+<h3 id="podfilelock">三、Podfile.lock</h3>
+<p>执行完<code>pod install</code>之后，会生成一个Podfile.lock文件，该文件用于保存已经安装的Pods依赖库的版本。  Podfile.lock文件最大的用处在于多人开发。应该加入到版本控制里面，不应该把这个文件加入到.gitignore中。因为Podfile.lock会锁定当前各依赖库的版本，之后如果多次执行pod install 不会更改版本，要pod update才会更改Podfile.lock。这样多人协作的时候，可以防止第三方库升级时造成大家各自的第三方库版本不一致。</p>
+
+<h3 id="podfile">四、Podfile</h3>
+<p>我们打交道最多的就是Podfile文件。CocoaPods是用ruby实现的，所以Podfile文件的语法就是ruby语法</p>
+
+<h4 id="podfile-1">(1)Podfile文件存放位置</h4>
+<p>通常情况下，推荐将Podfile文件放在工程根目录。但其实Podfile文件可以放在任意一个目录下，要做的是在Podfile中用<strong>xcodeproj</strong>关键字指定工程的路径：</p>
+
+<pre><code>xcodeproj "/Users/rayco/Desktop/MyProject/MyProject.xcodeproj"
+
+platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+</code></pre>
+
+<p>此后，进入Podfile文件所在路径，执行<code>pod install</code>命令就会和之前一样下载这些Pods依赖库，而且生成的相关文件都放在了Podfile所在目录下面，同样，我们需要使用这里生成的<strong>.workspace</strong>文件打开工程</p>
+
+<h4 id="podfiletarget">(2)Podfile和target</h4>
+<p>Podfile本质上是用来描述Xcode工程中的targets用的。如果我们不显式指定Podfile对应的target，CocoaPods会创建一个名称为default的隐式target，会和我们工程中的第一个target相对应。<br />
+换句话说，如果在Podfile中没有指定target，那么只有工程里的第一个target能够使用Podfile中描述的Pods依赖库。<br />
+如果想在一个Podfile中同时描述project中的多个target，根据需求的不同，有不同的实现方式，如下：</p>
+
+<h5 id="targetpods"><strong><em>多个target中使用相同的Pods依赖库</em></strong></h5>
+
+<p>比如，名称为MyProject的target和YourProject的target都需要使用Reachability、MJRefresh、RESideMenu三个Pods依赖库，可以使用<strong>link_with</strong>关键字来实现，将Podfile写成如下方式：</p>
+
+<pre><code>link_with 'MyProject', 'YourProject'
+platform :ios
+pod 'Reachability',  '~&gt; 3.0.0'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+</code></pre>
+
+<p>这种写法就实现了MyProject和YourProject两个target共用相同的Pods依赖库。</p>
+
+<h5 id="targetpods-1"><strong><em>不同的target使用不同的Pods依赖库</em></strong></h5>
+<p>MyProject这个target使用的是Reachability、MJRefresh、RESideMenu三个依赖库，但YourProject这个target只需要使用MBProgressHUD这一个依赖库，这时可以使用<strong>target</strong>关键字，Podfile的描述方式如下：</p>
+
+<pre><code>target :'MyProject' do
+platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+end
+
+target :'YourProject' do
+pod 'MBProgressHUD'
+end
+</code></pre>
+
+<p>其中，<strong>do/end</strong>作为开始和结束标识符。</p>
+
+<h4 id="podfilepods">(3)使用Podfile管理Pods依赖库版本</h4>
+<p>引入依赖库时，需要显示或隐式注明引用的依赖库版本，具体写法和表示含义如下：</p>
+
+<pre><code>pod 'AFNetworking'             //不显式指定依赖库版本，表示每次都获取最新版本
+pod 'AFNetworking', '2.0'      //只使用2.0版本
+pod 'AFNetworking', '&gt; 2.0'    //使用高于2.0的版本
+pod 'AFNetworking', '&gt;= 2.0'   //使用大于或等于2.0的版本
+pod 'AFNetworking', '&lt; 2.0'    //使用小于2.0的版本
+pod 'AFNetworking', '&lt;= 2.0'   //使用小于或等于2.0的版本
+pod 'AFNetworking', '~&gt; 0.1.2' //使用大于等于0.1.2但小于0.2的版本
+pod 'AFNetworking', '~&gt;0.1'    //使用大于等于0.1但小于1.0的版本
+pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么都不写是一个效果，都表示使用最新版本  
+</code></pre>
+
+<h3 id="cocoapods-2">五、CocoaPods常用命令</h3>
+
+<h4 id="pod-install">(1)pod install</h4>
+<p>根据Podfile文件指定的内容，安装依赖库，如果有Podfile.lock文件而且对应的Podfile文件未被修改，则会根据Podfile.lock文件指定的版本安装。<br />
+每次更新了Podfile文件时，都需要重新执行该命令，以便重新安装Pods依赖库。</p>
+
+<h4 id="pod-update">(2)pod update</h4>
+<p>如果Podfile中指定的依赖库版本不是写死的，当对应的依赖库有了更新，无论有没有Podfile.lock文件都会去获取Podfile文件描述的允许获取到的最新依赖库版本。</p>
+
+<h4 id="pod-search">(3)pod search</h4>
+<p>格式：<br />
+<code>$ pod search DTCoreText</code><br />
+该命令按名称搜索可用的Pods依赖库，执行结果如下：</p>
+
+<pre><code>-&gt; DTCoreText (1.6.17)
+   Methods to allow using HTML code with CoreText.
+   pod 'DTCoreText', '~&gt; 1.6.17'
+   - Homepage: https://github.com/Cocoanetics/DTCoreText
+   - Source:   https://github.com/Cocoanetics/DTCoreText.git
+   - Versions: 1.6.17, 1.6.16, 1.6.15, 1.6.14, 1.6.13, 1.6.12, 1.6.11, 1.6.10, 1.6.9, 1.6.8, 1.6.7, 1.6.6, 1.6.5, 1.6.4, 1.6.3, 1.6.2, 1.6.1, 1.6.0, 1.5.3, 1.5.2, 1.5.1, 1.5.0, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.2, 1.0.1, 1.0.0
+   [master repo]
+</code></pre>
+
+<p>搜索结果描述了DTCoreText库的简要信息。我们需要的是第三行：</p>
+
+<pre><code>pod 'DTCoreText', '~&gt; 1.6.17'
+</code></pre>
+
+<p>这是需要添加到Podfile文件中的。</p>
+
+<h4 id="pod-setup">(4)pod setup</h4>
+<p>格式：<br />
+<code>$ pod setup</code><br />
+这条命令用于更新本地电脑上的保存的Pods依赖库tree。由于每天有很多人会创建或者更新Pods依赖库，这条命令执行的时候会很慢，要耐心等待。我们需要经常执行这条命令，否则有新的Pods依赖库的时候执行pod search命令搜不出来。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[4.常用命令]]></title>
+    <link href="http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling.html"/>
+    <updated>2016-01-20T21:30:05+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/4-chang-yong-ming-ling</id>
+    <content type="html"><![CDATA[<h3 id="github-page">· 建立github page</h3>
+<p><code>$ rake setup_github_pages</code><br />
+并在Repository url中输入在Github上创建的仓库地址</p>
+
+<h3 id="octopress">· 安装Octopress默认主题</h3>
+<p><code>$ rake install</code></p>
+
+<!--more-->
+
+<h3 id="section">· 生成静态页面</h3>
+<p><code>$ rake generate</code></p>
+
+<h3 id="section-1">· 本地预览</h3>
+<p><code>$ rake preview</code><br />
+<code>http://localhost:4000/</code></p>
+
+<h3 id="github">· 发布博客到Github</h3>
+<p><code>$ rake deploy</code></p>
+
+<h3 id="source">· 提交源文件，即source分支</h3>
+<p><code>$ git add .</code><br />
+<code>$ git commit -m “commit message”</code><br />
+<code>$ git push origin source</code></p>
+
+<h3 id="section-2">· 下载并安装主题：</h3>
+<p><code>$ cd octopress</code><br />
+<code>$ git clone GIT_URL .themes/THEME_NAME</code><br />
+<code>$ rake install['THEME_NAME']</code><br />
+<code>$ rake generate</code></p>
+
+<h3 id="section-3">· 新建博文：</h3>
+<p><code>$ rake new_post['Blog Name']</code></p>
+
+<h3 id="section-4">· 增加新网页</h3>
+<p><code>$ rake new_page['tag_cloud']</code></p>
+
+<h3 id="section-5">· 博客克隆</h3>
+
+<h5 id="octopress-1">(1)拉取Octopress仓库内容：</h5>
+
+<p><code>$ mkdir Octopress</code><br />
+<code>$ cd Octopress/</code><br />
+<code>$ git init</code><br />
+<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.com.git</code><br />
+<code>$ git pull origin</code></p>
+
+<h5 id="source-1">(2)切换到source分支：</h5>
+<p><code>$ git checkout source</code></p>
+
+<h5 id="github-pages">(3)建立github pages：</h5>
+<p><code>$ rake setup_github_pages</code></p>
+
+<h5 id="master">(4)拉取master分支：</h5>
+<p><code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+
+<h5 id="source-2">(5)切换回source分支：</h5>
+<p><code>$ cd ..</code><br />
+<code>$ git checkout source</code></p>
+
+<h3 id="section-6">· 在不同电脑上维护同一个博客，要处理好同步问题。</h3>
+
+<h5 id="section-7">每台电脑在处理完博客事务后记得要要运行：</h5>
+<p><code>$ rake deploy</code></p>
+
+<p><code>$ git add .</code><br />
+<code>$ git commit -m "commit message"</code><br />
+<code>$ git push origin source</code></p>
+
+<h5 id="github-1">在开始处理博客事务之前，要同步Github仓库的数据：</h5>
+<p><code>$ cd octopress/</code><br />
+<code>$ git pull origin source</code><br />
+<code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[3.博客克隆]]></title>
+    <link href="http://zhangrui1209.github.io/blog/3-bo-ke-ke-long.html"/>
+    <updated>2016-01-19T22:50:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/3-bo-ke-ke-long</id>
+    <content type="html"><![CDATA[<p>很多情况下我们需要在不同电脑之间维护同一个Octopress博客，那应该怎么在一台新的电脑上获取自己的Octopress仓库呢？</p>
+
+<h3 id="section">1、环境配置</h3>
+<p>安装Git，Ruby，DevKit等请参考第一篇：<a href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html">环境搭建</a>。Octopress依赖项在拉取仓库后再进行安装，也就是本文中在建立github pages之前。</p>
+
+<h3 id="octopress">2、克隆自己的Octopress</h3>
+
+<h4 id="octopress-1">(1) 拉取Octopress仓库内容</h4>
+<p>这里得注意要克隆自己的Octopress仓库，而不要去克隆imathis大神的仓库了。进入要放置Octopress的目录，比如桌面（换电脑记得 SSH 密钥要重新创建添加）。打开git bash，执行如下命令，初始化git仓库，添加远程仓库，也就是你自己的Octopress地址，pull远程仓库。<br />
+<!--more--></p>
+
+<p><code>$ mkdir octopress</code><br />
+<code>$ cd octopress/</code><br />
+<code>$ git init</code><br />
+<code>$ git remote add origin git@github.com:zhangrui1209/zhangrui1209.github.io.git</code><br />
+<code>$ git pull origin</code></p>
+
+<h4 id="source">(2) 切换到source分支</h4>
+<p>这时候进入octopress目录，发现除了初始化生成的.git目录，什么都没有。没事，执行如下命令。</p>
+
+<p><code>$ git checkout source</code><br />
+<code>$ ls -al</code></p>
+
+<p>这时source分支的东西都出来了。但是还没完，因为_deploy目录还没有。</p>
+
+<h4 id="octopress-2">(3) 安装Octopress依赖项</h4>
+<p>进入octopress目录，运行如下命令：</p>
+
+<p><code>$ gem install bundler</code><br />
+<code>$ bundle install</code></p>
+
+<p>如果出现错误，请尝试更换ruby版本。</p>
+
+<h4 id="github-pages">(4) 建立github pages</h4>
+<p>运行如下命令，在Repository url输入github上的博客仓库地址</p>
+
+<p><code>$ rake setup_github_pages</code></p>
+
+<p>查看Octopress目录，发现_deploy目录出来了。但是里面还是只有.git和index.html文件。</p>
+
+<h4 id="master">(5) 拉取master分支</h4>
+<p>进入_deploy目录，运行如下命令</p>
+
+<p><code>$ cd _deploy/</code><br />
+<code>$ git pull origin master</code><br />
+<code>$ ls –al</code></p>
+
+<p>发现东西都回来了。</p>
+
+<h4 id="source-1">(6) 切换回source分支</h4>
+<p>运行如下命令，切换至source分支</p>
+
+<p><code>$ cd ..</code><br />
+<code>$ git checkout source</code></p>
+
+<p>至此，Octopress就在另一台电脑上克隆好了，你可以在不同的电脑上维护同一个博客。运行一下如下命令，确认没有问题。</p>
+
+<p><code>$ rake generate</code><br />
+<code>$ rake preview</code><br />
+<code>$ rake deploy</code></p>
+
+<h3 id="section-1">3、注意</h3>
+
+<h4 id="push">记得push</h4>
+<p>不过需要注意的是在不同的电脑上维护同一个博客，需要处理好同步的问题。每台电脑在处理完博客事务后记得要要运行以下命令。</p>
+
+<p>发布博客到Github：</p>
+
+<p><code>$ rake deploy</code></p>
+
+<p>提交源文件：</p>
+
+<p><code>$ git add .</code><br />
+<code>$ git commit -m "commit message"</code><br />
+<code>$ git push origin source</code></p>
+
+<h4 id="pull">记得pull</h4>
+<p>在开始处理博客事务之前，需要同步Github仓库的数据。</p>
+
+<p><code>$ cd octopress/</code><br />
+<code>$ git pull origin source</code><br />
+<code>$ cd _deploy</code><br />
+<code>$ git pull origin master</code></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[2.发布博客]]></title>
+    <link href="http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke.html"/>
+    <updated>2016-01-19T22:45:06+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/2-dot-fa-bu-bo-ke</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#github" id="markdown-toc-github">1、新建Github仓库</a></li>
+  <li><a href="#octopressgithub" id="markdown-toc-octopressgithub">2、发布Octopress到Github</a>    <ul>
+      <li><a href="#github-page" id="markdown-toc-github-page">(1) 建立github page</a></li>
+      <li><a href="#octopress" id="markdown-toc-octopress">(2) 安装Octopress默认主题</a></li>
+      <li><a href="#section" id="markdown-toc-section">(3) 生成静态页面</a></li>
+      <li><a href="#section-1" id="markdown-toc-section-1">(4) 本地预览</a></li>
+      <li><a href="#github-1" id="markdown-toc-github-1">(5) 发布博客到Github</a></li>
+      <li><a href="#source" id="markdown-toc-source">(6) 提交源文件，即source分支</a></li>
+      <li><a href="#githubssh" id="markdown-toc-githubssh">附录-给github设置SSH</a>        <ul>
+          <li><a href="#a-ssh" id="markdown-toc-a-ssh">A. 创建SSH密钥（通常在用户主目录下进行）</a></li>
+          <li><a href="#b-github" id="markdown-toc-b-github">B. 添加公有密钥到github</a></li>
+          <li><a href="#c-" id="markdown-toc-c-">C. 在本地确认设置</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>本地环境配置完毕后就可以把Octopress推到Github上了。</p>
+
+<h3 id="github">1、新建Github仓库</h3>
+
+<p>仓库名字必须是username.github.io，其中username是你的github用户名。描述和Readme 可选，创建即可。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/github-repo.png" alt="github-repo" /></p>
+
+<!--more-->
+
+<h3 id="octopressgithub">2、发布Octopress到Github</h3>
+
+<h4 id="github-page">(1) 建立github page</h4>
+<p>进入octopress目录，执行如下命令：<br />
+<code>$ rake setup_github_pages</code><br />
+在Repository url输入刚刚创建的仓库地址：<br />
+git@github.com:[username]/[username].github.com.git，自行替换username<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/setup-github-page.png" alt="setup-github-page" /><br />
+从打印信息可得到以下信息：<br />
+1. 已经将默认的remote(即Github上的仓库名)设置为origin<br />
+2. 将master分支重命名为source，即将源码分支命名成了source，用来提交博客源文件<br />
+3. 新建了_deploy目录，并在该目录下初始化了一个空的Git仓库，且添加了index.html</p>
+
+<h4 id="octopress">(2) 安装Octopress默认主题</h4>
+<p><code>$ rake install</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-install.png" alt="rake-install" /></p>
+
+<h4 id="section">(3) 生成静态页面</h4>
+<p><code>$ rake generate</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-generate.png" alt="rake-generate" /></p>
+
+<h4 id="section-1">(4) 本地预览</h4>
+<p><code>$ rake preview</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-preview.png" alt="rake-preview" /><br />
+本地预览地址：<a href="http://localhost:4000/">http://localhost:4000/</a>这时候打开本地预览地址，可以看到如下页面，使用 Ctrl+C停止预览。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/localhost.png" alt="localhost" /></p>
+
+<h4 id="github-1">(5) 发布博客到Github</h4>
+<p><code>$ rake deploy</code><br />
+这步会帮我们把master分支提交到Github，但是平时我们编辑的则是source分支，source分支则不会提交，需要我们手动提交。这里采用的是SSH方式推送的，如果出错，可能是没有创建SSH密钥，请按照附录方法设置。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rake-deploy.png" alt="rake-deploy" /><br />
+这时候打开<a href="http://zhangrui1209.github.io">http://zhangrui1209.github.io</a>，可以看到如下页面（如果是404页面，那等一等，第一次deploy可能需要10分钟左右才能看到）：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/404.png" alt="404" /><br />
+正确显示效果<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/github-io.png" alt="github-io" /></p>
+
+<h4 id="source">(6) 提交源文件，即source分支</h4>
+<p><code>$ git add .</code><br />
+<code>$ git commit -m “commit message”</code><br />
+<code>$ git push origin source</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/push-source.png" alt="push-source" /></p>
+
+<h4 id="githubssh">附录-给github设置SSH</h4>
+
+<h6 id="a-ssh">A. 创建SSH密钥（通常在用户主目录下进行）</h6>
+<p><code>$ ssh-keygen -t rsa -C "YourEmail@example.com"</code><br />
+确认目录和密码短语，可以直接使用默认，回车就行。</p>
+
+<h5 id="b-github">B. 添加公有密钥到github</h5>
+<p>在刚才确认的目录下可以看到生成了.ssh目录，里面有两个文件id_rsa（私有密钥）和id_rsa.pub（公有密钥）。登录github→Account Settings→SSH keys→Add SSH key添加一个SSH key，标题任意，把id_rsa.pub的内容拷入即可。</p>
+
+<h5 id="c-">C. 在本地确认设置</h5>
+<p><code>$ ssh -T git@github.com</code></p>
+
+<p>…</p>
+
+<p>Hi xxx! You’ve successfully authenticated…</p>
+
+<p>有上面的提示就OK了，如果设置了密码短语，需要输入密码短语。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[1.环境搭建]]></title>
+    <link href="http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian.html"/>
+    <updated>2016-01-19T21:26:36+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/1-dot-huan-jing-da-jian</id>
+    <content type="html"><![CDATA[<ul id="markdown-toc">
+  <li><a href="#windows" id="markdown-toc-windows">Windows环境</a>    <ul>
+      <li><a href="#git" id="markdown-toc-git">1、安装并配置Git</a></li>
+      <li><a href="#ruby" id="markdown-toc-ruby">2、安装并配置Ruby</a></li>
+      <li><a href="#devkit" id="markdown-toc-devkit">3、安装DevKit</a></li>
+      <li><a href="#utf-8windowsdos" id="markdown-toc-utf-8windowsdos">4、为支持UTF-8编码，配置Windows环境变量如下(在DOS执行)：</a></li>
+      <li><a href="#octopress" id="markdown-toc-octopress">5、克隆Octopress库</a></li>
+      <li><a href="#octopress-1" id="markdown-toc-octopress-1">6、安装Octopress依赖项</a></li>
+      <li><a href="#jqueryminjsrequest-url" id="markdown-toc-jqueryminjsrequest-url">7、更改jquery.min.js的Request URL</a></li>
+    </ul>
+  </li>
+  <li><a href="#mac" id="markdown-toc-mac">Mac环境：</a></li>
+</ul>
+
+<h2 id="windows">Windows环境</h2>
+
+<h3 id="git">1、安装并配置Git</h3>
+
+<p>下载地址：<a href="http://git-scm.com/">http://git-scm.com/</a><br />
+安装好git后<br />
+##### (1)配置环境变量，将git路径配置到系统环境变量Path中<br />
+##### (2)配置user.name和user.email(在DOS执行)<br />
+<code>&gt; git config --global user.name "rayco"</code><br />
+<code>&gt; git config --global user.email "rayco.zhang@gmail.com"</code></p>
+
+<h3 id="ruby">2、安装并配置Ruby</h3>
+
+<p>下载地址：<a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a><br />
+将ruby安装到一个没有空格，没有中文的路径下（避免后面在执行bundle install时报错）。安装时勾选Add Ruby executables to your PATH，将ruby加入系统环境路径。<br />
+<!--more-->
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/rubyinstall.png" alt="rubyinstall" /><br />
+安装完成后在cmd执行：<br />
+<code>&gt; ruby -v</code><br />
+确认是否添加成功。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/ruby-v.png" alt="ruby-v" /></p>
+
+<p>替换更新源（gem是基于ruby的一些开发工具包）<br />
+~~<code>&gt; gem sources -a https://ruby.taobao.org/</code>~~(淘宝的镜像不再维护了，换成腾讯的镜像:<code>&gt; gem sources -a https://gems.ruby-china.org/</code>，如果报错，将https换为http)<br />
+<code>&gt; gem sources -r https://rubygems.org/</code><br />
+<code>&gt; gem sources -l</code><br />
+因为若不翻墙，ruby网站上不去，所以需要更换ruby的更新源，第一个是添加，第二个是删除，第三个是显示，如果显示输出~~<a href="https://ruby.taobao.org/">https://ruby.taobao.org/</a>~~(<a href="https://gems.ruby-china.org/">https://gems.ruby-china.org/</a>)，就对了。<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/gem-sources.png" alt="ruby-v" /></p>
+
+<h3 id="devkit">3、安装DevKit</h3>
+
+<p>下载地址：<a href="http://rubyinstaller.org/downloads/">http://rubyinstaller.org/downloads/</a><br />
+下载完后解压到D:\DevKit，打开cmd，执行如下命令：<br />
+<code>&gt; d:</code><br />
+<code>&gt; cd d:DevKit</code><br />
+<code>&gt; ruby dk.rb init</code><br />
+<code>&gt; ruby dk.rb install</code><br />
+如果执行ruby dk.rb install时出现Invalid configuration or no Rubies listed. Please fix ‘config.yml’ and rerun ‘ruby dk.rb install’<br />
+则打开DevKit目录下的config.yml文件，将ruby安装目录的绝对路径添加进去，然后重新执行ruby dk.rb install<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/devkit.png" alt="devkit" /><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/configyml.png" alt="configyml" /></p>
+
+<h3 id="utf-8windowsdos">4、为支持UTF-8编码，配置Windows环境变量如下(在DOS执行)：</h3>
+
+<p><code>&gt; set LANG=zh_CN.UTF-8</code><br />
+<code>&gt; set LC_ALL=zh_CN.UTF-8</code><br />
+或者<br />
+<code>&gt; set LANG=en_US.UTF-8</code><br />
+<code>&gt; set LC_ALL=en_US.UTF-8</code></p>
+
+<h3 id="octopress">5、克隆Octopress库</h3>
+
+<p>进入你要存放博客源码的目录，比如直接在D盘根目录。<br />
+在D盘根目录右键选择Git Bash Here，打开git的命令行，然后执行：<br />
+<code>$ git clone git://github.com/imathis/octopress.git</code><br />
+将Octopress源码克隆到本地<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/clone-octopress.png" alt="clone-octopress" /><br />
+进入octopress文件夹，用文本工具打开Gemfile文件，将<code>source "https://rubygems.org"</code>替换为~~<code>source "https://ruby.taobao.org"</code>~~(<code>source "http://gems.ruby-china.org"</code>)</p>
+
+<h3 id="octopress-1">6、安装Octopress依赖项</h3>
+
+<p>进入octopress目录，运行如下命令：<br />
+<code>$ gem install bundler</code><br />
+<code>$ bundle install</code><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/octopress/bundlepng.png" alt="bundle" /><br />
+如果出现错误，请尝试更换ruby版本</p>
+
+<h3 id="jqueryminjsrequest-url">7、更改jquery.min.js的Request URL</h3>
+
+<p>在国内环境下加载页面速度很慢，用google浏览器检查发现，jquery.min.js和widgets.js的请求失败。是由于jquery.min.js和widgets.js默认的Request URL如下：<br />
+<code>http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js</code><br />
+<code>http://platform.twitter.com/widgets.js</code><br />
+由于被墙，在国内环境下打开博客时，加载速度很慢。所以将jquery.min.js的Request URL改为国内可用的(主要修改jquery.min.js，widgets.js可先不管)。打开octopress/source/_includes目录下的head.html文件，将<br />
+<code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code><br />
+替换为<br />
+<code>&lt;script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code></p>
+
+<h2 id="mac">Mac环境：</h2>
+
+<p>Mac环境下默认已经安装了Git和Ruby，可以不用另外安装，除非版本不匹配，需要别的版本，安装即可。只是注意也要修改Ruby的更新源：<br />
+~~<code>&gt; gem sources -a https://ruby.taobao.org/</code>~~(淘宝的镜像不再维护了，换成腾讯的镜像:<code>&gt; gem sources -a https://gems.ruby-china.org/</code>，如果报错，将https换为http)<br />
+<code>&gt; gem sources -r https://rubygems.org/</code><br />
+<code>&gt; gem sources -l</code><br />
+剩下的步骤都同Windows一样。同样注意先将octopress目录下Gemfile文件中的<code>source "https://rubygems.org"</code>替换为~~<code>source "https://ruby.taobao.org"</code>~~(<code>source "http://gems.ruby-china.org"</code>)</p>
+
+<p>octopress/source/_includes目录下的head.html文件中的<br />
+<code>&lt;script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code><br />
+替换为<br />
+<code>&lt;script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"&gt;&lt;/script&gt;</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[转]一个苹果证书怎么多次使用--导出p12文件]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ios-certificates-p12.html"/>
+    <updated>2014-11-09T14:33:09+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ios-certificates-p12</id>
+    <content type="html"><![CDATA[<h3 id="p12">为什么要导出.p12文件</h3>
+
+<p>当我们用大于三个mac设备开发应用时，想要申请新的证书，如果在我们的证书里，包含了3个发布证书，2个开发证书，可以发现再也申请不了开发证书和发布证书了（一般在我们的证书界面中应该只有一个开发证书，一个发布证书，没必要生成那么多的证书，证书一般在过期之后才会重新添加。）<br />
+如图：</p>
+
+<!--more-->
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate1.png" alt="certificate1" /><br />
+这时候，再点击“+”时，就会发现点击不了开发和发布证书，也就是添加不了开发证书和发布证书了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/certificate2.png" alt="certificate2" /></p>
+
+<h3 id="section">有两个解决不能添加证书的办法。</h3>
+
+<h4 id="revoke">第一种方法——“revoke”（不推荐）：</h4>
+<p>将以前的证书“revoke”掉，如图：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/revoke.png" alt="revoke" /><br />
+然后重新生成一个新的证书。<br />
+这种方法是可以的，但是会造成相应的Provisioning Profiles失效，这个可大可小。如果只有你一个人则问题不大，如果是一个团队大家都在用，你把这个证书删除了，会导致别人的描述文件失效，这意味着别人不能发布应用了（还可以开发），这可是大问题，<strong><em>所以不提倡这种做法</em></strong>。</p>
+
+<h4 id="p12-1">第二种方法——“.p12”（推荐）：</h4>
+<p>我们的每一个证书都可以生成一个.p12文件，这个文件是一个加密的文件，只要知道其密码，就可以供给所有的mac设备使用，使设备不需要在苹果开发者网站重新申请开发和发布证书，就能使用。<br />
+<strong><em>注意：一般.p12文件是给与别人使用的，本机必须已经有一个带秘钥的证书才可以生成.p12文件，如图：</em></strong><br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-1.png" alt="p12-1" /><br />
+打开钥匙串，选择我们需要的证书，右击，选择“导出“iPhone Distribition:```”：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-2.png" alt="p12-2" /><br />
+为.p12文件填一个名字，点击存储：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-3.png" alt="p12-3" /><br />
+填一个“密码”，“验证”和密码相同：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-4.png" alt="" /><br />
+点击好，在桌面上就形成了一个.p12文件了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-5.png" alt="" /></p>
+
+<h4 id="section-1">在别人的电脑上要成功安装，须具备两个文件：</h4>
+<p>1) 该证书导出的“.p12”文件。<br />
+2) 苹果开发者中的与“证书”对应的“描述文件”</p>
+
+<h4 id="section-2">如果需要用于开发的，那么需要这两个文件：</h4>
+<p>.p12文件本身就是一个加密的证书，所以用这两个文件就可以让其他mac设备使用了：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/Apple%20Developer/p12-6.png" alt="p12-6" /><br />
+拿到这两个文件后，依次双击“证书”，“.p12“文件（需要输入密码，密码就是当时生成.p12时设定的密码，），作用是加入钥匙串中，使我们的电脑具备开发的证明，”描述文件“（作用是置于xcode中，让xcode知道我们开发的合法性），添加完后就可以使用了。</p>
+
+<p>原文：<a href="http://my.oschina.net/u/1245365/blog/196363">http://my.oschina.net/u/1245365/blog/196363</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Git管理空目录]]></title>
+    <link href="http://zhangrui1209.github.io/blog/git-manage-empty-dir.html"/>
+    <updated>2014-07-10T15:32:35+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/git-manage-empty-dir</id>
+    <content type="html"><![CDATA[<p>Git 和 SVN 不同，仅仅跟踪文件的变动，不跟踪目录。Perforce 也是如此。</p>
+
+<p>所以，一个空目录，如果里面没有文件，即便 git add 这个目录，另外在别处 check out 的时候，是没有这个空目录的。</p>
+
+<p>只跟踪文件变化，不跟踪目录，这么设计是有原因的。但这会带来一些小麻烦。有时候，确实需要在代码仓库中保留某个空目录。比如测试时需要用到的空目录。</p>
+
+<!--more-->
+
+<p>变通的解决办法是在空目录下存一个 .gitignore 文件。然后 git add 此目录后，相当于跟踪了 .gitignore 文件，产生的“副作用”就是这个“空”目录也纳入“跟踪”，最终的效果是可以 check out 出一个看起来空空的目录。如果有许多这样的空目录，可以用下面的命令自动补充 .gitignore 文件：</p>
+
+<p><code>$ find . −typed−empty -and −not−regex./\.git.∗ -exec touch {}/.gitignore \;</code></p>
+
+<p>该命令的作用是递归找寻当前目录下，类型为目录，且为空，也没有 .git 开头的文件，在其中用 touch 新建一个空的 .gitignore 文件。</p>
+
+<p>然后 git add . 之后即可。</p>
+
+<p>如果这些特殊文件会对测试带来干扰，那就只好在测试程序运行具体测试项目之前，先跑一段初始化目录结构的代码。另外可能还需要编写负责清理的代码。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-samba-config.html"/>
+    <updated>2014-05-19T14:52:39+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-samba-config</id>
+    <content type="html"><![CDATA[<h3 id="samba">1、先要安装Samba</h3>
+
+<p><code>$ sudo apt-get install samba openssh-server</code></p>
+
+<h3 id="samba-1">2、编译Samba配置文件</h3>
+
+<p><code>$ sudo vi /etc/samba/smb.conf</code></p>
+
+<!--more-->
+
+<p>找到[homes]项，此项默认是注释掉的，取消其注释，然后修改其具体内容，修改成如下：</p>
+
+<pre><code>[homes]
+comment = Home Directories
+browseable = yes
+# By default, the home directories are exported read-only. Change the
+# next parameter to 'no' if you want to be able to write to them.
+read only = no
+# File creation mask is set to 0700 for security reasons. If you want to
+# create files with group=rw permissions, set next parameter to 0775.
+create mask = 0755 #建议将权限修改成0755，这样其它用户只是不能修改
+# Directory creation mask is set to 0700 for security reasons. If you want to
+# create dirs. with group=rw permissions, set next parameter to 0775.
+directory mask = 0755
+# By default, \\server\username shares can be connected to by anyone
+# with access to the samba server. Un-comment the following parameter
+# to make sure that only "username" can connect to \\server\username
+# The following parameter makes sure that only "username" can connect
+#
+# This might need tweaking when using external authentication schemes
+valid users = %S #本行需要取消注释 
+</code></pre>
+
+<p>如上修改完成后wq保存退出！</p>
+
+<h3 id="samba-2">3、重启samba服务：</h3>
+
+<p><code>$ sudo service restart smbd</code><br />
+<code>$ sudo service restart nmbd</code></p>
+
+<h3 id="samba-3">4、增加一个现有用户的对应samba帐号：</h3>
+
+<p>如果已经有一个用户叫reddy，现在给reddy开通samba帐号：<br />
+<code>$ sudo smbpasswd -a reddy</code></p>
+
+<p>根据提示输入两次密码即可。</p>
+
+<h3 id="windowsamba">5、测试，在Window下输入samba地址尝试登录：</h3>
+<p><code>\\10.0.0.2\reddy</code></p>
+
+<h3 id="windows">6、windows会弹出窗口要求输入用户名和密码，输入即可</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[转]Linux的启动流程]]></title>
+    <link href="http://zhangrui1209.github.io/blog/linux-boot-flow.html"/>
+    <updated>2014-05-07T16:32:59+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/linux-boot-flow</id>
+    <content type="html"><![CDATA[<p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+<!--more-->
+
+<p>这个部分比较有意思。因为在BIOS阶段，计算机的行为基本上被写死了，程序员可以做的事情并不多；但是，一旦进入操作系统，程序员几乎可以定制所有方面。所以，这个部分与程序员的关系更密切。</p>
+
+<p>我主要关心的是Linux操作系统，它是目前服务器端的主流操作系统。下面的内容针对的是Debian发行版，因为我对其他发行版不够熟悉。</p>
+
+<h3 id="section">第一步、加载内核</h3>
+
+<p>操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow2.png" alt="bootflow2" /></p>
+
+<p>以我的电脑为例，/boot 目录下面大概是这样一些文件：</p>
+
+<pre><code>$ ls /boot
+
+config-3.2.0-3-amd64
+config-3.2.0-4-amd64
+grub
+initrd.img-3.2.0-3-amd64
+initrd.img-3.2.0-4-amd64
+System.map-3.2.0-3-amd64
+System.map-3.2.0-4-amd64
+vmlinuz-3.2.0-3-amd64
+vmlinuz-3.2.0-4-amd64
+</code></pre>
+
+<h3 id="section-1">第二步、启动初始化进程</h3>
+
+<p>内核文件加载以后，就开始运行第一个程序 /sbin/init，它的作用是初始化系统环境。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow3.png" alt="bootflow3" /></p>
+
+<p>由于init是第一个运行的程序，它的进程编号（pid）就是1。其他所有进程都从它衍生，都是它的子进程。</p>
+
+<h3 id="section-2">第三步、确定运行级别</h3>
+
+<p>许多程序需要开机启动。它们在Windows叫做”服务”（service），在Linux就叫做”守护进程”（daemon）。</p>
+
+<p>init进程的一大任务，就是去运行这些开机启动的程序。但是，不同的场合需要启动不同的程序，比如用作服务器时，需要启动Apache，用作桌面就不需要。Linux允许为不同的场合，分配不同的开机启动程序，这就叫做”运行级别”（runlevel）。也就是说，启动时根据”运行级别”，确定要运行哪些程序。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow4.png" alt="bootflow4" /></p>
+
+<p>Linux预置七种运行级别（0-6）。一般来说，0是关机，1是单用户模式（也就是维护模式），6是重启。运行级别2-5，各个发行版不太一样，对于Debian来说，都是同样的多用户模式（也就是正常模式）。</p>
+
+<p>init进程首先读取文件 /etc/inittab，它是运行级别的设置文件。如果你打开它，可以看到第一行是这样的：</p>
+
+<pre><code>id:2:initdefault:
+</code></pre>
+
+<p>initdefault的值是2，表明系统启动时的运行级别为2。如果需要指定其他级别，可以手动修改这个值。</p>
+
+<p>那么，运行级别2有些什么程序呢，系统怎么知道每个级别应该加载哪些程序呢？……回答是每个运行级别在/etc目录下面，都有一个对应的子目录，指定要加载的程序。</p>
+
+<pre><code>/etc/rc0.d
+/etc/rc1.d
+/etc/rc2.d
+/etc/rc3.d
+/etc/rc4.d
+/etc/rc5.d
+/etc/rc6.d
+</code></pre>
+
+<p>上面目录名中的”rc”，表示run command（运行程序），最后的d表示directory（目录）。下面让我们看看 /etc/rc2.d 目录中到底指定了哪些程序。</p>
+
+<pre><code>$ ls  /etc/rc2.d
+
+README
+S01motd
+S13rpcbind
+S14nfs-common
+S16binfmt-support
+S16rsyslog
+S16sudo
+S17apache2
+S18acpid
+...
+</code></pre>
+
+<p>可以看到，除了第一个文件README以外，其他文件名都是”字母S+两位数字+程序名”的形式。字母S表示Start，也就是启动的意思（启动脚本的运行参数为start），如果这个位置是字母K，就代表Kill（关闭），即如果从其他运行级别切换过来，需要关闭的程序（启动脚本的运行参数为stop）。后面的两位数字表示处理顺序，数字越小越早处理，所以第一个启动的程序是motd，然后是rpcbing、nfs……数字相同时，则按照程序名的字母顺序启动，所以rsyslog会先于sudo启动。</p>
+
+<p>这个目录里的所有文件（除了README），就是启动时要加载的程序。如果想增加或删除某些程序，不建议手动修改 /etc/rcN.d 目录，最好是用一些专门命令进行管理（参考这里和这里）。</p>
+
+<h3 id="section-3">第四步、加载开机启动程序</h3>
+
+<p>前面提到，七种预设的”运行级别”各自有一个目录，存放需要开机启动的程序。不难想到，如果多个”运行级别”需要启动同一个程序，那么这个程序的启动脚本，就会在每一个目录里都有一个拷贝。这样会造成管理上的困扰：如果要修改启动脚本，岂不是每个目录都要改一遍？</p>
+
+<p>Linux的解决办法，就是七个 /etc/rcN.d 目录里列出的程序，都设为链接文件，指向另外一个目录 /etc/init.d ，真正的启动脚本都统一放在这个目录中。init进程逐一加载开机启动程序，其实就是运行这个目录里的启动脚本。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow5.png" alt="bootflow5" /></p>
+
+<p>下面就是链接文件真正的指向。</p>
+
+<pre><code>$ ls -l /etc/rc2.d
+
+README
+S01motd -&gt; ../init.d/motd
+S13rpcbind -&gt; ../init.d/rpcbind
+S14nfs-common -&gt; ../init.d/nfs-common
+S16binfmt-support -&gt; ../init.d/binfmt-support
+S16rsyslog -&gt; ../init.d/rsyslog
+S16sudo -&gt; ../init.d/sudo
+S17apache2 -&gt; ../init.d/apache2
+S18acpid -&gt; ../init.d/acpid
+...
+</code></pre>
+
+<p>这样做的另一个好处，就是如果你要手动关闭或重启某个进程，直接到目录 /etc/init.d 中寻找启动脚本即可。比如，我要重启Apache服务器，就运行下面的命令：</p>
+
+<pre><code>$ sudo /etc/init.d/apache2 restart
+</code></pre>
+
+<p>/etc/init.d 这个目录名最后一个字母d，是directory的意思，表示这是一个目录，用来与程序 /etc/init 区分。</p>
+
+<h3 id="section-4">第五步、用户登录</h3>
+
+<p>开机启动程序加载完毕以后，就要让用户登录了。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow6.png" alt="bootflow6" /></p>
+
+<p>一般来说，用户的登录方式有三种：</p>
+
+<pre><code>（1）命令行登录
+（2）ssh登录
+（3）图形界面登录
+</code></pre>
+
+<p>这三种情况，都有自己的方式对用户进行认证。<br />
+（1）命令行登录：init进程调用getty程序（意为get teletype），让用户输入用户名和密码。输入完成后，再调用login程序，核对密码（Debian还会再多运行一个身份核对程序/etc/pam.d/login）。如果密码正确，就从文件 /etc/passwd 读取该用户指定的shell，然后启动这个shell。<br />
+（2）ssh登录：这时系统调用sshd程序（Debian还会再运行/etc/pam.d/ssh ），取代getty和login，然后启动shell。<br />
+（3）图形界面登录：init进程调用显示管理器，Gnome图形界面对应的显示管理器为gdm（GNOME Display Manager），然后用户输入用户名和密码。如果密码正确，就读取/etc/gdm3/Xsession，启动用户的会话。</p>
+
+<h3 id="login-shell">第六步、进入 login shell</h3>
+
+<p>所谓shell，简单说就是命令行界面，让用户可以直接与操作系统对话。用户登录时打开的shell，就叫做login shell。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow7.png" alt="bootflow7" /></p>
+
+<p>Debian默认的shell是Bash，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。<br />
+（1）命令行登录：首先读入 /etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。</p>
+
+<pre><code>~/.bash_profile
+~/.bash_login
+~/.profile 需要注意的是，这三个文件只要有一个存在，就不再读入后面的文件了。比如，要是 ~/.bash_profile 存在，就不会再读入后面两个文件了。   （2）ssh登录：与第一种情况完全相同。   （3）图形界面登录：只加载 /etc/profile 和 ~/.profile。也就是说，~/.bash_profile 不管有没有，都不会运行。  
+</code></pre>
+
+<h3 id="non-login-shell">第七步，打开 non-login shell</h3>
+
+<p>老实说，上一步完成以后，Linux的启动过程就算结束了，用户已经可以看到命令行提示符或者图形界面了。但是，为了内容的完整，必须再介绍一下这一步。</p>
+
+<p>用户进入操作系统以后，常常会再手动开启一个shell。这个shell就叫做 non-login shell，意思是它不同于登录时出现的那个shell，不读取/etc/profile和.profile等配置文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow8.png" alt="bootflow8" /></p>
+
+<p>non-login shell的重要性，不仅在于它是用户最常接触的那个shell，还在于它会读入用户自己的bash配置文件 ~/.bashrc。大多数时候，我们对于bash的定制，都是写在这个文件里面的。</p>
+
+<p>你也许会问，要是不进入 non-login shell，岂不是.bashrc就不会运行了，因此bash 也就不能完成定制了？事实上，Debian已经考虑到这个问题了，请打开文件 ~/.profile，可以看到下面的代码：</p>
+
+<pre><code>if [ -n "$BASH_VERSION" ]; then
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi 上面代码先判断变量 $BASH_VERSION 是否有值，然后判断主目录下是否存在 .bashrc 文件，如果存在就运行该文件。第三行开头的那个点，是source命令的简写形式，表示运行某个文件，写成"source ~/.bashrc"也是可以的。  
+</code></pre>
+
+<p>因此，只要运行～/.profile文件，～/.bashrc文件就会连带运行。但是上一节的第一种情况提到过，如果存在～/.bash_profile文件，那么有可能不会运行～/.profile文件。解决这个问题很简单，把下面代码写入.bash_profile就行了。</p>
+
+<pre><code>if [ -f ~/.profile ]; then
+	. ~/.profile
+fi
+</code></pre>
+
+<p>这样一来，不管是哪种情况，.bashrc都会执行，用户的设置可以放心地都写入这个文件了。</p>
+
+<p>Bash的设置之所以如此繁琐，是由于历史原因造成的。早期的时候，计算机运行速度很慢，载入配置文件需要很长时间，Bash的作者只好把配置文件分成了几个部分，阶段性载入。系统的通用设置放在 /etc/profile，用户个人的、需要被所有子进程继承的设置放在.profile，不需要被继承的设置放在.bashrc。</p>
+
+<p>顺便提一下，除了Linux以外， Mac OS X 使用的shell也是Bash。但是，它只加载.bash_profile，然后在.bash_profile里面调用.bashrc。而且，不管是ssh登录，还是在图形界面里启动shell窗口，都是如此。</p>
+
+<p>参考链接</p>
+
+<pre><code>[1] Debian Wiki, Environment Variables
+[2] Debian Wiki, Dot Files
+[3] Debian Administration, An introduction to run-levels
+[4] Debian Admin，Debian and Ubuntu Linux Run Levels
+[5] Linux Information Project (LINFO), Runlevel Definition
+[6] LinuxQuestions.org, What are run levels?
+[7] Dalton Hubble, Bash Configurations Demystified
+</code></pre>
+
+<p>(完)</p>
+
+<p>原文：<a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html">http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux大文件分割(split)与合并(cat)使用方法]]></title>
+    <link href="http://zhangrui1209.github.io/blog/linux-split-cat.html"/>
+    <updated>2014-04-19T13:52:39+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/linux-split-cat</id>
+    <content type="html"><![CDATA[<p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
+  
+- 或者-l,指定每多少行切割一次，用于文本文件分割
+  
+-b 指定切割文件大小,单位KB，K，MB，M，G等
+  
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
+
+<!--more-->
+
+<h4 id="section">示例1</h4>
+<p>将a.tar.gz包按每个5M大小切割</p>
+
+<pre><code>$ split -b 5m a.tar.gz a.tar.gz.  
+</code></pre>
+
+<p>后面输出的文件名<code>a.tar.gz. </code>不指定的话会以xaa，xab，xac形式输出。文件名后面不加<code>". "</code>，输出文件名会和后缀连在一起而不直观</p>
+
+<h4 id="section-1">示例2</h4>
+<p>使用<code>|</code>管道将打包分割动作合并</p>
+
+<pre><code>$ tar -zcf - a | split -b 5m - a.tar.gz.
+</code></pre>
+
+<p>注意管道前后两个没带参数的<code>“-”</code>是不能省略的，它作为tar的ouput和split的input的参数</p>
+
+<h2 id="cat">cat</h2>
+
+<pre><code>语法：cat [-AbeEnstTuv] [--help] [--version] fileName
+  
+-n 或 –number 由 1 开始对所有输出的行数编号
+  
+-b 或 –number-nonblank 和 -n 相似，只不过对于空白行不编号
+  
+-s 或 –squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+  
+-v 或 –show-nonprinting
+</code></pre>
+
+<h4 id="cat-1">cat常用功能</h4>
+
+<pre><code>#一次显示整个文件
+cat   filename
+  
+#创建一个文件，只能创建新文件,不能编辑已有文件
+cat  &gt;  filename
+  
+#将几个文件合并为一个文件。
+cat   file1   file2  &gt; file
+</code></pre>
+
+<p>所以上面的示例中将分割文件合并，可以使用：</p>
+
+<pre><code>#合并
+cat a.tar.gz.* &gt; a.tar.gz
+  
+#合并并解压
+cat a.tar.gz.*  | tar -zxv
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[修改ubuntu的命令提示符]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-prompt-sign.html"/>
+    <updated>2014-04-12T17:40:38+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-prompt-sign</id>
+    <content type="html"><![CDATA[<p>首先了解一个变量：<br />
+<strong>PS(Prompt Sign)</strong>：是指命令提示符，例如ubuntu 12.04终端下的：<br />
+<code>zhangrui@thinkPad-Edge-E430c:~$</code></p>
+
+<p>修改ubuntu的命令提示符主要是通过修改变量PS1和PS2的值<br />
+PS1是主要的提示符设置，在ubuntu一般为：</p>
+
+<!--more-->
+
+<pre><code>${debian_chroot:+($debian_chroot)}\u@\h:\w\$   
+</code></pre>
+
+<p>PS2是次要提示符，一般为</p>
+
+<pre><code>“&gt;”  
+</code></pre>
+
+<p>在设定PS1环境变量时，我们需要用到预设的一些特殊变量，分类如下：</p>
+
+<h4 id="section">主要信息：</h4>
+<p><strong>\u</strong>：当前登录用户名<br />
+<strong>\h</strong>：当前计算机名称（比如上面的thinkPad-Edge-E430c）<br />
+<strong>\H</strong>：完整的主机名称<br />
+<strong>\w</strong>：完整的工作目录名称。home目录会以 ~ 取代<br />
+<strong>\W</strong>：利用 basename 取得工作目录名称，所以仅会列出最后一个目录名<br />
+<strong>\$</strong>：提示字符，如果是root用户，提示字符为#，否则就是$</p>
+
+<h4 id="section-1">时间显示：</h4>
+<p><strong>\t</strong>：显示时间（24小时制，如：HH:MM:SS）<br />
+<strong>\T</strong>：显示时间（12小时制）<br />
+<strong>\@</strong>：显示时间（AM/PM显示）<br />
+<strong>\d</strong>：显示日期，格式为 Weekday Month Date，例如 “Mon Aug 1”</p>
+
+<h4 id="shell">Shell信息：</h4>
+<p><strong>\#</strong>：下达的第几个指令<br />
+<strong>\v</strong>：Bash的版本信息<br />
+<strong>\V</strong>：Bash的发布版本号<br />
+<strong>\S</strong>：Shell名称<br />
+<strong>\!</strong>：Bash命令的历史编号<br />
+<strong>\j</strong>：job序号<br />
+<strong>\l</strong>：Shell的终端名称</p>
+
+<h4 id="section-2">控制符：</h4>
+<p>\\：\<br />
+<strong>\n</strong>：换行<br />
+<strong>\r</strong><br />
+<strong>\]</strong>：]<br />
+<strong>\e</strong>：Esc<br />
+<strong>\[</strong>：[</p>
+
+<h4 id="section-3">举例：</h4>
+<p>打开～/.bashrc文件，作如下修改：</p>
+
+<pre><code># uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+# force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+	if [ -x /usr/bin/tput ] &amp;&amp; tput setaf 1 &gt;&amp;/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+	else
+	color_prompt=
+	fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+	PS1='\n\e[33m\u:&gt;&gt; \w\n\e[32m\h\e[36m\t\e[31m\$\e[0m '
+else  
+	PS1='\n\u:&gt;&gt; \w\n\h \t \$ '  
+fi  
+unset color_prompt force_color_prompt
+</code></pre>
+
+<p>保存之后，重新打开终端，效果如下：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/terminal1.png" alt="terminal1" /></p>
+
+<p>如果将<code># force_color_prompt=yes</code>注释打开<code>force_color_prompt=yes</code><br />
+保存之后，重新打开终端，效果如下：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/terminal2.png" alt="terminal2" /></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu之dos2unix和unix2dos]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-dos-unix.html"/>
+    <updated>2014-03-10T16:50:38+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-dos-unix</id>
+    <content type="html"><![CDATA[<p>Ubuntu下默认没有安装dos2unix工具，而且也没有一个叫这个名字的工具。但是有一个替代工具——tofrodos, 下面说一下它的安装和使用。用apt安装。</p>
+
+<h4 id="tofrodos">(1) 安装tofrodos</h4>
+<p><code>$ sudo apt-get install tofrodos</code><br />
+实际上它安装了两个工具：todos（相当于unix2dos）和fromdos（相当于dos2unix）<br />
+安装完即可，现在已经可以进行文本格式的转换了。</p>
+
+<!--more-->
+
+<p>比如：<br />
+<code>$ todos Hello.txt</code><br />
+(即unix2dos Hello.txt)</p>
+
+<p><code>$ fromdos Hello.txt</code><br />
+(即dos2unix Hello.txt)</p>
+
+<h4 id="section">(2) 做一些优化</h4>
+<p>由于习惯了unix2dos和dos2unix的命令，可以把上面安装的两个工具链接成unix2dos 和dos2unix，或者仅仅是起个别名，并放在启动脚本里。<br />
+步骤：<br />
+<code>$ ln -s /usr/bin/todos /usr/bin/unix2dos</code><br />
+<code>$ ln -s /usr/bin/fromdos /usr/bin/dos2unix</code></p>
+
+<p>或者在 ~/.bashrc里起个别名<br />
+<code>$ vi ~/.bashrc</code><br />
+添加 alias unix2dos=todos alias dos2unix=fromdos</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu12.04中的部分快捷键]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-part-shortcut.html"/>
+    <updated>2014-03-06T10:26:40+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-part-shortcut</id>
+    <content type="html"><![CDATA[<h5 id="shiftctrlt">Shift+Ctrl+T:新建标签页</h5>
+
+<h5 id="shiftctrlw">Shift+Ctrl+W:关闭标签页</h5>
+
+<h5 id="ctrlpageup">Ctrl+PageUp:前一标签页</h5>
+
+<h5 id="ctrlpagedown">Ctrl+PageDown:后一标签页</h5>
+
+<!--more-->
+
+<h5 id="shiftctrlpageup">Shift+Ctrl+PageUp:标签页左移</h5>
+
+<h5 id="shiftctrlpagedown">Shift+Ctrl+PageDown:标签页右移</h5>
+
+<h5 id="alt11">Alt+1:切换到标签页1</h5>
+
+<h5 id="alt22">Alt+2:切换到标签页2</h5>
+
+<h5 id="alt33">Alt+3:切换到标签页3</h5>
+
+<h5 id="shiftctrln">Shift+Ctrl+N:新建窗口</h5>
+
+<h5 id="shiftctrlq">Shift+Ctrl+Q:关闭终端</h5>
+
+<h3 id="section">终端中的复制／粘贴:</h3>
+
+<h5 id="shiftctrlc">Shift+Ctrl+C:复制</h5>
+
+<h5 id="shiftctrlv">Shift+Ctrl+V:粘贴</h5>
+
+<h3 id="section-1">终端改变大小：</h3>
+
+<h5 id="f11">F11：全屏</h5>
+
+<h5 id="ctrlplus">Ctrl+plus:放大</h5>
+
+<h5 id="ctrlminus">Ctrl+minus:减小</h5>
+
+<h5 id="ctrl0">Ctrl+0:原始大小</h5>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux下VirtualBox状态栏隐藏和恢复]]></title>
+    <link href="http://zhangrui1209.github.io/blog/hide-virtualbox-statusbar.html"/>
+    <updated>2014-03-04T15:23:30+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/hide-virtualbox-statusbar</id>
+    <content type="html"><![CDATA[<h3 id="section">隐藏：</h3>
+
+<p><code>$ VBoxManage setextradata global GUI/Customizations noStatusBar</code></p>
+
+<h3 id="section-1">恢复：</h3>
+<p><code>$ VBoxManage setextradata global GUI/Customizations StatusBar</code></p>
+
+<!--more-->
+]]></content>
+  </entry>
+  
+</feed>
