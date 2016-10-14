@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[分类：Android开发 | Rayco Zhang]]></title>
+  <link href="http://zhangrui1209.github.io/blog/categories/androidkai-fa/atom.xml" rel="self"/>
+  <link href="http://zhangrui1209.github.io/"/>
+  <updated>2016-10-14T11:18:02+08:00</updated>
+  <id>http://zhangrui1209.github.io/</id>
+  <author>
+    <name><![CDATA[Rayco]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[[转]RxJava资料]]></title>
+    <link href="http://zhangrui1209.github.io/blog/rxjava-zi-liao.html"/>
+    <updated>2015-10-09T20:50:08+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/rxjava-zi-liao</id>
+    <content type="html"><![CDATA[<p><a href="https://github.com/lzyzsd/Awesome-RxJava">原文链接</a></p>
+
+<h2 id="section">网站</h2>
+<ul>
+  <li><a href="http://reactivex.io/">ReactiveX</a>，ReactiveX官方网站</li>
+  <li><a href="https://github.com/ReactiveX/RxJava">RxJava</a>，RxJava项目GitHub地址</li>
+  <li><a href="http://rxmarbles.com/">RxMarbles</a>，直观有趣的宝石图，让你对这种编程思想理解得更加透彻</li>
+</ul>
+
+<h2 id="blog">Blog</h2>
+
+<h3 id="section-1">一些入门级的文章</h3>
+
+<ul>
+  <li>
+    <p><a href="http://gank.io/post/560e15be2dca930e00da1083">给 Android 开发者的 RxJava 详解</a> -<strong>强烈推荐</strong>，扔物线的文章，讲解非常详细。<a href="https://github.com/androidmalin/RengwuxianRxjava">例子源码</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=323">NotRxJava懒人专用指南</a> -这篇入门极力推荐，手把手，深入浅出教你实现一个简易的RxJava库，更好的理解RxJava的实现思路</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/41833541">深入浅出RxJava ( 一：基础篇 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/44094895">深入浅出RxJava ( 二：操作符 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/44891933">深入浅出RxJava ( 三–响应式的好处 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/45033611">深入浅出RxJava ( 四-在Android中使用响应式编程 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/49248235">如何升级到RxAndroid1.0</a> -适合使用Rx 0.x版本的用户升级的时候参考</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/theone10211024/article/details/50435325">可能是东半球最全的RxJava使用场景小结</a></p>
+  </li>
+</ul>
+
+<h3 id="section-2">开发者前线翻译的一系列很赞的教程</h3>
+
+<ul>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=174">那些年我们错过的响应式编程</a> -非常棒的讲解响应式编程的文章。</p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=764">使用RxJava从多个数据源中加载数据</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=114">使用RxJava.Observable取代AsyncTask和AsyncTaskLoader</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=565">当复仇者联盟遇上Dragger2、RxJava和Retrofit的巧妙结合</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=734">结合RxJava使用SQLite</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=770">比钢铁侠反应更灵敏-RxJava</a></p>
+  </li>
+</ul>
+
+<h3 id="section-3">一些不错的介绍操作符的文章</h3>
+
+<ul>
+  <li>
+    <p><a href="http://blog.csdn.net/job_hesc/article/details/46242117">行云流水的博客</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.chinaunix.net/uid/20771867.html">Android RxJava使用介绍（二） RxJava的操作符</a></p>
+  </li>
+  <li>
+    <p><a href="http://mushuichuan.com/tags/RxJava/">木水川的博客</a></p>
+  </li>
+  <li>
+    <p><a href="http://rxmarbles.com/">RxMarbles</a>-Interactive diagrams of Rx Observables</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/job_hesc/article/details/46242117">Android RxJava使用介绍（二） RxJava的操作符</a></p>
+  </li>
+</ul>
+
+<h3 id="section-4">一些不错的翻译文章</h3>
+
+<ul>
+  <li>
+    <p><a href="http://www.jianshu.com/p/c83996149f5b">【译】Deferring Observable code until subscription in RxJava</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/6d16805537ef">【译】RxJava Observable tranformation: concatMap() vs flatMap()</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/be084df924dc">【译】Loading data from multiple sources with RxJava</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/e9e03194199e">【译】Don’t break the chain: use RxJava’s compose() operator</a></p>
+  </li>
+</ul>
+
+<h3 id="section-5">一些原理分析的文章</h3>
+<ul>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=896">彻底搞懂 RxJava — 基础篇</a></p>
+  </li>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=910">彻底搞懂 RxJava — 中级篇</a></p>
+  </li>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=912">彻底搞懂 RxJava — 高级篇</a></p>
+  </li>
+</ul>
+
+<h2 id="section-6">书籍</h2>
+<ul>
+  <li><a href="http://rxjava.yuxingxin.com/">【译】RxJava Essentials 中文翻译版</a> -Ivan.Morgillo所写一书的中文翻译版本</li>
+</ul>
+
+<h2 id="test">Test</h2>
+<ul>
+  <li>
+    <p><a href="http://fedepaol.github.io/blog/2015/09/13/testing-rxjava-observables-subscriptions/">Unit Testing RxJava Observables and Subscriptions</a></p>
+  </li>
+  <li>
+    <p><a href="https://medium.com/ribot-labs/unit-testing-rxjava-6e9540d4a329">Unit Testing RxJava Observables</a></p>
+  </li>
+</ul>
+
+<h2 id="app">App</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/dlew/android-gfycat">android-gfycat</a> -Android application that loads gifs via gfycat for efficiency’s sake</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/JakeWharton/u2020">JakeWharton/u2020</a> -Jake大神的项目，里面有RxJava和Retrofit一起使用的例子</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/saulmm/Avengers">Avengers</a> - 一个使用Retrofit+RxJava+MVP的app</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/maoruibin/TranslateApp">TranslateApp</a> - 一个使用 MVP+Dagger2+RxJava+Retrofit的实现手机端『划词翻译』功能的App - 咕咚翻译</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/maoruibin/AppPlus">AppPlus</a> - 一个可以用于传送Apk文件，提取APK文件等的工具软件。</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tehmou/rx-android-architecture">rx-android-architecture</a> -Android中使用Rx的一种架构</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/ribot/android-boilerplate">android-boilerplate</a> -使用RxJava+Retrofit+MVP的app，并了结合详细的测试用例</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/jiang111/RxJavaApp">RxJavaApp</a> -用于学习RxJava操作符的APP</p>
+  </li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/jhusain/learnrxjava">learnrxjava</a> -RxJava例子</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/Froussios/Intro-To-RxJava">Intro-To-RxJava</a> -RxJava实例入门</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/esoxjem/MovieGuide">MovieGuide</a>-An Android app that showcases the MVP pattern and RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/SmartDengg/RxWeather">RxWeather</a>
+-Architecting Android with RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/SmartDengg/RxBlur">RxBlur</a>-用RxJava处理和操作高斯模糊效果的简单用例。</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/kaushikgopal/RxJava-Android-Samples">RxJava-Android-Samples</a>-Learning RxJava for Android by example</p>
+  </li>
+</ul>
+
+<h2 id="library">Library</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/f2prateek/rx-preferences">rx-preferences</a> -使SharedPreferences支持RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a> -RxJava的Android拓展</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/trello/RxLifecycle">RxLifecycle</a> -帮助使用了RxJava的安卓应用控制生命周期</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/JakeWharton/RxBinding">RxBinding</a> -安卓UI控件的RxJava绑定API</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/pushtorefresh/storio">storio</a> -支持RxJava的数据库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/square/retrofit">retrofit</a> -支持RxJava的网络请求库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/square/sqlbrite">sqlbrite</a> -支持RxJava的sqlite数据库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tbruyelle/RxPermissions">RxPermissions</a> -RxJava实现的Android运行时权限控制</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/reark/reark">reark</a> -RxJava architecture library for Android</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/android10/frodo">frodo</a> -Android Library for Logging RxJava Observables and Subscribers.</p>
+  </li>
+</ul>
+
+<h2 id="stackoverflow">Stackoverflow</h2>
+
+<ul>
+  <li><a href="http://stackoverflow.com/questions/21890338/when-should-one-use-rxjava-observable-and-when-simple-callback-on-android">When should one use RxJava Observable and when simple Callback on Android?</a></li>
+</ul>
+
+<h2 id="video">Video</h2>
+
+<ul>
+  <li>
+    <p><a href="https://www.youtube.com/watch?v=JCLZ55M2gVo&amp;list=PLAY9OtteiTj04IdJDW7KV1cy843reyjvT">droidconDE 2015: Ivan Morgillo – Android reactive programming with Rxjava</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.youtube.com/watch?v=QdmkXL7XikQ&amp;feature=youtu.be">Common RxJava Mistakes</a></p>
+  </li>
+</ul>
+]]></content>
+  </entry>
+  
+</feed>

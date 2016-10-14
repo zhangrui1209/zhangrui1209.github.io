@@ -1,0 +1,296 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Git管理空目录 - Rayco Zhang</title>
+  <meta name="author" content="Rayco">
+
+  
+  <meta name="description" content="Git 和 SVN 不同，仅仅跟踪文件的变动，不跟踪目录。Perforce 也是如此。 所以，一个空目录，如果里面没有文件，即便 git add 这个目录，另外在别处 check out 的时候，是没有这个空目录的。 只跟踪文件变化，不跟踪目录，这么设计是有原因的。但这会带来一些小麻烦。有时候， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/git-manage-empty-dir.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+</script> 
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Rayco Zhang</a></h1>
+  
+    <h2>Better master one than engage with ten.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Git管理空目录</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-07-10T15:32:35+08:00'><span class='date'>2014 年7 月10 日</span> <span class='time'>3:32 pm</span></time>
+        
+        
+            | <a href="#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Git 和 SVN 不同，仅仅跟踪文件的变动，不跟踪目录。Perforce 也是如此。</p>
+
+<p>所以，一个空目录，如果里面没有文件，即便 git add 这个目录，另外在别处 check out 的时候，是没有这个空目录的。</p>
+
+<p>只跟踪文件变化，不跟踪目录，这么设计是有原因的。但这会带来一些小麻烦。有时候，确实需要在代码仓库中保留某个空目录。比如测试时需要用到的空目录。</p>
+
+<!--more-->
+
+<p>变通的解决办法是在空目录下存一个 .gitignore 文件。然后 git add 此目录后，相当于跟踪了 .gitignore 文件，产生的“副作用”就是这个“空”目录也纳入“跟踪”，最终的效果是可以 check out 出一个看起来空空的目录。如果有许多这样的空目录，可以用下面的命令自动补充 .gitignore 文件：</p>
+
+<p><code>$ find . −typed−empty -and −not−regex./\.git.∗ -exec touch {}/.gitignore \;</code></p>
+
+<p>该命令的作用是递归找寻当前目录下，类型为目录，且为空，也没有 .git 开头的文件，在其中用 touch 新建一个空的 .gitignore 文件。</p>
+
+<p>然后 git add . 之后即可。</p>
+
+<p>如果这些特殊文件会对测试带来干扰，那就只好在测试程序运行具体测试项目之前，先跑一段初始化目录结构的代码。另外可能还需要编写负责清理的代码。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-07-10T15:32:35+08:00'><span class='date'>2014 年7 月10 日</span> <span class='time'>3:32 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/git/'>Git</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ubuntu-samba-config.html" title="Previous Post: Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录">&laquo; Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ios-certificates-p12.html" title="Next Post: [转]一个苹果证书怎么多次使用--导出p12文件">[转]一个苹果证书怎么多次使用--导出p12文件 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="/blog/git-manage-empty-dir" data-title="Git管理空目录" data-url="http://zhangrui1209.github.io/blog/git-manage-empty-dir.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/5-dot-chang-jian-wen-ti.html">5.常见问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/4-chang-yong-ming-ling.html">4.常用命令</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/androidkai-fa/'>Android开发 (1)</a></li>
+<li class='category'><a href='/blog/categories/apple/'>Apple (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>Git (1)</a></li>
+<li class='category'><a href='/blog/categories/linuxshi-yong/'>Linux使用 (7)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (5)</a></li>
+<li class='category'><a href='/blog/categories/ioskai-fa/'>iOS开发 (2)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        /*github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });*/
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
+
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Rayco -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>. Background image by <a href="http://www.flickr.com/photos/89433098@N04/">Florian Kraft Fotografie</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<!--
+-->
+
+
+
+  <div id="full" style="width:0px; height:0px; position:fixed; right:90px; bottom:150px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+</body>
+</html>

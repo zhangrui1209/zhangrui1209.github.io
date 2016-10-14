@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[分类：iOS开发 | Rayco Zhang]]></title>
+  <link href="http://zhangrui1209.github.io/blog/categories/ioskai-fa/atom.xml" rel="self"/>
+  <link href="http://zhangrui1209.github.io/"/>
+  <updated>2016-10-14T11:18:02+08:00</updated>
+  <id>http://zhangrui1209.github.io/</id>
+  <author>
+    <name><![CDATA[Rayco]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[通过CocoaPods发布自己的开源库]]></title>
+    <link href="http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods.html"/>
+    <updated>2016-03-02T14:45:32+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/zhi-zuo-cocoapods</id>
+    <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="github">一、在Github上创建自己的开源库</h3>
+
+<h4 id="section">1、创建</h4>
+<p>首先在Github上创建一个空的版本库，比如创建一个名为<strong>MyCustomView</strong>的仓库。<br />
+<strong>注意：</strong>一定要给仓库添加<strong>license</strong>。正规的仓库都应该有一个license文件，况且Pods依赖库对这个文件的要求更严，所以必须要有。可以在新建的时候让github创建一个，也可以自己后续再创建。</p>
+
+<h4 id="section-1">2、添加</h4>
+<p>将Github上创建好的空仓库clone到本地，并向其中添加创建Pods依赖库所需的文件。<br />
+<strong>注意：</strong>以下描述的文件都要放在本地仓库的根目录下面。<br />
+<!--more--></p>
+
+<h5 id="podspec">(1)、后缀为.podspec的文件</h5>
+<p>这个文件是Pods依赖库的描述文件，每个Pods依赖库必须有且仅有一个该描述文件。文件名称要和我们创建的依赖库名称保持一致，所以MyCustomView库对应的文件名为MyCustomView.podspec。<br />
+创建命令：<br />
+<code>$ pod spec create MyCustomView</code><br />
+使用该命令创建的podspec文件，里面内容太多，很多不是我们需要的，可以精简一下，以下是一个例子：</p>
+
+<pre><code>Pod::Spec.new do |s|
+s.name             = "MyCustomView"
+s.version          = "1.0.0"
+s.summary          = "A custom view used on iOS."
+s.description      = &lt;&lt;-DESC
+                   It is a custom view used on iOS, which implement by Objective-C.  
+                                          DESC
+s.homepage         = "https://github.com/username/MyCustomView"  
+# s.screenshots      = "www.example.com/screenshots_1", "www.example.com/screenshots_2"  
+s.license          = 'MIT'  
+s.author           = { "username" =&gt; "username@gmail.com" }  
+s.source           = { :git =&gt; "https://github.com/username/MyCustomView.git", :tag =&gt; s.version.to_s }  
+# s.social_media_url = 'https://twitter.com/NAME'  
+
+s.platform     = :ios, '4.3'  
+# s.ios.deployment_target = '5.0'  
+# s.osx.deployment_target = '10.7'  
+s.requires_arc = true  
+
+s.source_files = 'MyCustomView/*'  
+# s.resources = 'Assets'  
+
+# s.ios.exclude_files = 'Classes/osx'  
+# s.osx.exclude_files = 'Classes/ios'  
+# s.public_header_files = 'Classes/**/*.h'  
+s.frameworks = 'Foundation', 'CoreGraphics', 'UIKit'  
+
+end
+</code></pre>
+
+<p>注意几个参数：<br />
+<strong><em>s.license</em></strong><br />
+Pods依赖库使用的license类型<br />
+<strong><em>s.source_files</em></strong><br />
+源文件的路径(这个路径是相对podspec文件而言的)<br />
+<strong><em>s.frameworks</em></strong><br />
+需要用到的frameworks，不需要加.frameworks后缀</p>
+
+<h5 id="license">(2)、LICENSE文件</h5>
+<p>CocoaPods强制要求所有的Pods依赖库都必须有license文件，否则验证不会通过。license的类型有很多，可以参考网站<a href="https://tldrlegal.com/">TLDRLegal</a>。</p>
+
+<h5 id="section-2">(3)、库的源文件</h5>
+<p>创建一个与库名字相同的子目录，用来存放源码。</p>
+
+<h5 id="demo">(4)、demo工程</h5>
+<p>创建一个demo工程，帮助别人能快速使用我们的开源库。</p>
+
+<h5 id="readmemd">(5)、README.md</h5>
+<p>该文件用以对仓库进行详细说明。</p>
+
+<p>以上5个是创建Pods依赖库所需最基础的文件，其中1、2、3是必需的，4、5是可选但强烈推荐创建的。</p>
+
+<h4 id="section-3">3、提交</h4>
+<p>上一步骤中在本地仓库中添加了不少文件，现在需要将它们提交到Github仓库中去。分两步：</p>
+
+<h5 id="pod">(1)pod验证</h5>
+<p>执行以下命令，为pod添加版本号并打上tag： <br />
+<code>$ set the new version to 1.0.0</code><br />
+<code>$ set the new tag to 1.0.0</code></p>
+
+<p>然后执行pod验证命令：<br />
+<code>$ pod lib lint</code></p>
+
+<p>如果一切正常，该命令执行完后会出现：</p>
+
+<pre><code>-&gt; MyCustomView (1.0.0)  
+
+MyCustomView passed validation.
+</code></pre>
+
+<p><strong>注意：</strong>在执行pod验证命令的时候，如果打印出任何warning或者error信息，验证都会失败！根据提示修改即可。</p>
+
+<h5 id="section-4">(2)提交</h5>
+<p>依次执行以下命令：<br />
+<code>$ git add -A &amp;&amp; git commit -m "Release 1.0.0."</code><br />
+<code>$ git tag '1.0.0'</code><br />
+<code>$ git push --tags</code><br />
+<code>$ git push origin master</code></p>
+
+<h3 id="podspeccocoapods">二、将库的podspec文件上传到CocoaPods官方仓库中</h3>
+<p>要想一个Pods依赖库真正可用，还需要将我们刚才生成的podspec文件上传到<a href="https://github.com/CocoaPods/Specs">CocoaPods官方的Specs仓库</a>中。</p>
+
+<p>我们能使用的，以及我们使用pod search命令能搜索到的所有Pods依赖库都会把它们的podspec文件上传到这个仓库中，也就是说，只有将我们的podspec文件上传到这个仓库中以后，才能成为一个真正的Pods依赖库，别人才能搜索到并使用。</p>
+
+<p>由于要修改别人的仓库，所以先fork一份该仓库，待修改完成之后再创建一个<strong>pull request</strong>提交给原仓库。</p>
+
+<p>podspec文件在Specs仓库中的保存原则是：<br />
+<strong>Pods依赖库同名文件夹—&gt;版本号同名文件夹—&gt;podspec文件</strong></p>
+
+<p>所以按照上面的例子，需要在Specs目录下创建一个名为MyCustomView的子目录，然后在MyCustomView目录下创建一个名为1.0.0的子目录，最后将之前创建好的MyCustomView.podspec文件拷贝到1.0.0目录。</p>
+
+<p>不难理解，如果以后需要对MyCustomView升级，就在MyCustomView文件夹下建立对应版本名称的文件夹，用于保存对应版本的podspec文件即可。</p>
+
+<p>最后，如果CocoaPods官方审核通过了我们提交的pull request之后，想要通过<code>pod search</code>命令搜索到我们的Pods依赖库，需要先执行<code>pod setup</code>命令将所有的Pods依赖库tree更新到本地。然后再去执行<code>pod search MyCustomView</code>就能显示出对应的介绍信息了。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[通过CocoaPods管理项目中用到的开源库]]></title>
+    <link href="http://zhangrui1209.github.io/blog/shi-yong-cocoapods.html"/>
+    <updated>2016-03-01T14:04:45+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/shi-yong-cocoapods</id>
+    <content type="html"><![CDATA[<p>CocoaPods官方网站：<a href="https://cocoapods.org/">https://cocoapods.org/</a></p>
+
+<h3 id="cocoapods">一、安装CocoaPods</h3>
+<p>使用 ruby 的 gem 命令下载安装：<br />
+<code>$ sudo gem install cocoapods</code><br />
+<code>$ pod setup</code></p>
+
+<p>安装过程可能出现的问题：<br />
+1) 执行install命令半天没反应<br />
+因为Ruby的软件源<a href="https://rubygems.org">https://rubygems.org</a>使用的是亚马逊的云服务，被墙了，需要更新一下Ruby的源，使用如下代码将官方的Ruby源替换成国内淘宝的源：<!--more--><br />
+<code>$ gem sources --remove https://rubygems.org/</code><br />
+<code>$ gem sources -a https://ruby.taobao.org/</code><br />
+<code>$ gem sources -l</code></p>
+
+<p>2) gem版本过老<br />
+gem是管理Ruby库和程序的标准包，如果它的版本过低也可能导致安装失败，升级gem即可：<br />
+<code>$ sudo gem update --system</code></p>
+
+<h3 id="cocoapods-1">二、使用CocoaPods</h3>
+<p>使用CocoaPods时需要创建一个名为Podfile的文件，将项目要使用到的第三方库的的名字列在该文件中：</p>
+
+<pre><code>platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'	
+</code></pre>
+
+<p>然后将编辑好的Podfile文件放到项目根目录中，并执行<code>pod install</code>命令：<br />
+<code>$ cd "project root directory"</code><br />
+<code>$ pod install</code><br />
+执行完之后，所有需要的第三方库都已经下载完成并且设置好了编译参数和依赖，注意两点：<br />
+1) 使用CocoaPods生成的<strong>.xcworkspace</strong>文件来打开工程，而不是以前的<strong>.xcodeproj</strong>文件。<br />
+2) 每次更改了Podfile文件，要重新执行一次<code>pod update</code>命令。</p>
+
+<h3 id="podfilelock">三、Podfile.lock</h3>
+<p>执行完<code>pod install</code>之后，会生成一个Podfile.lock文件，该文件用于保存已经安装的Pods依赖库的版本。  Podfile.lock文件最大的用处在于多人开发。应该加入到版本控制里面，不应该把这个文件加入到.gitignore中。因为Podfile.lock会锁定当前各依赖库的版本，之后如果多次执行pod install 不会更改版本，要pod update才会更改Podfile.lock。这样多人协作的时候，可以防止第三方库升级时造成大家各自的第三方库版本不一致。</p>
+
+<h3 id="podfile">四、Podfile</h3>
+<p>我们打交道最多的就是Podfile文件。CocoaPods是用ruby实现的，所以Podfile文件的语法就是ruby语法</p>
+
+<h4 id="podfile-1">(1)Podfile文件存放位置</h4>
+<p>通常情况下，推荐将Podfile文件放在工程根目录。但其实Podfile文件可以放在任意一个目录下，要做的是在Podfile中用<strong>xcodeproj</strong>关键字指定工程的路径：</p>
+
+<pre><code>xcodeproj "/Users/rayco/Desktop/MyProject/MyProject.xcodeproj"
+
+platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+</code></pre>
+
+<p>此后，进入Podfile文件所在路径，执行<code>pod install</code>命令就会和之前一样下载这些Pods依赖库，而且生成的相关文件都放在了Podfile所在目录下面，同样，我们需要使用这里生成的<strong>.workspace</strong>文件打开工程</p>
+
+<h4 id="podfiletarget">(2)Podfile和target</h4>
+<p>Podfile本质上是用来描述Xcode工程中的targets用的。如果我们不显式指定Podfile对应的target，CocoaPods会创建一个名称为default的隐式target，会和我们工程中的第一个target相对应。<br />
+换句话说，如果在Podfile中没有指定target，那么只有工程里的第一个target能够使用Podfile中描述的Pods依赖库。<br />
+如果想在一个Podfile中同时描述project中的多个target，根据需求的不同，有不同的实现方式，如下：</p>
+
+<h5 id="targetpods"><strong><em>多个target中使用相同的Pods依赖库</em></strong></h5>
+
+<p>比如，名称为MyProject的target和YourProject的target都需要使用Reachability、MJRefresh、RESideMenu三个Pods依赖库，可以使用<strong>link_with</strong>关键字来实现，将Podfile写成如下方式：</p>
+
+<pre><code>link_with 'MyProject', 'YourProject'
+platform :ios
+pod 'Reachability',  '~&gt; 3.0.0'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+</code></pre>
+
+<p>这种写法就实现了MyProject和YourProject两个target共用相同的Pods依赖库。</p>
+
+<h5 id="targetpods-1"><strong><em>不同的target使用不同的Pods依赖库</em></strong></h5>
+<p>MyProject这个target使用的是Reachability、MJRefresh、RESideMenu三个依赖库，但YourProject这个target只需要使用MBProgressHUD这一个依赖库，这时可以使用<strong>target</strong>关键字，Podfile的描述方式如下：</p>
+
+<pre><code>target :'MyProject' do
+platform :ios
+pod 'Reachability'
+
+platform :ios, '7.0'
+pod 'MJRefresh'
+pod 'RESideMenu'
+end
+
+target :'YourProject' do
+pod 'MBProgressHUD'
+end
+</code></pre>
+
+<p>其中，<strong>do/end</strong>作为开始和结束标识符。</p>
+
+<h4 id="podfilepods">(3)使用Podfile管理Pods依赖库版本</h4>
+<p>引入依赖库时，需要显示或隐式注明引用的依赖库版本，具体写法和表示含义如下：</p>
+
+<pre><code>pod 'AFNetworking'             //不显式指定依赖库版本，表示每次都获取最新版本
+pod 'AFNetworking', '2.0'      //只使用2.0版本
+pod 'AFNetworking', '&gt; 2.0'    //使用高于2.0的版本
+pod 'AFNetworking', '&gt;= 2.0'   //使用大于或等于2.0的版本
+pod 'AFNetworking', '&lt; 2.0'    //使用小于2.0的版本
+pod 'AFNetworking', '&lt;= 2.0'   //使用小于或等于2.0的版本
+pod 'AFNetworking', '~&gt; 0.1.2' //使用大于等于0.1.2但小于0.2的版本
+pod 'AFNetworking', '~&gt;0.1'    //使用大于等于0.1但小于1.0的版本
+pod 'AFNetworking', '~&gt;0'      //高于0的版本，写这个限制和什么都不写是一个效果，都表示使用最新版本  
+</code></pre>
+
+<h3 id="cocoapods-2">五、CocoaPods常用命令</h3>
+
+<h4 id="pod-install">(1)pod install</h4>
+<p>根据Podfile文件指定的内容，安装依赖库，如果有Podfile.lock文件而且对应的Podfile文件未被修改，则会根据Podfile.lock文件指定的版本安装。<br />
+每次更新了Podfile文件时，都需要重新执行该命令，以便重新安装Pods依赖库。</p>
+
+<h4 id="pod-update">(2)pod update</h4>
+<p>如果Podfile中指定的依赖库版本不是写死的，当对应的依赖库有了更新，无论有没有Podfile.lock文件都会去获取Podfile文件描述的允许获取到的最新依赖库版本。</p>
+
+<h4 id="pod-search">(3)pod search</h4>
+<p>格式：<br />
+<code>$ pod search DTCoreText</code><br />
+该命令按名称搜索可用的Pods依赖库，执行结果如下：</p>
+
+<pre><code>-&gt; DTCoreText (1.6.17)
+   Methods to allow using HTML code with CoreText.
+   pod 'DTCoreText', '~&gt; 1.6.17'
+   - Homepage: https://github.com/Cocoanetics/DTCoreText
+   - Source:   https://github.com/Cocoanetics/DTCoreText.git
+   - Versions: 1.6.17, 1.6.16, 1.6.15, 1.6.14, 1.6.13, 1.6.12, 1.6.11, 1.6.10, 1.6.9, 1.6.8, 1.6.7, 1.6.6, 1.6.5, 1.6.4, 1.6.3, 1.6.2, 1.6.1, 1.6.0, 1.5.3, 1.5.2, 1.5.1, 1.5.0, 1.4.3, 1.4.2, 1.4.1, 1.4.0, 1.3.2, 1.3.1, 1.3.0, 1.2.1, 1.2.0, 1.1.0, 1.0.2, 1.0.1, 1.0.0
+   [master repo]
+</code></pre>
+
+<p>搜索结果描述了DTCoreText库的简要信息。我们需要的是第三行：</p>
+
+<pre><code>pod 'DTCoreText', '~&gt; 1.6.17'
+</code></pre>
+
+<p>这是需要添加到Podfile文件中的。</p>
+
+<h4 id="pod-setup">(4)pod setup</h4>
+<p>格式：<br />
+<code>$ pod setup</code><br />
+这条命令用于更新本地电脑上的保存的Pods依赖库tree。由于每天有很多人会创建或者更新Pods依赖库，这条命令执行的时候会很慢，要耐心等待。我们需要经常执行这条命令，否则有新的Pods依赖库的时候执行pod search命令搜不出来。</p>
+]]></content>
+  </entry>
+  
+</feed>
