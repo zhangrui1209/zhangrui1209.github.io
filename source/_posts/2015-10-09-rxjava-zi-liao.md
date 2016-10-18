@@ -17,7 +17,10 @@ categories: Android开发
 
 ### 一些入门级的文章  
 
-* [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083) -**强烈推荐**，扔物线的文章，讲解非常详细。[例子源码](https://github.com/androidmalin/RengwuxianRxjava)
+* [给 Android 开发者的 RxJava 详解](http://gank.io/post/560e15be2dca930e00da1083) -**强烈推荐**，扔物线的文章，讲解非常详细。[例子源码](https://github.com/androidmalin/RengwuxianRxjava)  
+
+<!--more-->  
+
 
 * [NotRxJava懒人专用指南](http://www.devtf.cn/?p=323) -这篇入门极力推荐，手把手，深入浅出教你实现一个简易的RxJava库，更好的理解RxJava的实现思路
 

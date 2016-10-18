@@ -21,7 +21,7 @@ categories: Octopress
 #### (5) 拉取master分支  进入_deploy目录，运行如下命令  
 `$ cd _deploy/`  `$ git pull origin master`  `$ ls –al`  
 
-发现东西都回来了。  #### (6) 切换回source分支  运行如下命令，切换至source分支
+发现东西都回来了。  #### (6) 切换回source分支  运行如下命令，切换至source分支  
 `$ cd ..`  `$ git checkout source`  
 至此，Octopress就在另一台电脑上克隆好了，你可以在不同的电脑上维护同一个博客。运行一下如下命令，确认没有问题。  
 `$ rake generate`  `$ rake preview`  `$ rake deploy`  ### 3、注意  
