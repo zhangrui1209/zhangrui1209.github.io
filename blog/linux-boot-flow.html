@@ -1,0 +1,477 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>[转]Linux的启动流程 - Rayco Zhang</title>
+  <meta name="author" content="Rayco">
+
+  
+  <meta name="description" content="半年前，我写了《计算机是如何启动的？》，探讨BIOS和主引导记录的作用。 那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。 这个部分比较有意思。因为在BIOS阶段，计算机的行为基本上被写死了， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/linux-boot-flow.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+</script> 
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Rayco Zhang</a></h1>
+  
+    <h2>Better master one than engage with ten.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">[转]Linux的启动流程</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2014-05-07T16:32:59+08:00'><span class='date'>2014 年5 月7 日</span> <span class='time'>4:32 pm</span></time>
+        
+        
+            | <a href="#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+<!--more-->
+
+<p>这个部分比较有意思。因为在BIOS阶段，计算机的行为基本上被写死了，程序员可以做的事情并不多；但是，一旦进入操作系统，程序员几乎可以定制所有方面。所以，这个部分与程序员的关系更密切。</p>
+
+<p>我主要关心的是Linux操作系统，它是目前服务器端的主流操作系统。下面的内容针对的是Debian发行版，因为我对其他发行版不够熟悉。</p>
+
+<h3 id="section">第一步、加载内核</h3>
+
+<p>操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow2.png" alt="bootflow2" /></p>
+
+<p>以我的电脑为例，/boot 目录下面大概是这样一些文件：</p>
+
+<pre><code>$ ls /boot
+
+config-3.2.0-3-amd64
+config-3.2.0-4-amd64
+grub
+initrd.img-3.2.0-3-amd64
+initrd.img-3.2.0-4-amd64
+System.map-3.2.0-3-amd64
+System.map-3.2.0-4-amd64
+vmlinuz-3.2.0-3-amd64
+vmlinuz-3.2.0-4-amd64
+</code></pre>
+
+<h3 id="section-1">第二步、启动初始化进程</h3>
+
+<p>内核文件加载以后，就开始运行第一个程序 /sbin/init，它的作用是初始化系统环境。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow3.png" alt="bootflow3" /></p>
+
+<p>由于init是第一个运行的程序，它的进程编号（pid）就是1。其他所有进程都从它衍生，都是它的子进程。</p>
+
+<h3 id="section-2">第三步、确定运行级别</h3>
+
+<p>许多程序需要开机启动。它们在Windows叫做”服务”（service），在Linux就叫做”守护进程”（daemon）。</p>
+
+<p>init进程的一大任务，就是去运行这些开机启动的程序。但是，不同的场合需要启动不同的程序，比如用作服务器时，需要启动Apache，用作桌面就不需要。Linux允许为不同的场合，分配不同的开机启动程序，这就叫做”运行级别”（runlevel）。也就是说，启动时根据”运行级别”，确定要运行哪些程序。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow4.png" alt="bootflow4" /></p>
+
+<p>Linux预置七种运行级别（0-6）。一般来说，0是关机，1是单用户模式（也就是维护模式），6是重启。运行级别2-5，各个发行版不太一样，对于Debian来说，都是同样的多用户模式（也就是正常模式）。</p>
+
+<p>init进程首先读取文件 /etc/inittab，它是运行级别的设置文件。如果你打开它，可以看到第一行是这样的：</p>
+
+<pre><code>id:2:initdefault:
+</code></pre>
+
+<p>initdefault的值是2，表明系统启动时的运行级别为2。如果需要指定其他级别，可以手动修改这个值。</p>
+
+<p>那么，运行级别2有些什么程序呢，系统怎么知道每个级别应该加载哪些程序呢？……回答是每个运行级别在/etc目录下面，都有一个对应的子目录，指定要加载的程序。</p>
+
+<pre><code>/etc/rc0.d
+/etc/rc1.d
+/etc/rc2.d
+/etc/rc3.d
+/etc/rc4.d
+/etc/rc5.d
+/etc/rc6.d
+</code></pre>
+
+<p>上面目录名中的”rc”，表示run command（运行程序），最后的d表示directory（目录）。下面让我们看看 /etc/rc2.d 目录中到底指定了哪些程序。</p>
+
+<pre><code>$ ls  /etc/rc2.d
+
+README
+S01motd
+S13rpcbind
+S14nfs-common
+S16binfmt-support
+S16rsyslog
+S16sudo
+S17apache2
+S18acpid
+...
+</code></pre>
+
+<p>可以看到，除了第一个文件README以外，其他文件名都是”字母S+两位数字+程序名”的形式。字母S表示Start，也就是启动的意思（启动脚本的运行参数为start），如果这个位置是字母K，就代表Kill（关闭），即如果从其他运行级别切换过来，需要关闭的程序（启动脚本的运行参数为stop）。后面的两位数字表示处理顺序，数字越小越早处理，所以第一个启动的程序是motd，然后是rpcbing、nfs……数字相同时，则按照程序名的字母顺序启动，所以rsyslog会先于sudo启动。</p>
+
+<p>这个目录里的所有文件（除了README），就是启动时要加载的程序。如果想增加或删除某些程序，不建议手动修改 /etc/rcN.d 目录，最好是用一些专门命令进行管理（参考这里和这里）。</p>
+
+<h3 id="section-3">第四步、加载开机启动程序</h3>
+
+<p>前面提到，七种预设的”运行级别”各自有一个目录，存放需要开机启动的程序。不难想到，如果多个”运行级别”需要启动同一个程序，那么这个程序的启动脚本，就会在每一个目录里都有一个拷贝。这样会造成管理上的困扰：如果要修改启动脚本，岂不是每个目录都要改一遍？</p>
+
+<p>Linux的解决办法，就是七个 /etc/rcN.d 目录里列出的程序，都设为链接文件，指向另外一个目录 /etc/init.d ，真正的启动脚本都统一放在这个目录中。init进程逐一加载开机启动程序，其实就是运行这个目录里的启动脚本。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow5.png" alt="bootflow5" /></p>
+
+<p>下面就是链接文件真正的指向。</p>
+
+<pre><code>$ ls -l /etc/rc2.d
+
+README
+S01motd -&gt; ../init.d/motd
+S13rpcbind -&gt; ../init.d/rpcbind
+S14nfs-common -&gt; ../init.d/nfs-common
+S16binfmt-support -&gt; ../init.d/binfmt-support
+S16rsyslog -&gt; ../init.d/rsyslog
+S16sudo -&gt; ../init.d/sudo
+S17apache2 -&gt; ../init.d/apache2
+S18acpid -&gt; ../init.d/acpid
+...
+</code></pre>
+
+<p>这样做的另一个好处，就是如果你要手动关闭或重启某个进程，直接到目录 /etc/init.d 中寻找启动脚本即可。比如，我要重启Apache服务器，就运行下面的命令：</p>
+
+<pre><code>$ sudo /etc/init.d/apache2 restart
+</code></pre>
+
+<p>/etc/init.d 这个目录名最后一个字母d，是directory的意思，表示这是一个目录，用来与程序 /etc/init 区分。</p>
+
+<h3 id="section-4">第五步、用户登录</h3>
+
+<p>开机启动程序加载完毕以后，就要让用户登录了。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow6.png" alt="bootflow6" /></p>
+
+<p>一般来说，用户的登录方式有三种：</p>
+
+<pre><code>（1）命令行登录
+（2）ssh登录
+（3）图形界面登录
+</code></pre>
+
+<p>这三种情况，都有自己的方式对用户进行认证。<br />
+（1）命令行登录：init进程调用getty程序（意为get teletype），让用户输入用户名和密码。输入完成后，再调用login程序，核对密码（Debian还会再多运行一个身份核对程序/etc/pam.d/login）。如果密码正确，就从文件 /etc/passwd 读取该用户指定的shell，然后启动这个shell。<br />
+（2）ssh登录：这时系统调用sshd程序（Debian还会再运行/etc/pam.d/ssh ），取代getty和login，然后启动shell。<br />
+（3）图形界面登录：init进程调用显示管理器，Gnome图形界面对应的显示管理器为gdm（GNOME Display Manager），然后用户输入用户名和密码。如果密码正确，就读取/etc/gdm3/Xsession，启动用户的会话。</p>
+
+<h3 id="login-shell">第六步、进入 login shell</h3>
+
+<p>所谓shell，简单说就是命令行界面，让用户可以直接与操作系统对话。用户登录时打开的shell，就叫做login shell。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow7.png" alt="bootflow7" /></p>
+
+<p>Debian默认的shell是Bash，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。<br />
+（1）命令行登录：首先读入 /etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。</p>
+
+<pre><code>~/.bash_profile
+~/.bash_login
+~/.profile 需要注意的是，这三个文件只要有一个存在，就不再读入后面的文件了。比如，要是 ~/.bash_profile 存在，就不会再读入后面两个文件了。   （2）ssh登录：与第一种情况完全相同。   （3）图形界面登录：只加载 /etc/profile 和 ~/.profile。也就是说，~/.bash_profile 不管有没有，都不会运行。  
+</code></pre>
+
+<h3 id="non-login-shell">第七步，打开 non-login shell</h3>
+
+<p>老实说，上一步完成以后，Linux的启动过程就算结束了，用户已经可以看到命令行提示符或者图形界面了。但是，为了内容的完整，必须再介绍一下这一步。</p>
+
+<p>用户进入操作系统以后，常常会再手动开启一个shell。这个shell就叫做 non-login shell，意思是它不同于登录时出现的那个shell，不读取/etc/profile和.profile等配置文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow8.png" alt="bootflow8" /></p>
+
+<p>non-login shell的重要性，不仅在于它是用户最常接触的那个shell，还在于它会读入用户自己的bash配置文件 ~/.bashrc。大多数时候，我们对于bash的定制，都是写在这个文件里面的。</p>
+
+<p>你也许会问，要是不进入 non-login shell，岂不是.bashrc就不会运行了，因此bash 也就不能完成定制了？事实上，Debian已经考虑到这个问题了，请打开文件 ~/.profile，可以看到下面的代码：</p>
+
+<pre><code>if [ -n "$BASH_VERSION" ]; then
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi 上面代码先判断变量 $BASH_VERSION 是否有值，然后判断主目录下是否存在 .bashrc 文件，如果存在就运行该文件。第三行开头的那个点，是source命令的简写形式，表示运行某个文件，写成"source ~/.bashrc"也是可以的。  
+</code></pre>
+
+<p>因此，只要运行～/.profile文件，～/.bashrc文件就会连带运行。但是上一节的第一种情况提到过，如果存在～/.bash_profile文件，那么有可能不会运行～/.profile文件。解决这个问题很简单，把下面代码写入.bash_profile就行了。</p>
+
+<pre><code>if [ -f ~/.profile ]; then
+	. ~/.profile
+fi
+</code></pre>
+
+<p>这样一来，不管是哪种情况，.bashrc都会执行，用户的设置可以放心地都写入这个文件了。</p>
+
+<p>Bash的设置之所以如此繁琐，是由于历史原因造成的。早期的时候，计算机运行速度很慢，载入配置文件需要很长时间，Bash的作者只好把配置文件分成了几个部分，阶段性载入。系统的通用设置放在 /etc/profile，用户个人的、需要被所有子进程继承的设置放在.profile，不需要被继承的设置放在.bashrc。</p>
+
+<p>顺便提一下，除了Linux以外， Mac OS X 使用的shell也是Bash。但是，它只加载.bash_profile，然后在.bash_profile里面调用.bashrc。而且，不管是ssh登录，还是在图形界面里启动shell窗口，都是如此。</p>
+
+<p>参考链接</p>
+
+<pre><code>[1] Debian Wiki, Environment Variables
+[2] Debian Wiki, Dot Files
+[3] Debian Administration, An introduction to run-levels
+[4] Debian Admin，Debian and Ubuntu Linux Run Levels
+[5] Linux Information Project (LINFO), Runlevel Definition
+[6] LinuxQuestions.org, What are run levels?
+[7] Dalton Hubble, Bash Configurations Demystified
+</code></pre>
+
+<p>(完)</p>
+
+<p>原文：<a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html">http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2014-05-07T16:32:59+08:00'><span class='date'>2014 年5 月7 日</span> <span class='time'>4:32 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/linuxshi-yong/'>Linux使用</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/linux-split-cat.html" title="Previous Post: Linux大文件分割(split)与合并(cat)使用方法">&laquo; Linux大文件分割(split)与合并(cat)使用方法</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/ubuntu-samba-config.html" title="Next Post: Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录">Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="/blog/linux-boot-flow" data-title="[转]Linux的启动流程" data-url="http://zhangrui1209.github.io/blog/linux-boot-flow.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/5-dot-chang-jian-wen-ti.html">5.常见问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/4-chang-yong-ming-ling.html">4.常用命令</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/androidkai-fa/'>Android开发 (1)</a></li>
+<li class='category'><a href='/blog/categories/apple/'>Apple (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>Git (1)</a></li>
+<li class='category'><a href='/blog/categories/linuxshi-yong/'>Linux使用 (7)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (5)</a></li>
+<li class='category'><a href='/blog/categories/ioskai-fa/'>iOS开发 (2)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        /*github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });*/
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
+
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Rayco -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>. Background image by <a href="http://www.flickr.com/photos/89433098@N04/">Florian Kraft Fotografie</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<!--
+-->
+
+
+
+  <div id="full" style="width:0px; height:0px; position:fixed; right:90px; bottom:150px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+</body>
+</html>

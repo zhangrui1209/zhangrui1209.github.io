@@ -1,0 +1,514 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>[转]RxJava资料 - Rayco Zhang</title>
+  <meta name="author" content="Rayco">
+
+  
+  <meta name="description" content="原文链接 网站 ReactiveX，ReactiveX官方网站 RxJava，RxJava项目GitHub地址 RxMarbles，直观有趣的宝石图，让你对这种编程思想理解得更加透彻 Blog 一些入门级的文章 给 Android 开发者的 RxJava 详解 -强烈推荐，扔物线的文章， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://zhangrui1209.github.io/blog/rxjava-zi-liao.html">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <link href="/atom.xml" rel="alternate" title="Rayco Zhang" type="application/atom+xml">
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+<!--<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">-->
+
+<script>
+    function addBlankTargetForLinks () {
+      $('a[href^="http"]').each(function(){
+          $(this).attr('target', '_blank');
+      });
+    }
+
+    $(document).bind('DOMNodeInserted', function(event) {
+      addBlankTargetForLinks();
+    });
+</script> 
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Rayco Zhang</a></h1>
+  
+    <h2>Better master one than engage with ten.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="订阅RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="zhangrui1209.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="搜索"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">首页</a></li>
+  <li><a href="/blog/archives">文章列表</a></li>
+  <li><a href="/series">系列文章</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">[转]RxJava资料</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T20:50:08+08:00'><span class='date'>2015 年10 月9 日</span> <span class='time'>8:50 pm</span></time>
+        
+        
+            | <a href="#comments">评论</a>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="https://github.com/lzyzsd/Awesome-RxJava">原文链接</a></p>
+
+<h2 id="section">网站</h2>
+<ul>
+  <li><a href="http://reactivex.io/">ReactiveX</a>，ReactiveX官方网站</li>
+  <li><a href="https://github.com/ReactiveX/RxJava">RxJava</a>，RxJava项目GitHub地址</li>
+  <li><a href="http://rxmarbles.com/">RxMarbles</a>，直观有趣的宝石图，让你对这种编程思想理解得更加透彻</li>
+</ul>
+
+<h2 id="blog">Blog</h2>
+
+<h3 id="section-1">一些入门级的文章</h3>
+
+<ul>
+  <li><a href="http://gank.io/post/560e15be2dca930e00da1083">给 Android 开发者的 RxJava 详解</a> -<strong>强烈推荐</strong>，扔物线的文章，讲解非常详细。<a href="https://github.com/androidmalin/RengwuxianRxjava">例子源码</a></li>
+</ul>
+
+<!--more-->
+
+<ul>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=323">NotRxJava懒人专用指南</a> -这篇入门极力推荐，手把手，深入浅出教你实现一个简易的RxJava库，更好的理解RxJava的实现思路</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/41833541">深入浅出RxJava ( 一：基础篇 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/44094895">深入浅出RxJava ( 二：操作符 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/44891933">深入浅出RxJava ( 三–响应式的好处 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/45033611">深入浅出RxJava ( 四-在Android中使用响应式编程 )</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/lzyzsd/article/details/49248235">如何升级到RxAndroid1.0</a> -适合使用Rx 0.x版本的用户升级的时候参考</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/theone10211024/article/details/50435325">可能是东半球最全的RxJava使用场景小结</a></p>
+  </li>
+</ul>
+
+<h3 id="section-2">开发者前线翻译的一系列很赞的教程</h3>
+
+<ul>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=174">那些年我们错过的响应式编程</a> -非常棒的讲解响应式编程的文章。</p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=764">使用RxJava从多个数据源中加载数据</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=114">使用RxJava.Observable取代AsyncTask和AsyncTaskLoader</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=565">当复仇者联盟遇上Dragger2、RxJava和Retrofit的巧妙结合</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=734">结合RxJava使用SQLite</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.devtf.cn/?p=770">比钢铁侠反应更灵敏-RxJava</a></p>
+  </li>
+</ul>
+
+<h3 id="section-3">一些不错的介绍操作符的文章</h3>
+
+<ul>
+  <li>
+    <p><a href="http://blog.csdn.net/job_hesc/article/details/46242117">行云流水的博客</a></p>
+  </li>
+  <li>
+    <p><a href="http://blog.chinaunix.net/uid/20771867.html">Android RxJava使用介绍（二） RxJava的操作符</a></p>
+  </li>
+  <li>
+    <p><a href="http://mushuichuan.com/tags/RxJava/">木水川的博客</a></p>
+  </li>
+  <li>
+    <p><a href="http://rxmarbles.com/">RxMarbles</a>-Interactive diagrams of Rx Observables</p>
+  </li>
+  <li>
+    <p><a href="http://blog.csdn.net/job_hesc/article/details/46242117">Android RxJava使用介绍（二） RxJava的操作符</a></p>
+  </li>
+</ul>
+
+<h3 id="section-4">一些不错的翻译文章</h3>
+
+<ul>
+  <li>
+    <p><a href="http://www.jianshu.com/p/c83996149f5b">【译】Deferring Observable code until subscription in RxJava</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/6d16805537ef">【译】RxJava Observable tranformation: concatMap() vs flatMap()</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/be084df924dc">【译】Loading data from multiple sources with RxJava</a></p>
+  </li>
+  <li>
+    <p><a href="http://www.jianshu.com/p/e9e03194199e">【译】Don’t break the chain: use RxJava’s compose() operator</a></p>
+  </li>
+</ul>
+
+<h3 id="section-5">一些原理分析的文章</h3>
+<ul>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=896">彻底搞懂 RxJava — 基础篇</a></p>
+  </li>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=910">彻底搞懂 RxJava — 中级篇</a></p>
+  </li>
+  <li>
+    <p><a href="http://diordna.sinaapp.com/?p=912">彻底搞懂 RxJava — 高级篇</a></p>
+  </li>
+</ul>
+
+<h2 id="section-6">书籍</h2>
+<ul>
+  <li><a href="http://rxjava.yuxingxin.com/">【译】RxJava Essentials 中文翻译版</a> -Ivan.Morgillo所写一书的中文翻译版本</li>
+</ul>
+
+<h2 id="test">Test</h2>
+<ul>
+  <li>
+    <p><a href="http://fedepaol.github.io/blog/2015/09/13/testing-rxjava-observables-subscriptions/">Unit Testing RxJava Observables and Subscriptions</a></p>
+  </li>
+  <li>
+    <p><a href="https://medium.com/ribot-labs/unit-testing-rxjava-6e9540d4a329">Unit Testing RxJava Observables</a></p>
+  </li>
+</ul>
+
+<h2 id="app">App</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/dlew/android-gfycat">android-gfycat</a> -Android application that loads gifs via gfycat for efficiency’s sake</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/JakeWharton/u2020">JakeWharton/u2020</a> -Jake大神的项目，里面有RxJava和Retrofit一起使用的例子</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/saulmm/Avengers">Avengers</a> - 一个使用Retrofit+RxJava+MVP的app</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/maoruibin/TranslateApp">TranslateApp</a> - 一个使用 MVP+Dagger2+RxJava+Retrofit的实现手机端『划词翻译』功能的App - 咕咚翻译</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/maoruibin/AppPlus">AppPlus</a> - 一个可以用于传送Apk文件，提取APK文件等的工具软件。</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tehmou/rx-android-architecture">rx-android-architecture</a> -Android中使用Rx的一种架构</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/ribot/android-boilerplate">android-boilerplate</a> -使用RxJava+Retrofit+MVP的app，并了结合详细的测试用例</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/jiang111/RxJavaApp">RxJavaApp</a> -用于学习RxJava操作符的APP</p>
+  </li>
+</ul>
+
+<h2 id="example">Example</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/jhusain/learnrxjava">learnrxjava</a> -RxJava例子</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/Froussios/Intro-To-RxJava">Intro-To-RxJava</a> -RxJava实例入门</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/esoxjem/MovieGuide">MovieGuide</a>-An Android app that showcases the MVP pattern and RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/SmartDengg/RxWeather">RxWeather</a>
+-Architecting Android with RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/SmartDengg/RxBlur">RxBlur</a>-用RxJava处理和操作高斯模糊效果的简单用例。</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/kaushikgopal/RxJava-Android-Samples">RxJava-Android-Samples</a>-Learning RxJava for Android by example</p>
+  </li>
+</ul>
+
+<h2 id="library">Library</h2>
+
+<ul>
+  <li>
+    <p><a href="https://github.com/f2prateek/rx-preferences">rx-preferences</a> -使SharedPreferences支持RxJava</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/ReactiveX/RxAndroid">RxAndroid</a> -RxJava的Android拓展</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/trello/RxLifecycle">RxLifecycle</a> -帮助使用了RxJava的安卓应用控制生命周期</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/JakeWharton/RxBinding">RxBinding</a> -安卓UI控件的RxJava绑定API</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/pushtorefresh/storio">storio</a> -支持RxJava的数据库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/square/retrofit">retrofit</a> -支持RxJava的网络请求库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/square/sqlbrite">sqlbrite</a> -支持RxJava的sqlite数据库</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/tbruyelle/RxPermissions">RxPermissions</a> -RxJava实现的Android运行时权限控制</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/reark/reark">reark</a> -RxJava architecture library for Android</p>
+  </li>
+  <li>
+    <p><a href="https://github.com/android10/frodo">frodo</a> -Android Library for Logging RxJava Observables and Subscribers.</p>
+  </li>
+</ul>
+
+<h2 id="stackoverflow">Stackoverflow</h2>
+
+<ul>
+  <li><a href="http://stackoverflow.com/questions/21890338/when-should-one-use-rxjava-observable-and-when-simple-callback-on-android">When should one use RxJava Observable and when simple Callback on Android?</a></li>
+</ul>
+
+<h2 id="video">Video</h2>
+
+<ul>
+  <li>
+    <p><a href="https://www.youtube.com/watch?v=JCLZ55M2gVo&amp;list=PLAY9OtteiTj04IdJDW7KV1cy843reyjvT">droidconDE 2015: Ivan Morgillo – Android reactive programming with Rxjava</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.youtube.com/watch?v=QdmkXL7XikQ&amp;feature=youtu.be">Common RxJava Mistakes</a></p>
+  </li>
+</ul>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Rayco</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-10-09T20:50:08+08:00'><span class='date'>2015 年10 月9 日</span> <span class='time'>8:50 pm</span></time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/androidkai-fa/'>Android开发</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/ios-certificates-p12.html" title="Previous Post: [转]一个苹果证书怎么多次使用--导出p12文件">&laquo; [转]一个苹果证书怎么多次使用--导出p12文件</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/1-dot-huan-jing-da-jian.html" title="Next Post: 1.环境搭建">1.环境搭建 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+  <section>
+    <h1>评论</h1>
+    <div id="comments" aria-live="polite"><!-- 多说评论框 start -->
+<div class="ds-thread" data-thread-key="/blog/rxjava-zi-liao" data-title="[转]RxJava资料" data-url="http://zhangrui1209.github.io/blog/rxjava-zi-liao.html"></div>
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"rayco"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- 多说公共JS代码 end -->
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>最新发布</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/5-dot-chang-jian-wen-ti.html">5.常见问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/zhi-zuo-cocoapods.html">通过CocoaPods发布自己的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/shi-yong-cocoapods.html">通过CocoaPods管理项目中用到的开源库</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/4-chang-yong-ming-ling.html">4.常用命令</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/3-bo-ke-ke-long.html">3.博客克隆</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>分类目录</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/androidkai-fa/'>Android开发 (1)</a></li>
+<li class='category'><a href='/blog/categories/apple/'>Apple (1)</a></li>
+<li class='category'><a href='/blog/categories/git/'>Git (1)</a></li>
+<li class='category'><a href='/blog/categories/linuxshi-yong/'>Linux使用 (7)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>Octopress (5)</a></li>
+<li class='category'><a href='/blog/categories/ioskai-fa/'>iOS开发 (2)</a></li>
+
+  </ul>
+</section>
+<section>
+  <h1>GitHub</h1>
+  <ul id="gh_repos">
+    <li class="loading">Status updating...</li>
+  </ul>
+  
+  <a href="https://github.com/zhangrui1209">@zhangrui1209</a> on GitHub
+  
+  <script type="text/javascript">
+    $.domReady(function(){
+        if (!window.jXHR){
+            var jxhr = document.createElement('script');
+            jxhr.type = 'text/javascript';
+            jxhr.src = '/javascripts/libs/jXHR.js';
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(jxhr, s);
+        }
+
+        /*github.showRepos({
+            user: 'zhangrui1209',
+            count: 0,
+            skip_forks: true,
+            target: '#gh_repos'
+        });*/
+    });
+  </script>
+  <script src="/javascripts/github.js" type="text/javascript"> </script>
+</section>
+
+<section>
+<h1>最近评论</h1>
+<ul class="ds-recent-comments" data-num-items="5" data-show-avatars="1" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="18"></ul>
+
+</section><section>
+  <h1>访客统计</h1>
+  <br/>
+	<a href="http://s11.flagcounter.com/more/WY"><img src="http://s11.flagcounter.com/count2/WY/bg_FFFFFF/txt_000000/border_CCCCCC/columns_2/maxflags_10/viewers_0/labels_0/pageviews_0/flags_0/percent_0/" alt="Flag Counter" border="0"></a>
+</section>
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2016 - Rayco -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a>. Design by <a href="http://octopressthemes.com">Octopress Themes</a>. Background image by <a href="http://www.flickr.com/photos/89433098@N04/">Florian Kraft Fotografie</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+<!--
+-->
+
+
+
+  <div id="full" style="width:0px; height:0px; position:fixed; right:90px; bottom:150px; z-index:100; text-align:center; background-color:transparent; cursor:pointer;">
+  <a href="#" onclick="goTop();return false;"><img src="/images/top.png" border=0 alt="返回顶部"></a>
+</div>
+<script src="/javascripts/top.js" type="text/javascript"></script>
+</body>
+</html>

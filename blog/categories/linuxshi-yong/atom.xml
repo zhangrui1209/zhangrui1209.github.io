@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[分类：Linux使用 | Rayco Zhang]]></title>
+  <link href="http://zhangrui1209.github.io/blog/categories/linuxshi-yong/atom.xml" rel="self"/>
+  <link href="http://zhangrui1209.github.io/"/>
+  <updated>2016-10-18T22:10:19+08:00</updated>
+  <id>http://zhangrui1209.github.io/</id>
+  <author>
+    <name><![CDATA[Rayco]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu下的Samba配置：使每个用户可以用自己的用户名和密码登录自己的home目录]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-samba-config.html"/>
+    <updated>2014-05-19T14:52:39+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-samba-config</id>
+    <content type="html"><![CDATA[<h3 id="samba">1、先要安装Samba</h3>
+
+<p><code>$ sudo apt-get install samba openssh-server</code></p>
+
+<h3 id="samba-1">2、编译Samba配置文件</h3>
+
+<p><code>$ sudo vi /etc/samba/smb.conf</code></p>
+
+<!--more-->
+
+<p>找到[homes]项，此项默认是注释掉的，取消其注释，然后修改其具体内容，修改成如下：</p>
+
+<pre><code>[homes]
+comment = Home Directories
+browseable = yes
+# By default, the home directories are exported read-only. Change the
+# next parameter to 'no' if you want to be able to write to them.
+read only = no
+# File creation mask is set to 0700 for security reasons. If you want to
+# create files with group=rw permissions, set next parameter to 0775.
+create mask = 0755 #建议将权限修改成0755，这样其它用户只是不能修改
+# Directory creation mask is set to 0700 for security reasons. If you want to
+# create dirs. with group=rw permissions, set next parameter to 0775.
+directory mask = 0755
+# By default, \\server\username shares can be connected to by anyone
+# with access to the samba server. Un-comment the following parameter
+# to make sure that only "username" can connect to \\server\username
+# The following parameter makes sure that only "username" can connect
+#
+# This might need tweaking when using external authentication schemes
+valid users = %S #本行需要取消注释 
+</code></pre>
+
+<p>如上修改完成后wq保存退出！</p>
+
+<h3 id="samba-2">3、重启samba服务：</h3>
+
+<p><code>$ sudo service restart smbd</code><br />
+<code>$ sudo service restart nmbd</code></p>
+
+<h3 id="samba-3">4、增加一个现有用户的对应samba帐号：</h3>
+
+<p>如果已经有一个用户叫reddy，现在给reddy开通samba帐号：<br />
+<code>$ sudo smbpasswd -a reddy</code></p>
+
+<p>根据提示输入两次密码即可。</p>
+
+<h3 id="windowsamba">5、测试，在Window下输入samba地址尝试登录：</h3>
+<p><code>\\10.0.0.2\reddy</code></p>
+
+<h3 id="windows">6、windows会弹出窗口要求输入用户名和密码，输入即可</h3>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[[转]Linux的启动流程]]></title>
+    <link href="http://zhangrui1209.github.io/blog/linux-boot-flow.html"/>
+    <updated>2014-05-07T16:32:59+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/linux-boot-flow</id>
+    <content type="html"><![CDATA[<p>半年前，我写了<a href="http://www.ruanyifeng.com/blog/2013/02/booting.html">《计算机是如何启动的？》</a>，探讨BIOS和主引导记录的作用。</p>
+
+<p>那篇文章不涉及操作系统，只与主板的板载程序有关。今天，我想接着往下写，探讨操作系统接管硬件以后发生的事情，也就是操作系统的启动流程。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow1.png" alt="bootflow1" /></p>
+
+<!--more-->
+
+<p>这个部分比较有意思。因为在BIOS阶段，计算机的行为基本上被写死了，程序员可以做的事情并不多；但是，一旦进入操作系统，程序员几乎可以定制所有方面。所以，这个部分与程序员的关系更密切。</p>
+
+<p>我主要关心的是Linux操作系统，它是目前服务器端的主流操作系统。下面的内容针对的是Debian发行版，因为我对其他发行版不够熟悉。</p>
+
+<h3 id="section">第一步、加载内核</h3>
+
+<p>操作系统接管硬件以后，首先读入 /boot 目录下的内核文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow2.png" alt="bootflow2" /></p>
+
+<p>以我的电脑为例，/boot 目录下面大概是这样一些文件：</p>
+
+<pre><code>$ ls /boot
+
+config-3.2.0-3-amd64
+config-3.2.0-4-amd64
+grub
+initrd.img-3.2.0-3-amd64
+initrd.img-3.2.0-4-amd64
+System.map-3.2.0-3-amd64
+System.map-3.2.0-4-amd64
+vmlinuz-3.2.0-3-amd64
+vmlinuz-3.2.0-4-amd64
+</code></pre>
+
+<h3 id="section-1">第二步、启动初始化进程</h3>
+
+<p>内核文件加载以后，就开始运行第一个程序 /sbin/init，它的作用是初始化系统环境。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow3.png" alt="bootflow3" /></p>
+
+<p>由于init是第一个运行的程序，它的进程编号（pid）就是1。其他所有进程都从它衍生，都是它的子进程。</p>
+
+<h3 id="section-2">第三步、确定运行级别</h3>
+
+<p>许多程序需要开机启动。它们在Windows叫做”服务”（service），在Linux就叫做”守护进程”（daemon）。</p>
+
+<p>init进程的一大任务，就是去运行这些开机启动的程序。但是，不同的场合需要启动不同的程序，比如用作服务器时，需要启动Apache，用作桌面就不需要。Linux允许为不同的场合，分配不同的开机启动程序，这就叫做”运行级别”（runlevel）。也就是说，启动时根据”运行级别”，确定要运行哪些程序。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow4.png" alt="bootflow4" /></p>
+
+<p>Linux预置七种运行级别（0-6）。一般来说，0是关机，1是单用户模式（也就是维护模式），6是重启。运行级别2-5，各个发行版不太一样，对于Debian来说，都是同样的多用户模式（也就是正常模式）。</p>
+
+<p>init进程首先读取文件 /etc/inittab，它是运行级别的设置文件。如果你打开它，可以看到第一行是这样的：</p>
+
+<pre><code>id:2:initdefault:
+</code></pre>
+
+<p>initdefault的值是2，表明系统启动时的运行级别为2。如果需要指定其他级别，可以手动修改这个值。</p>
+
+<p>那么，运行级别2有些什么程序呢，系统怎么知道每个级别应该加载哪些程序呢？……回答是每个运行级别在/etc目录下面，都有一个对应的子目录，指定要加载的程序。</p>
+
+<pre><code>/etc/rc0.d
+/etc/rc1.d
+/etc/rc2.d
+/etc/rc3.d
+/etc/rc4.d
+/etc/rc5.d
+/etc/rc6.d
+</code></pre>
+
+<p>上面目录名中的”rc”，表示run command（运行程序），最后的d表示directory（目录）。下面让我们看看 /etc/rc2.d 目录中到底指定了哪些程序。</p>
+
+<pre><code>$ ls  /etc/rc2.d
+
+README
+S01motd
+S13rpcbind
+S14nfs-common
+S16binfmt-support
+S16rsyslog
+S16sudo
+S17apache2
+S18acpid
+...
+</code></pre>
+
+<p>可以看到，除了第一个文件README以外，其他文件名都是”字母S+两位数字+程序名”的形式。字母S表示Start，也就是启动的意思（启动脚本的运行参数为start），如果这个位置是字母K，就代表Kill（关闭），即如果从其他运行级别切换过来，需要关闭的程序（启动脚本的运行参数为stop）。后面的两位数字表示处理顺序，数字越小越早处理，所以第一个启动的程序是motd，然后是rpcbing、nfs……数字相同时，则按照程序名的字母顺序启动，所以rsyslog会先于sudo启动。</p>
+
+<p>这个目录里的所有文件（除了README），就是启动时要加载的程序。如果想增加或删除某些程序，不建议手动修改 /etc/rcN.d 目录，最好是用一些专门命令进行管理（参考这里和这里）。</p>
+
+<h3 id="section-3">第四步、加载开机启动程序</h3>
+
+<p>前面提到，七种预设的”运行级别”各自有一个目录，存放需要开机启动的程序。不难想到，如果多个”运行级别”需要启动同一个程序，那么这个程序的启动脚本，就会在每一个目录里都有一个拷贝。这样会造成管理上的困扰：如果要修改启动脚本，岂不是每个目录都要改一遍？</p>
+
+<p>Linux的解决办法，就是七个 /etc/rcN.d 目录里列出的程序，都设为链接文件，指向另外一个目录 /etc/init.d ，真正的启动脚本都统一放在这个目录中。init进程逐一加载开机启动程序，其实就是运行这个目录里的启动脚本。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow5.png" alt="bootflow5" /></p>
+
+<p>下面就是链接文件真正的指向。</p>
+
+<pre><code>$ ls -l /etc/rc2.d
+
+README
+S01motd -&gt; ../init.d/motd
+S13rpcbind -&gt; ../init.d/rpcbind
+S14nfs-common -&gt; ../init.d/nfs-common
+S16binfmt-support -&gt; ../init.d/binfmt-support
+S16rsyslog -&gt; ../init.d/rsyslog
+S16sudo -&gt; ../init.d/sudo
+S17apache2 -&gt; ../init.d/apache2
+S18acpid -&gt; ../init.d/acpid
+...
+</code></pre>
+
+<p>这样做的另一个好处，就是如果你要手动关闭或重启某个进程，直接到目录 /etc/init.d 中寻找启动脚本即可。比如，我要重启Apache服务器，就运行下面的命令：</p>
+
+<pre><code>$ sudo /etc/init.d/apache2 restart
+</code></pre>
+
+<p>/etc/init.d 这个目录名最后一个字母d，是directory的意思，表示这是一个目录，用来与程序 /etc/init 区分。</p>
+
+<h3 id="section-4">第五步、用户登录</h3>
+
+<p>开机启动程序加载完毕以后，就要让用户登录了。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow6.png" alt="bootflow6" /></p>
+
+<p>一般来说，用户的登录方式有三种：</p>
+
+<pre><code>（1）命令行登录
+（2）ssh登录
+（3）图形界面登录
+</code></pre>
+
+<p>这三种情况，都有自己的方式对用户进行认证。<br />
+（1）命令行登录：init进程调用getty程序（意为get teletype），让用户输入用户名和密码。输入完成后，再调用login程序，核对密码（Debian还会再多运行一个身份核对程序/etc/pam.d/login）。如果密码正确，就从文件 /etc/passwd 读取该用户指定的shell，然后启动这个shell。<br />
+（2）ssh登录：这时系统调用sshd程序（Debian还会再运行/etc/pam.d/ssh ），取代getty和login，然后启动shell。<br />
+（3）图形界面登录：init进程调用显示管理器，Gnome图形界面对应的显示管理器为gdm（GNOME Display Manager），然后用户输入用户名和密码。如果密码正确，就读取/etc/gdm3/Xsession，启动用户的会话。</p>
+
+<h3 id="login-shell">第六步、进入 login shell</h3>
+
+<p>所谓shell，简单说就是命令行界面，让用户可以直接与操作系统对话。用户登录时打开的shell，就叫做login shell。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow7.png" alt="bootflow7" /></p>
+
+<p>Debian默认的shell是Bash，它会读入一系列的配置文件。上一步的三种情况，在这一步的处理，也存在差异。<br />
+（1）命令行登录：首先读入 /etc/profile，这是对所有用户都有效的配置；然后依次寻找下面三个文件，这是针对当前用户的配置。</p>
+
+<pre><code>~/.bash_profile
+~/.bash_login
+~/.profile 需要注意的是，这三个文件只要有一个存在，就不再读入后面的文件了。比如，要是 ~/.bash_profile 存在，就不会再读入后面两个文件了。   （2）ssh登录：与第一种情况完全相同。   （3）图形界面登录：只加载 /etc/profile 和 ~/.profile。也就是说，~/.bash_profile 不管有没有，都不会运行。  
+</code></pre>
+
+<h3 id="non-login-shell">第七步，打开 non-login shell</h3>
+
+<p>老实说，上一步完成以后，Linux的启动过程就算结束了，用户已经可以看到命令行提示符或者图形界面了。但是，为了内容的完整，必须再介绍一下这一步。</p>
+
+<p>用户进入操作系统以后，常常会再手动开启一个shell。这个shell就叫做 non-login shell，意思是它不同于登录时出现的那个shell，不读取/etc/profile和.profile等配置文件。</p>
+
+<p><img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/bootflow8.png" alt="bootflow8" /></p>
+
+<p>non-login shell的重要性，不仅在于它是用户最常接触的那个shell，还在于它会读入用户自己的bash配置文件 ~/.bashrc。大多数时候，我们对于bash的定制，都是写在这个文件里面的。</p>
+
+<p>你也许会问，要是不进入 non-login shell，岂不是.bashrc就不会运行了，因此bash 也就不能完成定制了？事实上，Debian已经考虑到这个问题了，请打开文件 ~/.profile，可以看到下面的代码：</p>
+
+<pre><code>if [ -n "$BASH_VERSION" ]; then
+	if [ -f "$HOME/.bashrc" ]; then
+		. "$HOME/.bashrc"
+	fi
+fi 上面代码先判断变量 $BASH_VERSION 是否有值，然后判断主目录下是否存在 .bashrc 文件，如果存在就运行该文件。第三行开头的那个点，是source命令的简写形式，表示运行某个文件，写成"source ~/.bashrc"也是可以的。  
+</code></pre>
+
+<p>因此，只要运行～/.profile文件，～/.bashrc文件就会连带运行。但是上一节的第一种情况提到过，如果存在～/.bash_profile文件，那么有可能不会运行～/.profile文件。解决这个问题很简单，把下面代码写入.bash_profile就行了。</p>
+
+<pre><code>if [ -f ~/.profile ]; then
+	. ~/.profile
+fi
+</code></pre>
+
+<p>这样一来，不管是哪种情况，.bashrc都会执行，用户的设置可以放心地都写入这个文件了。</p>
+
+<p>Bash的设置之所以如此繁琐，是由于历史原因造成的。早期的时候，计算机运行速度很慢，载入配置文件需要很长时间，Bash的作者只好把配置文件分成了几个部分，阶段性载入。系统的通用设置放在 /etc/profile，用户个人的、需要被所有子进程继承的设置放在.profile，不需要被继承的设置放在.bashrc。</p>
+
+<p>顺便提一下，除了Linux以外， Mac OS X 使用的shell也是Bash。但是，它只加载.bash_profile，然后在.bash_profile里面调用.bashrc。而且，不管是ssh登录，还是在图形界面里启动shell窗口，都是如此。</p>
+
+<p>参考链接</p>
+
+<pre><code>[1] Debian Wiki, Environment Variables
+[2] Debian Wiki, Dot Files
+[3] Debian Administration, An introduction to run-levels
+[4] Debian Admin，Debian and Ubuntu Linux Run Levels
+[5] Linux Information Project (LINFO), Runlevel Definition
+[6] LinuxQuestions.org, What are run levels?
+[7] Dalton Hubble, Bash Configurations Demystified
+</code></pre>
+
+<p>(完)</p>
+
+<p>原文：<a href="http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html">http://www.ruanyifeng.com/blog/2013/08/linux_boot_process.html</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Linux大文件分割(split)与合并(cat)使用方法]]></title>
+    <link href="http://zhangrui1209.github.io/blog/linux-split-cat.html"/>
+    <updated>2014-04-19T13:52:39+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/linux-split-cat</id>
+    <content type="html"><![CDATA[<p>在传输等方面大文件往往都是被限制的，所以我们需要分割大文件，以下学习总结备查：</p>
+
+<h2 id="split">split</h2>
+
+<pre><code>语法：split [--help][--version][-][-l][-b][-C][-d][-a][要切割的文件][输出文件名]
+
+--version 显示版本信息
+  
+- 或者-l,指定每多少行切割一次，用于文本文件分割
+  
+-b 指定切割文件大小,单位KB，K，MB，M，G等
+  
+-C 与-b类似，但尽量维持每行完整性
+  
+-d 使用数字而不是字母作为后缀名
+  
+-a 指定后缀名的长度，默认为2位
+</code></pre>
+
+<!--more-->
+
+<h4 id="section">示例1</h4>
+<p>将a.tar.gz包按每个5M大小切割</p>
+
+<pre><code>$ split -b 5m a.tar.gz a.tar.gz.  
+</code></pre>
+
+<p>后面输出的文件名<code>a.tar.gz. </code>不指定的话会以xaa，xab，xac形式输出。文件名后面不加<code>". "</code>，输出文件名会和后缀连在一起而不直观</p>
+
+<h4 id="section-1">示例2</h4>
+<p>使用<code>|</code>管道将打包分割动作合并</p>
+
+<pre><code>$ tar -zcf - a | split -b 5m - a.tar.gz.
+</code></pre>
+
+<p>注意管道前后两个没带参数的<code>“-”</code>是不能省略的，它作为tar的ouput和split的input的参数</p>
+
+<h2 id="cat">cat</h2>
+
+<pre><code>语法：cat [-AbeEnstTuv] [--help] [--version] fileName
+  
+-n 或 –number 由 1 开始对所有输出的行数编号
+  
+-b 或 –number-nonblank 和 -n 相似，只不过对于空白行不编号
+  
+-s 或 –squeeze-blank 当遇到有连续两行以上的空白行，就代换为一行的空白行
+  
+-v 或 –show-nonprinting
+</code></pre>
+
+<h4 id="cat-1">cat常用功能</h4>
+
+<pre><code>#一次显示整个文件
+cat   filename
+  
+#创建一个文件，只能创建新文件,不能编辑已有文件
+cat  &gt;  filename
+  
+#将几个文件合并为一个文件。
+cat   file1   file2  &gt; file
+</code></pre>
+
+<p>所以上面的示例中将分割文件合并，可以使用：</p>
+
+<pre><code>#合并
+cat a.tar.gz.* &gt; a.tar.gz
+  
+#合并并解压
+cat a.tar.gz.*  | tar -zxv
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[修改ubuntu的命令提示符]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-prompt-sign.html"/>
+    <updated>2014-04-12T17:40:38+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-prompt-sign</id>
+    <content type="html"><![CDATA[<p>首先了解一个变量：<br />
+<strong>PS(Prompt Sign)</strong>：是指命令提示符，例如ubuntu 12.04终端下的：<br />
+<code>zhangrui@thinkPad-Edge-E430c:~$</code></p>
+
+<p>修改ubuntu的命令提示符主要是通过修改变量PS1和PS2的值<br />
+PS1是主要的提示符设置，在ubuntu一般为：</p>
+
+<!--more-->
+
+<pre><code>${debian_chroot:+($debian_chroot)}\u@\h:\w\$   
+</code></pre>
+
+<p>PS2是次要提示符，一般为</p>
+
+<pre><code>“&gt;”  
+</code></pre>
+
+<p>在设定PS1环境变量时，我们需要用到预设的一些特殊变量，分类如下：</p>
+
+<h4 id="section">主要信息：</h4>
+<p><strong>\u</strong>：当前登录用户名<br />
+<strong>\h</strong>：当前计算机名称（比如上面的thinkPad-Edge-E430c）<br />
+<strong>\H</strong>：完整的主机名称<br />
+<strong>\w</strong>：完整的工作目录名称。home目录会以 ~ 取代<br />
+<strong>\W</strong>：利用 basename 取得工作目录名称，所以仅会列出最后一个目录名<br />
+<strong>\$</strong>：提示字符，如果是root用户，提示字符为#，否则就是$</p>
+
+<h4 id="section-1">时间显示：</h4>
+<p><strong>\t</strong>：显示时间（24小时制，如：HH:MM:SS）<br />
+<strong>\T</strong>：显示时间（12小时制）<br />
+<strong>\@</strong>：显示时间（AM/PM显示）<br />
+<strong>\d</strong>：显示日期，格式为 Weekday Month Date，例如 “Mon Aug 1”</p>
+
+<h4 id="shell">Shell信息：</h4>
+<p><strong>\#</strong>：下达的第几个指令<br />
+<strong>\v</strong>：Bash的版本信息<br />
+<strong>\V</strong>：Bash的发布版本号<br />
+<strong>\S</strong>：Shell名称<br />
+<strong>\!</strong>：Bash命令的历史编号<br />
+<strong>\j</strong>：job序号<br />
+<strong>\l</strong>：Shell的终端名称</p>
+
+<h4 id="section-2">控制符：</h4>
+<p>\\：\<br />
+<strong>\n</strong>：换行<br />
+<strong>\r</strong><br />
+<strong>\]</strong>：]<br />
+<strong>\e</strong>：Esc<br />
+<strong>\[</strong>：[</p>
+
+<h4 id="section-3">举例：</h4>
+<p>打开～/.bashrc文件，作如下修改：</p>
+
+<pre><code># uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+# force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+	if [ -x /usr/bin/tput ] &amp;&amp; tput setaf 1 &gt;&amp;/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+	else
+	color_prompt=
+	fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+	PS1='\n\e[33m\u:&gt;&gt; \w\n\e[32m\h\e[36m\t\e[31m\$\e[0m '
+else  
+	PS1='\n\u:&gt;&gt; \w\n\h \t \$ '  
+fi  
+unset color_prompt force_color_prompt
+</code></pre>
+
+<p>保存之后，重新打开终端，效果如下：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/terminal1.png" alt="terminal1" /></p>
+
+<p>如果将<code># force_color_prompt=yes</code>注释打开<code>force_color_prompt=yes</code><br />
+保存之后，重新打开终端，效果如下：<br />
+<img src="https://raw.githubusercontent.com/zhangrui1209/MarkdownPictures/master/LinuxUse/terminal2.png" alt="terminal2" /></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Ubuntu之dos2unix和unix2dos]]></title>
+    <link href="http://zhangrui1209.github.io/blog/ubuntu-dos-unix.html"/>
+    <updated>2014-03-10T16:50:38+08:00</updated>
+    <id>http://zhangrui1209.github.io/blog/ubuntu-dos-unix</id>
+    <content type="html"><![CDATA[<p>Ubuntu下默认没有安装dos2unix工具，而且也没有一个叫这个名字的工具。但是有一个替代工具——tofrodos, 下面说一下它的安装和使用。用apt安装。</p>
+
+<h4 id="tofrodos">(1) 安装tofrodos</h4>
+<p><code>$ sudo apt-get install tofrodos</code><br />
+实际上它安装了两个工具：todos（相当于unix2dos）和fromdos（相当于dos2unix）<br />
+安装完即可，现在已经可以进行文本格式的转换了。</p>
+
+<!--more-->
+
+<p>比如：<br />
+<code>$ todos Hello.txt</code><br />
+(即unix2dos Hello.txt)</p>
+
+<p><code>$ fromdos Hello.txt</code><br />
+(即dos2unix Hello.txt)</p>
+
+<h4 id="section">(2) 做一些优化</h4>
+<p>由于习惯了unix2dos和dos2unix的命令，可以把上面安装的两个工具链接成unix2dos 和dos2unix，或者仅仅是起个别名，并放在启动脚本里。<br />
+步骤：<br />
+<code>$ ln -s /usr/bin/todos /usr/bin/unix2dos</code><br />
+<code>$ ln -s /usr/bin/fromdos /usr/bin/dos2unix</code></p>
+
+<p>或者在 ~/.bashrc里起个别名<br />
+<code>$ vi ~/.bashrc</code><br />
+添加 alias unix2dos=todos alias dos2unix=fromdos</p>
+
+]]></content>
+  </entry>
+  
+</feed>
